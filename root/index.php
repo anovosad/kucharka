@@ -3,6 +3,6 @@
 
 	chdir("..");
 	include("cookbook.php");
-	
+
 	new Cookbook();
 ?>
