@@ -1,4 +1,5 @@
 <?php
+	session_start();
 	include("oz.php");
 	include("db.php");
 
@@ -60,6 +61,9 @@
 					error_log(print_r($e, true));
 				}
 			}
+		}
+		
+		protected function index($matches) {
 		}
 
 		protected function getRecipe($matches) {
