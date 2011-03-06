@@ -37,10 +37,10 @@
 			'GET	^/autori$			listUsers',					/* list all users */
 			'GET	^/autor/(\d+)$		getUser',					/* get one user */
 			'POST	^/autor/(\d+)$		userProcess',				/* edit user */
-			'DELETE	^/autor/(\d+)$		userDelete'					/* delete user */
+			'DELETE	^/autor/(\d+)$		userDelete',				/* delete user */
 
 			'GET	^/hledani/?$		search',					/* search form/query */ 
-			'GET	^/(.*)$				fallback',					/* search fallback */
+			'GET	^/(.*)$				fallback'					/* search fallback */
 		);
 		
 		public function __construct() {
