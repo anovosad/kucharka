@@ -12,7 +12,7 @@
 		public function getRecipe($id) {
 			$data = $this->query("SELECT * FROM ".self::RECIPE." WHERE id = ?", $id);
 			if (count($data)) { 
-				$data[0]["recept"] = array(""=>$data[0]["recept"]);
+				$data[0]["text"] = array(""=>$data[0]["text"]);
 				return $data[0]; 
 			}
 			return null; 
