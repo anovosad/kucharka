@@ -24,18 +24,35 @@
 		}
 
 		public function getIngredients() {
-			/* FIXME postprocess */
-			return $this->query("SELECT ".self::INGREDIENT.".*, 
-								".self::CATEGORY.".name AS category_name
-								FROM ".self::INGREDIENT." 
-								LEFT JOIN ".self::CATEGORY." ON ".self::INGREDIENT.".id_category = ".self::CATEGORY.".id 
-								ORDER by ".self::CATEGORY.".`order` ASC");
+			$ingredients = $this->query("SELECT * FROM ".self::INGREDIENT." ORDER by name ASC");
+			$categories = $this->getCategories();
+			
+			$tmp = array(); /* temporary id-indexed categories */
+			for ($i=0;$i<count($categories);$i++) {
+				$id = $categories[$i]["id"];
+				$tmp[$id] = $categories[$i];
+				$tmp[$id]["ingredients"] = array();
+			}
+			
+			for ($i=0;$i<count($ingredients);$i++) {
+				$id = $ingredients[$i]["id_category"];
+				$tmp[$id]["ingredients"][] = $ingredients[$i];
+			}
+			
+			$result = array();
+			foreach ($tmp as $item) { $result[] = $item; }
+			
+			return $result;
 		}
 		
 		public function getUsers() {
 			return $this->query("SELECT id, name FROM ".self::USER." ORDER by id ASC");
 		}
 		
+		private function getCategories() {
+			return $this->query("SELECT id, name FROM ".self::CATEGORY." ORDER by `order` ASC");
+		}
+
 		/***/
 
 		public function getRecipe($id) {
