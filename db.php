@@ -16,7 +16,7 @@
 
 		public function getRecipes() {
 			$data = $this->query("SELECT id, name FROM ".self::RECIPE." ORDER by name ASC");
-			return addImageInfo($data);
+			return $this->addImageInfo($data);
 		}
 
 		public function getTypes() {
@@ -48,7 +48,7 @@
 			
 			$data["ingredients"] = array("ingredient"=>$this->getAmounts($id));
 
-			$data = addImageInfo($data);
+			$data = $this->addImageInfo($data);
 			return $data; 
 		}
 
@@ -80,11 +80,11 @@
 		/***/
 		
 		public function getLatestRecipes($amount = 10) {
-			$data = $this->query("SELECT id, name FROM ".self::RECIPE." ORDER BY ts LIMIT ?", $amount);
-			return addImageInfo($data);
+			$data = $this->query("SELECT id, name FROM ".self::RECIPE." ORDER BY ts DESC LIMIT ". (int) $amount);
+			return $this->addImageInfo($data);
 		}
 		
-		public function addImageInfo($recipes) {
+		private function addImageInfo($recipes) {
 			return $recipes;
 		}
 		

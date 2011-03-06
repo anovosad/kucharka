@@ -64,8 +64,8 @@
 		}
 		
 		protected function index($matches) {
-			$recipes = $this-db->getLatestRecipes();
-			if ($data) { $this->view->addData("recipe", $data); }
+			$recipes = $this->db->getLatestRecipes();
+			if ($recipes) { $this->view->addData("recipes", array("recipe"=>$recipes)); }
 			
 			$this->view->setTemplate("templates/index.xsl");
 			echo $this->view->toString();
