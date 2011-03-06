@@ -64,6 +64,11 @@
 		}
 		
 		protected function index($matches) {
+			$recipes = $this-db->getLatestRecipes();
+			if ($data) { $this->view->addData("recipe", $data); }
+			
+			$this->view->setTemplate("templates/index.xsl");
+			echo $this->view->toString();
 		}
 
 		protected function getRecipe($matches) {

@@ -15,7 +15,8 @@
 		}
 
 		public function getRecipes() {
-			return $this->query("SELECT id, name FROM ".self::RECIPE." ORDER by name ASC");
+			$data = $this->query("SELECT id, name FROM ".self::RECIPE." ORDER by name ASC");
+			return addImageInfo($data);
 		}
 
 		public function getTypes() {
@@ -46,6 +47,8 @@
 			$data["remark"] = array(""=>$data["remark"]);
 			
 			$data["ingredients"] = array("ingredient"=>$this->getAmounts($id));
+
+			$data = addImageInfo($data);
 			return $data; 
 		}
 
@@ -74,6 +77,17 @@
 									ORDER BY ".self::CATEGORY.".`order`", $id_recipe);
 		}
 
+		/***/
+		
+		public function getLatestRecipes($amount = 10) {
+			$data = $this->query("SELECT id, name FROM ".self::RECIPE." ORDER BY ts LIMIT ?", $amount);
+			return addImageInfo($data);
+		}
+		
+		public function addImageInfo($recipes) {
+			return $recipes;
+		}
+		
 	}
 
 ?>
