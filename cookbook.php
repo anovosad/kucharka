@@ -7,40 +7,40 @@
 		private $debug = true;
 
 		protected $dispatch_table = array(
-			"GET	^/$					index",						/* homepage */
-			"GET	^/rss$				rss",						/* feed */
-			"GET	^/login$			login",						/* login form */
-			"POST	^/login$			loginProcess",				/* login action */
-			"POST	^/logout$			logoutProcess",				/* logout action */
+			'GET	^/$					index',						/* homepage */
+			'GET	^/rss$				rss',						/* feed */
+			'GET	^/login$			login',						/* login form */
+			'POST	^/login$			loginProcess',				/* login action */
+			'POST	^/logout$			logoutProcess',				/* logout action */
 
-			"GET	^/recepty$			listRecipes",				/* alphabetical */
-			"GET	^/recept/(\d+)$		getRecipe",					/* one recipe */
-			"POST	^/recept/(\d+)$		recipeProcess",				/* edit recipe */
-			"DELETE	^/recept/(\d+)$		recipeDelete",				/* delete recipe */
+			'GET	^/recepty$			listRecipes',				/* alphabetical */
+			'GET	^/recept/(\d+)$		getRecipe',					/* one recipe */
+			'POST	^/recept/(\d+)$		recipeProcess',				/* edit recipe */
+			'DELETE	^/recept/(\d+)$		recipeDelete',				/* delete recipe */
 
-			"GET	^/jidelnicek$		menu",						/* menu form/query */
+			'GET	^/jidelnicek$		menu',						/* menu form/query */
 			
-			"GET	^/druhy$			listTypes",					/* list recipe types */
-			"GET	^/druh/(\d+)$		getType",					/* one recipe type */
-			"POST	^/druh/(\d+)$		typeProcess",				/* edit type */
-			"DELETE	^/druh/(\d+)$		typeDelete",				/* delete type */
+			'GET	^/druhy$			listTypes',					/* list recipe types */
+			'GET	^/druh/(\d+)$		getType',					/* one recipe type */
+			'POST	^/druh/(\d+)$		typeProcess',				/* edit type */
+			'DELETE	^/druh/(\d+)$		typeDelete',				/* delete type */
 			
-			"GET	^/suroviny$			listIngredients",			/* list ingredients */
-			"GET	^/surovina/(\d+)$	getIngredient",				/* one ingredient */
-			"POST	^/surovina/(\d+)$	ingredientProcess",			/* edit ingredient */
-			"DELETE	^/surovina/(\d+)$	ingredientDelete",			/* delete ingredient */
+			'GET	^/suroviny$			listIngredients',			/* list ingredients */
+			'GET	^/surovina/(\d+)$	getIngredient',				/* one ingredient */
+			'POST	^/surovina/(\d+)$	ingredientProcess',			/* edit ingredient */
+			'DELETE	^/surovina/(\d+)$	ingredientDelete',			/* delete ingredient */
 
-			"GET	^/kategorie/(\d+)$	getIngredientCategory",		/* one ingredient category */
-			"POST	^/kategorie/(\d+)$	ingredientCategoryProcess",	/* edit ingredient */
-			"DELETE	^/kategorie/(\d+)$	ingredientCategoryDelete",	/* delete ingredient */
+			'GET	^/kategorie/(\d+)$	getIngredientCategory',		/* one ingredient category */
+			'POST	^/kategorie/(\d+)$	ingredientCategoryProcess',	/* edit ingredient */
+			'DELETE	^/kategorie/(\d+)$	ingredientCategoryDelete',	/* delete ingredient */
 			
-			"GET	^/autori$			listUsers",					/* list all users */
-			"GET	^/autor/(\d+)$		getUser",					/* get one user */
-			"POST	^/autor/(\d+)$		userProcess",				/* edit user */
-			"DELETE	^/autor/(\d+)$		userDelete"				/* delete user */
+			'GET	^/autori$			listUsers',					/* list all users */
+			'GET	^/autor/(\d+)$		getUser',					/* get one user */
+			'POST	^/autor/(\d+)$		userProcess',				/* edit user */
+			'DELETE	^/autor/(\d+)$		userDelete'					/* delete user */
 
-			"GET	^/hledat/?$			search",					/* search form/query */ 
-			"GET	^/(.*)$				fallback",					/* search fallback */
+			'GET	^/hledani/?$		search',					/* search form/query */ 
+			'GET	^/(.*)$				fallback',					/* search fallback */
 		);
 		
 		public function __construct() {
@@ -72,7 +72,7 @@
 		}
 		
 		protected function fallback($matches) {
-			HTTP::redirect("/search?q=" . $matches[1]);
+			HTTP::redirect("/hledani?q=" . $matches[1]);
 		}
 		
 	}
