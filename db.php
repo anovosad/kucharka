@@ -24,7 +24,7 @@
 
 		public function getIngredients() {
 			return $this->query("SELECT ".self::INGREDIENT.".*, 
-								".self::CATEGORY.".name 
+								".self::CATEGORY.".name AS category_name
 								FROM ".self::INGREDIENT." 
 								LEFT JOIN ".self::CATEGORY." ON ".self::INGREDIENT.".id_category = ".self::CATEGORY.".id 
 								ORDER by ".self::CATEGORY.".`order` ASC");
