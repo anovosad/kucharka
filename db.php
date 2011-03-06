@@ -66,13 +66,12 @@
 		}
 		
 		public function getAmounts($id_recipe) {
-			$data = $this->query("SELECT ".self::INGREDIENT.".*, ".self::AMOUNT.".amount
+			return $this->query("SELECT ".self::INGREDIENT.".name, ".self::AMOUNT.".amount
 									FROM ".self::AMOUNT."
 									LEFT JOIN ".self::INGREDIENT." ON ".self::AMOUNT.".id_ingredient = ".self::INGREDIENT.".id
 									LEFT JOIN ".self::CATEGORY." ON ".self::INGREDIENT.".id_category = ".self::CATEGORY.".id
 									WHERE ".self::AMOUNT.".id_recipe = ?
 									ORDER BY ".self::CATEGORY.".`order`", $id_recipe);
-			return $data;
 		}
 
 	}
