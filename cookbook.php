@@ -79,5 +79,14 @@
 			HTTP::redirect("/hledani?q=" . $matches[1]);
 		}
 		
+		protected function listIngredients($matches) {
+			$data = $this->db->getIngredients();
+			if ($data) { $this->view->addData("ingredients", $data); }
+			
+			$this->view->setTemplate("templates/ingredients.xsl");
+			echo $this->view->toString();
+			
+		}
+		
 	}
 ?>
