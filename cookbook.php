@@ -65,7 +65,7 @@
 		
 		protected function index($matches) {
 			$recipes = $this->db->getLatestRecipes();
-			if ($recipes) { $this->view->addData("recipes", array("recipe"=>$recipes)); }
+			if ($recipes) { $this->view->addData("recipe", $recipes); }
 			
 			$this->view->setTemplate("templates/index.xsl");
 			echo $this->view->toString();
@@ -86,7 +86,7 @@
 		
 		protected function listIngredients($matches) {
 			$data = $this->db->getIngredients();
-			if ($data) { $this->view->addData("ingredients", $data); }
+			if ($data) { $this->view->addData("category", $data); }
 			
 			$this->view->setTemplate("templates/ingredients.xsl");
 			echo $this->view->toString();

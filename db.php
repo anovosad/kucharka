@@ -63,7 +63,7 @@
 			$data["text"] = array(""=>$data["text"]);
 			$data["remark"] = array(""=>$data["remark"]);
 			
-			$data["ingredients"] = array("ingredient"=>$this->getAmounts($id));
+			$data["ingredient"] = $this->getAmounts($id);
 
 			$data = $this->addImageInfo($data);
 			return $data; 
