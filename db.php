@@ -34,13 +34,6 @@
 			return $this->query("SELECT id, name FROM ".self::USER." ORDER by id ASC");
 		}
 
-		public function getRecipes() {
-			return $this->query("SELECT id, name FROM ".self::RECIPE." ORDER by name ASC");
-		}
-		
-		public function getRecipes() {
-			return $this->query("SELECT id, name FROM ".self::RECIPE." ORDER by name ASC");
-		}
 		public function getRecipe($id) {
 			$data = $this->query("SELECT * FROM ".self::RECIPE." WHERE id = ?", $id);
 			if (count($data)) { 
