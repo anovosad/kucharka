@@ -46,7 +46,7 @@
 			'POST	^/autor/(\d+)$		User.edit',			/* edit user */
 			'DELETE	^/autor/(\d+)$		User.delete',		/* delete user */
 
-			'GET	^/(.*)$				fallback'			/* search fallback */
+			'GET	^/([^/]*)$				fallback'			/* search fallback */
 		);
 		
 		public function __construct() {
