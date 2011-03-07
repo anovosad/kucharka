@@ -6,6 +6,7 @@
 	class Cookbook extends APP {
 		private $db;
 		private $debug = true;
+		private $image_path = "root/img/recipe";
 
 		protected $dispatch_table = array(
 			'GET	^/$					index',						/* homepage */
@@ -45,11 +46,20 @@
 		);
 		
 		public function __construct() {
-			$this->db = new CookbookDB();
+			$this->db = new CookbookDB($this->image_path);
 			$this->view = new XML();
 			$this->view->setParameter("BASE", HTTP::$BASE);
 			$this->view->setParameter("DEBUG", $this->debug);
+			$this->view->setParameter("IMAGE_PATH", $this->image_path);
 			$this->view->addFilter(new FILTER_FRACTIONS());
+			
+			$id = $this->loggedId();
+			if ($id) {
+				$this->view->addData("login", array(
+					"id"=>$id,
+					"name"=>$this->loggedName()
+				));
+			}
 
 			try {
 				$this->dispatch();
@@ -63,11 +73,54 @@
 			}
 		}
 		
+		protected function login($matches) {
+			$this->view->addData("referer", array("url"=>HTTP::$REFERER));
+			$this->view->setTemplate("templates/login.xsl");
+			echo $this->view->toString();
+		}
+		
+		protected function loginProcess($matches) {
+			$login = HTTP::value("login", "post", "");
+			$password = HTTP::value("password", "post", "");
+			$result = $this->db->validateLogin($login, $password);
+			if ($result) { 
+				$_SESSION["id"] = $result["id"];
+				$_SESSION["name"] = $result["name"];
+				$referer = HTTP::value("referer", "post", "");
+				if ($referer) { return HTTP::redirect($referer); }
+			}
+			HTTP::redirectBack(); 
+		}
+
+		protected function logoutProcess($matches) {
+			if ($this->loggedId()) {
+				unset($_SESSION["id"]);
+				unset($_SESSION["name"]);
+			}
+			HTTP::redirectBack();
+		}
+
 		protected function index($matches) {
 			$recipes = $this->db->getLatestRecipes();
-			if ($recipes) { $this->view->addData("recipe", $recipes); }
+			if (count($recipes)) { $this->view->addData("recipe", $recipes); }
 			
 			$this->view->setTemplate("templates/index.xsl");
+			echo $this->view->toString();
+		}
+		
+		protected function rss($matches) {
+			$recipes = $this->db->getLatestRecipes();
+			if (count($recipes)) { $this->view->addData("recipe", $recipes); }
+			
+			$this->view->setTemplate("templates/rss.xsl");
+			echo $this->view->toString();
+		}
+
+		protected function listRecipes($matches) {
+			$data = $this->db->getRecipes();
+			if (count($data)) { $this->view->addData("recipe", $data); }
+
+			$this->view->setTemplate("templates/recipes.xsl");
 			echo $this->view->toString();
 		}
 
@@ -93,5 +146,27 @@
 			
 		}
 		
+		protected function search($matches) {
+			$query = HTTP::value("q", "get", "");
+			$recipes = $this->db->searchRecipes($query);
+			
+			if (count($recipes) == 1) {
+				HTTP::redirect("/recept/".$recipes[0]["id"]);
+				return;
+			}
+			
+			if (count($recipes)) { $this->view->addData("recipe", $recipes); }
+			$this->view->setTemplate("templates/search-results.xsl");
+			echo $this->view->toString();
+			
+		}
+		
+		private function loggedId() {
+			return (isset($_SESSION["id"]) ? $_SESSION["id"] : null);
+		}
+
+		private function loggedName() {
+			return (isset($_SESSION["name"]) ? $_SESSION["name"] : null);
+		}
 	}
 ?>

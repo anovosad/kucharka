@@ -9,9 +9,18 @@
 		const USER			= "user";
 		const AMOUNT		= "amount";
 		
-		public function __construct() {
+		private $image_path = "";
+
+		public function __construct($image_path) {
 			global $user, $pass, $db;
+			$this->image_path = $image_path;
 			parent::__construct("mysql:host=localhost;dbname=".$db, $user, $pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		}
+		
+		public function validateLogin($login, $password) {
+			$hash = sha1($password);
+			$data = $this->query("SELECT id, name FROM ".self::USER." WHERE login = ? AND pwd = ?", $login, $password);
+			return (count($data) ? $data[0] : null);
 		}
 
 		public function getRecipes() {
@@ -58,6 +67,7 @@
 		public function getRecipe($id) {
 			$data = $this->query("SELECT * FROM ".self::RECIPE." WHERE id = ?", $id);
 			if (!count($data)) { return null; }
+			$data = $this->addImageInfo($data);
 			
 			$data = $data[0];
 			$data["text"] = array(""=>$data["text"]);
@@ -65,7 +75,6 @@
 			
 			$data["ingredient"] = $this->getAmounts($id);
 
-			$data = $this->addImageInfo($data);
 			return $data; 
 		}
 
@@ -91,7 +100,7 @@
 									LEFT JOIN ".self::INGREDIENT." ON ".self::AMOUNT.".id_ingredient = ".self::INGREDIENT.".id
 									LEFT JOIN ".self::CATEGORY." ON ".self::INGREDIENT.".id_category = ".self::CATEGORY.".id
 									WHERE ".self::AMOUNT.".id_recipe = ?
-									ORDER BY ".self::CATEGORY.".`order`", $id_recipe);
+									ORDER BY ".self::CATEGORY.".`order` ASC, ".self::INGREDIENT.".name ASC", $id_recipe);
 		}
 
 		/***/
@@ -101,10 +110,77 @@
 			return $this->addImageInfo($data);
 		}
 		
+		public function getRandomRecipes($id_types, $amount = 10) {
+			$data = $this->query("SELECT id, name 
+									FROM ".self::RECIPE."
+									WHERE id_type IN (".implode(",",$id_types).")
+									LIMIT ".(int)$amount." 
+									ORDER BY name ASC");
+			return $this->addImageInfo($data);
+		}
+		
+		public function searchRecipes($query) {
+			$data = $this->query("SELECT id, name FROM ".self::RECIPE." WHERE name LIKE ?", "%".$query."%");
+			return $this->addImageInfo($data);
+		}
+		
+		public function getRecipesForType($id_type) {
+			$data = $this->query("SELECT id, name FROM ".self::RECIPE." WHERE id_type = ? ORDER BY name ASC", $id_type);
+			return $this->addImageInfo($data);
+		}
+		
+		public function getRecipesForUser($id_user) {
+			$data = $this->query("SELECT id, name FROM ".self::RECIPE." WHERE id_user = ? ORDER BY name ASC", $id_user);
+			return $this->addImageInfo($data);
+		}
+
+		public function getRecipesForIngredient($id_ingredient) {
+			/* FIXME obohatit, obrazek */
+			return $this->query("SELECT DISTINCT id_recipe FROM ".self::AMOUNT." WHERE id_ingredient = ? ORDER BY id_recipe ASC", $id_ingredient);
+		}
+
+		public function getIngredientsForCategory($id_category) {
+			return $this->query("SELECT id, name FROM ".self::INGREDIENT." WHERE id_category = ? ORDER BY name ASC", $id_category);
+		}
+
 		private function addImageInfo($recipes) {
+			for ($i=0;$i<count($recipes);$i++) {
+				$recipes[$i]["image"] = (file_exists($this->image_path . "/" . $recipes[$i]["id"] . ".jpg") ? 1 : 0);
+			}
 			return $recipes;
 		}
 		
+		/***/
+		
+		public function deleteRecipe($id) {
+			$this->delete(self::RECIPE, $id);
+			$this->delete(self::AMOUNT, array("id_recipe" => $id));
+			return true;
+		}
+
+		public function deleteType($id) {
+			if (count($this->getRecipesForType($id))) { return false; }
+			$this->delete(self::TYPE, $id);
+			return true;
+		}
+
+		public function deleteIngredient($id) {
+			if (count($this->getRecipesForIngredient($id))) { return false; }
+			$this->delete(self::INGREDIENT, $id);
+			return true;
+		}
+
+		public function deleteCategory($id) {
+			if (count($this->getIngredientsForCategory($id))) { return false; }
+			$this->delete(self::CATEGORY, $id);
+			return true;
+		}
+
+		public function deleteUser($id) {
+			if (count($this->getRecipesForUser($id))) { return false; }
+			$this->delete(self::USER, $id);
+			return true;
+		}
 	}
 
 ?>
