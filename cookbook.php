@@ -1,17 +1,17 @@
 <?php
 	session_start();
-	include("oz.php");
-	include("db.php");
-	include("cookbook.user.php");
-	include("cookbook.type.php");
-	include("cookbook.recipe.php");
-	include("cookbook.ingredient.php");
-	include("cookbook.category.php");
+	include("lib/oz.php");
+	include("lib/db.php");
+	include("lib/cookbook.user.php");
+	include("lib/cookbook.type.php");
+	include("lib/cookbook.recipe.php");
+	include("lib/cookbook.ingredient.php");
+	include("lib/cookbook.category.php");
 
 	class Cookbook extends APP {
-		private $db;
+		private $db = null;
 		private $debug = true;
-		private $image_path = "root/img/recipe";
+		private $image_path = "root/img";
 
 		protected $dispatch_table = array(
 			'GET	^/$					index',				/* homepage */
@@ -129,6 +129,9 @@
 		public function index($matches) {
 			$recipes = $this->db->getLatestRecipes();
 			if (count($recipes)) { $this->view->addData("recipe", $recipes); }
+			
+			$count = $this->db->getRecipeCount();
+			$this->view->addData("count", array("total"=>$count));
 			
 			$this->view->setTemplate("templates/index.xsl");
 			echo $this->view->toString();
