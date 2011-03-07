@@ -186,7 +186,7 @@
 
 		protected function dispatch() {
 			$method = strtolower($_SERVER["REQUEST_METHOD"]);
-			$method = HTTP::value("http_method", "post", $method);
+			$method = HTTP::value("http-method", "post", $method);
 
 			$handler = "";
 			$resource = substr($_SERVER["REQUEST_URI"], strlen(HTTP::$BASE));

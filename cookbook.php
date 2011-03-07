@@ -241,5 +241,7 @@
 		private function loggedName() {
 			return (isset($_SESSION["name"]) ? $_SESSION["name"] : null);
 		}
+		
+		/*** DELETE methods ***/
 	}
 ?>
