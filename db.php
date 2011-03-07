@@ -19,17 +19,35 @@
 		
 		public function validateLogin($login, $password) {
 			$hash = sha1($password);
-			$data = $this->query("SELECT id, name FROM ".self::USER." WHERE login = ? AND pwd = ?", $login, $password);
+			$data = $this->query("SELECT id, name FROM ".self::USER." WHERE login = ? AND pwd = ?", $login, $hash);
 			return (count($data) ? $data[0] : null);
 		}
 
 		public function getRecipes() {
-			$data = $this->query("SELECT id, name FROM ".self::RECIPE." ORDER by name ASC");
+			$data = $this->query("SELECT id, name, id_type FROM ".self::RECIPE." ORDER by name ASC");
 			return $this->addImageInfo($data);
 		}
 
 		public function getTypes() {
-			return $this->query("SELECT id, name FROM ".self::TYPE." ORDER by `order` ASC");
+			$types = $this->query("SELECT id, name FROM ".self::TYPE." ORDER by `order` ASC");
+			$recipes = $this->getRecipes();
+			
+			$tmp = array(); /* temporary id-indexed types */
+			for ($i=0;$i<count($types);$i++) {
+				$id = $types[$i]["id"];
+				$tmp[$id] = $types[$i];
+				$tmp[$id]["recipe"] = array();
+			}
+			
+			for ($i=0;$i<count($recipes);$i++) {
+				$id = $recipes[$i]["id_type"];
+				$tmp[$id]["recipe"][] = $recipes[$i];
+			}
+			
+			$result = array();
+			foreach ($tmp as $item) { $result[] = $item; }
+			
+			return $result;
 		}
 
 		public function getIngredients() {
@@ -40,12 +58,12 @@
 			for ($i=0;$i<count($categories);$i++) {
 				$id = $categories[$i]["id"];
 				$tmp[$id] = $categories[$i];
-				$tmp[$id]["ingredients"] = array();
+				$tmp[$id]["ingredient"] = array();
 			}
 			
 			for ($i=0;$i<count($ingredients);$i++) {
 				$id = $ingredients[$i]["id_category"];
-				$tmp[$id]["ingredients"][] = $ingredients[$i];
+				$tmp[$id]["ingredient"][] = $ingredients[$i];
 			}
 			
 			$result = array();

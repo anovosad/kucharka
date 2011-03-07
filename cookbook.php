@@ -9,40 +9,39 @@
 		private $image_path = "root/img/recipe";
 
 		protected $dispatch_table = array(
-			'GET	^/$					index',						/* homepage */
-			'GET	^/rss$				rss',						/* feed */
-			'GET	^/login$			login',						/* login form */
-			'POST	^/login$			loginProcess',				/* login action */
-			'POST	^/logout$			logoutProcess',				/* logout action */
+			'GET	^/$					index',				/* homepage */
+			'GET	^/login$			login',				/* login form */
+			'POST	^/login$			loginProcess',		/* login action */
+			'POST	^/logout$			logoutProcess',		/* logout action */
 
-			'GET	^/recepty$			listRecipes',				/* alphabetical */
-			'GET	^/recept/(\d+)$		getRecipe',					/* one recipe */
-			'POST	^/recept/(\d+)$		recipeProcess',				/* edit recipe */
-			'DELETE	^/recept/(\d+)$		recipeDelete',				/* delete recipe */
+			'GET	^/recepty$			listRecipes',		/* alphabetical */
+			'GET	^/recept/(\d+)$		getRecipe',			/* one recipe */
+			'POST	^/recept/(\d+)$		recipeEdit',		/* edit recipe */
+			'DELETE	^/recept/(\d+)$		recipeDelete',		/* delete recipe */
 
-			'GET	^/jidelnicek$		menu',						/* menu form/query */
+			'GET	^/druhy$			listTypes',			/* list recipe types */
+			'GET	^/druh/(\d+)$		getType',			/* one recipe type */
+			'POST	^/druh/(\d+)$		typeEdit',			/* edit type */
+			'DELETE	^/druh/(\d+)$		typeDelete',		/* delete type */
 			
-			'GET	^/druhy$			listTypes',					/* list recipe types */
-			'GET	^/druh/(\d+)$		getType',					/* one recipe type */
-			'POST	^/druh/(\d+)$		typeProcess',				/* edit type */
-			'DELETE	^/druh/(\d+)$		typeDelete',				/* delete type */
-			
-			'GET	^/suroviny$			listIngredients',			/* list ingredients */
-			'GET	^/surovina/(\d+)$	getIngredient',				/* one ingredient */
-			'POST	^/surovina/(\d+)$	ingredientProcess',			/* edit ingredient */
-			'DELETE	^/surovina/(\d+)$	ingredientDelete',			/* delete ingredient */
+			'GET	^/suroviny$			listIngredients',	/* list ingredients */
+			'GET	^/surovina/(\d+)$	getIngredient',		/* one ingredient */
+			'POST	^/surovina/(\d+)$	ingredientEdit',	/* edit ingredient */
+			'DELETE	^/surovina/(\d+)$	ingredientDelete',	/* delete ingredient */
 
-			'GET	^/kategorie/(\d+)$	getIngredientCategory',		/* one ingredient category */
-			'POST	^/kategorie/(\d+)$	ingredientCategoryProcess',	/* edit ingredient */
-			'DELETE	^/kategorie/(\d+)$	ingredientCategoryDelete',	/* delete ingredient */
+			'GET	^/kategorie/(\d+)$	getCategory',		/* one ingredient category */
+			'POST	^/kategorie/(\d+)$	categoryEdit',		/* edit ingredient */
+			'DELETE	^/kategorie/(\d+)$	categoryDelete',	/* delete ingredient */
 			
-			'GET	^/autori$			listUsers',					/* list all users */
-			'GET	^/autor/(\d+)$		getUser',					/* get one user */
-			'POST	^/autor/(\d+)$		userProcess',				/* edit user */
-			'DELETE	^/autor/(\d+)$		userDelete',				/* delete user */
+			'GET	^/autori$			listUsers',			/* list all users */
+			'GET	^/autor/(\d+)$		getUser',			/* get one user */
+			'POST	^/autor/(\d+)$		userEdit',			/* edit user */
+			'DELETE	^/autor/(\d+)$		userDelete',		/* delete user */
 
-			'GET	^/hledani/?$		search',					/* search form/query */ 
-			'GET	^/(.*)$				fallback'					/* search fallback */
+			'GET	^/jidelnicek$		menu',				/* menu form/query */
+			'GET	^/rss$				rss',				/* feed */
+			'GET	^/hledani/?$		search',			/* search form/query */ 
+			'GET	^/(.*)$				fallback'			/* search fallback */
 		);
 		
 		public function __construct() {
@@ -137,15 +136,6 @@
 			HTTP::redirect("/hledani?q=" . $matches[1]);
 		}
 		
-		protected function listIngredients($matches) {
-			$data = $this->db->getIngredients();
-			if ($data) { $this->view->addData("category", $data); }
-			
-			$this->view->setTemplate("templates/ingredients.xsl");
-			echo $this->view->toString();
-			
-		}
-		
 		protected function search($matches) {
 			$query = HTTP::value("q", "get", "");
 			$recipes = $this->db->searchRecipes($query);
@@ -158,7 +148,90 @@
 			if (count($recipes)) { $this->view->addData("recipe", $recipes); }
 			$this->view->setTemplate("templates/search-results.xsl");
 			echo $this->view->toString();
+		}
+		
+		protected function listTypes($matches) {
+			$data = $this->db->getTypes();
+			if (count($data)) { $this->view->addData("type", $data); }
 			
+			$this->view->setTemplate("templates/types.xsl");
+			echo $this->view->toString();
+		}
+		
+		protected function getType($matches) {
+			$id = $matches[1];
+			$data = $this->db->getType($id);
+			if ($data) { $this->view->addData("type", $data); }
+			
+			$this->view->setTemplate("templates/type.xsl");
+			echo $this->view->toString();
+		}
+		
+		/**
+		 * Tree of categories + ingredients
+		 */
+		protected function listIngredients($matches) {
+			$data = $this->db->getIngredients();
+			if (count($data)) { $this->view->addData("category", $data); }
+			
+			$this->view->setTemplate("templates/ingredients.xsl");
+			echo $this->view->toString();
+		}
+
+		/**
+		 * Ingredient detail + used in recipes
+		 */
+		protected function getIngredient($matches) {
+			$id = $matches[1];
+			$data = $this->db->getIngredient($id);
+			if ($data) { 
+				$this->view->addData("ingredient", $data); 
+				$recipes = $this->db->getRecipesForIngredient($id);
+				if (count($recipes)) { $this->view->addData("recipe", $recipes); }
+			}
+			
+			$this->view->setTemplate("templates/ingredient.xsl");
+			echo $this->view->toString();
+		}
+
+		protected function getCategory($matches) {
+			$id = $matches[1];
+			$data = $this->db->getCategory($id);
+			if ($data) { $this->view->addData("category", $data); }
+			
+			$this->view->setTemplate("templates/category.xsl");
+			echo $this->view->toString();
+		}
+		
+		protected function listUsers($matches) {
+			$data = $this->db->getUsers();
+			if (count($data)) { $this->view->addData("user", $data); }
+			
+			$this->view->setTemplate("templates/users.xsl");
+			echo $this->view->toString();
+		}
+		
+		/**
+		 * User detail + his recipes
+		 */
+		protected function getUser($matches) {
+			$id = $matches[1];
+			$data = $this->db->getUser($id);
+			if ($data) { 
+				$this->view->addData("user", $data); 
+				$recipes = $this->db->getRecipesForUser($id);
+				if (count($recipes)) { $this->view->addData("recipe", $recipes); }
+			}
+			
+			$this->view->setTemplate("templates/user.xsl");
+			echo $this->view->toString();
+		}
+
+		protected function menu($matches) {
+			$recipes = $this->db->getRandomRecipes(/* FIXME */);
+			if (count($recipes)) { $this->view->addData("recipe", $recipes); }
+			$this->view->setTemplate("templates/menu-results.xsl");
+			echo $this->view->toString();
 		}
 		
 		private function loggedId() {

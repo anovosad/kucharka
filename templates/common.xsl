@@ -36,7 +36,7 @@
 		<nav id="menu">
 			<ul>
 				<xsl:choose>
-					<xsl:when test="/login">
+					<xsl:when test="login">
 						<form action="{concat($BASE, '/logout')}" method="post">
 							<input type="submit" value="logout" />
 						</form>
