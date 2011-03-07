@@ -55,5 +55,10 @@
 			echo $this->view->toString();
 		}
 		
+		public function delete($matches) {
+			$id = $matches[1];
+			$this->db->deleteRecipe($id);
+			HTTP::redirect("/");
+		}
 	}
 ?>

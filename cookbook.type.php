@@ -26,5 +26,14 @@
 			echo $this->view->toString();
 		}
 		
+		public function delete($matches) {
+			$id = $matches[1];
+			$ok = $this->db->deleteType($id);
+			if ($ok) {
+				HTTP::redirect("/druhy");
+			} else {
+				$this->app->error("Tento druh jídla nelze smazat, neboť mu náleží nějaké recepty");
+			}
+		}
 	}
 ?>

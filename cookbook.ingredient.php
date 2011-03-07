@@ -36,5 +36,14 @@
 			echo $this->view->toString();
 		}
 
+		public function delete($matches) {
+			$id = $matches[1];
+			$ok = $this->db->deleteIngredient($id);
+			if ($ok) {
+				HTTP::redirect("/suroviny");
+			} else {
+				$this->app->error("Tuto surovinu nelze smazat, neboť je využívána v nějakých receptech");
+			}
+		}
 	}
 ?>
