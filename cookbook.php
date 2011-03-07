@@ -2,6 +2,7 @@
 	session_start();
 	include("oz.php");
 	include("db.php");
+	include("cookbook.user.php");
 
 	class Cookbook extends APP {
 		private $db;
@@ -33,10 +34,10 @@
 			'POST	^/kategorie/(\d+)$	categoryEdit',		/* edit ingredient */
 			'DELETE	^/kategorie/(\d+)$	categoryDelete',	/* delete ingredient */
 			
-			'GET	^/autori$			listUsers',			/* list all users */
-			'GET	^/autor/(\d+)$		getUser',			/* get one user */
-			'POST	^/autor/(\d+)$		userEdit',			/* edit user */
-			'DELETE	^/autor/(\d+)$		userDelete',		/* delete user */
+			'GET	^/autori$			User.all',			/* list all users */
+			'GET	^/autor/(\d+)$		User.get',			/* get one user */
+			'POST	^/autor/(\d+)$		User.edit',			/* edit user */
+			'DELETE	^/autor/(\d+)$		User.delete',		/* delete user */
 
 			'GET	^/jidelnicek$		menu',				/* menu form/query */
 			'GET	^/rss$				rss',				/* feed */
@@ -72,6 +73,14 @@
 			}
 		}
 		
+		public function getDB() {
+			return $this->db;
+		}
+		
+		public function getView() {
+			return $this->view;
+		}
+
 		protected function login($matches) {
 			$this->view->addData("referer", array("url"=>HTTP::$REFERER));
 			$this->view->setTemplate("templates/login.xsl");
@@ -99,7 +108,7 @@
 			HTTP::redirectBack();
 		}
 
-		protected function index($matches) {
+		public function index($matches) {
 			$recipes = $this->db->getLatestRecipes();
 			if (count($recipes)) { $this->view->addData("recipe", $recipes); }
 			
@@ -203,30 +212,6 @@
 			echo $this->view->toString();
 		}
 		
-		protected function listUsers($matches) {
-			$data = $this->db->getUsers();
-			if (count($data)) { $this->view->addData("user", $data); }
-			
-			$this->view->setTemplate("templates/users.xsl");
-			echo $this->view->toString();
-		}
-		
-		/**
-		 * User detail + his recipes
-		 */
-		protected function getUser($matches) {
-			$id = $matches[1];
-			$data = $this->db->getUser($id);
-			if ($data) { 
-				$this->view->addData("user", $data); 
-				$recipes = $this->db->getRecipesForUser($id);
-				if (count($recipes)) { $this->view->addData("recipe", $recipes); }
-			}
-			
-			$this->view->setTemplate("templates/user.xsl");
-			echo $this->view->toString();
-		}
-
 		protected function menu($matches) {
 			$recipes = $this->db->getRandomRecipes(/* FIXME */);
 			if (count($recipes)) { $this->view->addData("recipe", $recipes); }

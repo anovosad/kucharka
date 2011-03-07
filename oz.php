@@ -1,9 +1,12 @@
 <?php
 	function error_handler($no, $str, $file, $line) {
-		throw new ErrorException($str, 0, $no, $file, $line);
+		throw new ErrorException($str, $no, 0, $file, $line);
 	}
 	set_error_handler("error_handler");
 
+	/**
+	 * Database helper class
+	 */
 	class DB {
 		protected $db = null;
 		
@@ -95,6 +98,9 @@
 		
 	}
 	
+	/**
+	 * XML (+XSLT) output class
+	 */
 	class XML {
 		protected $filters = array();
 		protected $template = null;
@@ -177,10 +183,13 @@
 		}
 	}
 	
+	/**
+	 * Base web application
+	 */
 	class APP {
 		protected $dispatch_table = array();
 
-		protected function __call($name, $arguments) {
+		public function __call($name, $arguments) {
 			$this->error501();
 		}
 
@@ -221,35 +230,62 @@
 				
 			} while (!$handler);
 			
-			return $this->$handler($matches);
+			$instance = $this;
+			$dotpos = strpos($handler, ".");
+			if ($dotpos !== false) {
+				$class = substr($handler, 0, $dotpos);
+				if (!class_exists($class)) { throw new ErrorException("Class '".$class."' not available", 0, 0, __FILE__, __LINE__); }
+				$instance = new $class($this);
+				$handler = substr($handler, $dotpos+1);
+			}
+			
+			return $instance->$handler($matches);
 		}
 
-		protected function error403() {
+		public function error403() {
 			HTTP::status(403);
 			echo "<h1>403 Not Authorized</h1>";
 		}
 
-		protected function error404() {
+		public function error404() {
 			HTTP::status(404);
 			echo "<h1>404 Not Found</h1>";
 		}
 		
-		protected function error405() {
+		public function error405() {
 			HTTP::status(405);
 			echo "<h1>405 Method Not Allowed</h1>";
 		}
 
-		protected function error500() {
+		public function error500() {
 			HTTP::status(500);
 			echo "<h1>500 Internal Server Error</h1>";
 		}
 
-		protected function error501() {
+		public function error501() {
 			HTTP::status(501);
 			echo "<h1>501 Not Implemented</h1>";
 		}
 	}
+	
+	/**
+	 * Application extension - module class
+	 */
+	class MODULE {
+		private $app;
+		
+		public function __construct($app) {
+			$this->app = $app;
+		}
+		
+		public function __call($name, $arguments) {
+			return call_user_func_array(array($this->app, $name), $arguments);
+		}
+	}
 
+	/**
+	 * Static HTTP helper
+	 */
 	class HTTP {
 		/**
 		 * @param {string} name
@@ -303,6 +339,9 @@
 	
 	if (isset($_SERVER["HTTP_REFERER"])) { HTTP::$REFERER = $_SERVER["HTTP_REFERER"]; }
 	
+	/**
+	 * XML output filter
+	 */
 	class FILTER {
 		public function __construct() {
 		}
