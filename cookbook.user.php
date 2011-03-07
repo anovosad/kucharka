@@ -33,5 +33,15 @@
 			echo $this->view->toString();
 		}
 
+		public function delete($matches) {
+			$id = $matches[1];
+			$ok = $this->db->deleteUser($id);
+			if ($ok) {
+				HTTP::redirect("/autori");
+			} else {
+				$this->app->error("Tohoto uživatele nelze smazat, neboť mu náleží nějaké recepty");
+			}
+		}
+
 	}
 ?>

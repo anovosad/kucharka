@@ -46,7 +46,7 @@
 			'POST	^/autor/(\d+)$		User.edit',			/* edit user */
 			'DELETE	^/autor/(\d+)$		User.delete',		/* delete user */
 
-			'GET	^/([^/]*)$				fallback'			/* search fallback */
+			'GET	^/([^/]*)$			fallback'			/* search fallback */
 		);
 		
 		public function __construct() {
@@ -91,6 +91,12 @@
 
 		public function loggedName() {
 			return (isset($_SESSION["name"]) ? $_SESSION["name"] : null);
+		}
+		
+		public function error($error) {
+			$this->view->addData("error", array(""=>$error));
+			$this->view->setTemplate("templates/error.xsl");
+			echo $this->view->toString();
 		}
 		
 		public function login($matches) {
