@@ -3,6 +3,10 @@
 	include("oz.php");
 	include("db.php");
 	include("cookbook.user.php");
+	include("cookbook.type.php");
+	include("cookbook.recipe.php");
+	include("cookbook.ingredient.php");
+	include("cookbook.category.php");
 
 	class Cookbook extends APP {
 		private $db;
@@ -15,33 +19,33 @@
 			'POST	^/login$			loginProcess',		/* login action */
 			'POST	^/logout$			logoutProcess',		/* logout action */
 
-			'GET	^/recepty$			listRecipes',		/* alphabetical */
-			'GET	^/recept/(\d+)$		getRecipe',			/* one recipe */
-			'POST	^/recept/(\d+)$		recipeEdit',		/* edit recipe */
-			'DELETE	^/recept/(\d+)$		recipeDelete',		/* delete recipe */
+			'GET	^/jidelnicek$		Recipe.menu',		/* menu form/query */
+			'GET	^/rss$				Recipe.rss',		/* feed */
+			'GET	^/hledani/?$		Recipe.search',		/* search form/query */ 
+			'GET	^/recepty$			Recipe.all',		/* alphabetical */
+			'GET	^/recept/(\d+)$		Recipe.get',		/* one recipe */
+			'POST	^/recept/(\d+)$		Recipe.edit',		/* edit recipe */
+			'DELETE	^/recept/(\d+)$		Recipe.delete',		/* delete recipe */
 
-			'GET	^/druhy$			listTypes',			/* list recipe types */
-			'GET	^/druh/(\d+)$		getType',			/* one recipe type */
-			'POST	^/druh/(\d+)$		typeEdit',			/* edit type */
-			'DELETE	^/druh/(\d+)$		typeDelete',		/* delete type */
+			'GET	^/druhy$			Type.all',			/* list recipe types */
+			'GET	^/druh/(\d+)$		Type.get',			/* one recipe type */
+			'POST	^/druh/(\d+)$		Type.edit',			/* edit type */
+			'DELETE	^/druh/(\d+)$		Type.delete',		/* delete type */
 			
-			'GET	^/suroviny$			listIngredients',	/* list ingredients */
-			'GET	^/surovina/(\d+)$	getIngredient',		/* one ingredient */
-			'POST	^/surovina/(\d+)$	ingredientEdit',	/* edit ingredient */
-			'DELETE	^/surovina/(\d+)$	ingredientDelete',	/* delete ingredient */
+			'GET	^/suroviny$			Ingredient.all',	/* list ingredients */
+			'GET	^/surovina/(\d+)$	Ingredient.get',	/* one ingredient */
+			'POST	^/surovina/(\d+)$	Ingredient.edit',	/* edit ingredient */
+			'DELETE	^/surovina/(\d+)$	Ingredient.delete',	/* delete ingredient */
 
-			'GET	^/kategorie/(\d+)$	getCategory',		/* one ingredient category */
-			'POST	^/kategorie/(\d+)$	categoryEdit',		/* edit ingredient */
-			'DELETE	^/kategorie/(\d+)$	categoryDelete',	/* delete ingredient */
+			'GET	^/kategorie/(\d+)$	Category.get',		/* one ingredient category */
+			'POST	^/kategorie/(\d+)$	Category.edit',		/* edit ingredient */
+			'DELETE	^/kategorie/(\d+)$	Category.delete',	/* delete ingredient */
 			
 			'GET	^/autori$			User.all',			/* list all users */
 			'GET	^/autor/(\d+)$		User.get',			/* get one user */
 			'POST	^/autor/(\d+)$		User.edit',			/* edit user */
 			'DELETE	^/autor/(\d+)$		User.delete',		/* delete user */
 
-			'GET	^/jidelnicek$		menu',				/* menu form/query */
-			'GET	^/rss$				rss',				/* feed */
-			'GET	^/hledani/?$		search',			/* search form/query */ 
 			'GET	^/(.*)$				fallback'			/* search fallback */
 		);
 		
@@ -81,13 +85,21 @@
 			return $this->view;
 		}
 
-		protected function login($matches) {
+		public function loggedId() {
+			return (isset($_SESSION["id"]) ? $_SESSION["id"] : null);
+		}
+
+		public function loggedName() {
+			return (isset($_SESSION["name"]) ? $_SESSION["name"] : null);
+		}
+		
+		public function login($matches) {
 			$this->view->addData("referer", array("url"=>HTTP::$REFERER));
 			$this->view->setTemplate("templates/login.xsl");
 			echo $this->view->toString();
 		}
 		
-		protected function loginProcess($matches) {
+		public function loginProcess($matches) {
 			$login = HTTP::value("login", "post", "");
 			$password = HTTP::value("password", "post", "");
 			$result = $this->db->validateLogin($login, $password);
@@ -116,117 +128,8 @@
 			echo $this->view->toString();
 		}
 		
-		protected function rss($matches) {
-			$recipes = $this->db->getLatestRecipes();
-			if (count($recipes)) { $this->view->addData("recipe", $recipes); }
-			
-			$this->view->setTemplate("templates/rss.xsl");
-			echo $this->view->toString();
-		}
-
-		protected function listRecipes($matches) {
-			$data = $this->db->getRecipes();
-			if (count($data)) { $this->view->addData("recipe", $data); }
-
-			$this->view->setTemplate("templates/recipes.xsl");
-			echo $this->view->toString();
-		}
-
-		protected function getRecipe($matches) {
-			$id = $matches[1];
-			$data = $this->db->getRecipe($id);
-			if ($data) { $this->view->addData("recipe", $data); }
-			
-			$this->view->setTemplate("templates/recipe.xsl");
-			echo $this->view->toString();
-		}
-		
-		protected function fallback($matches) {
+		public function fallback($matches) {
 			HTTP::redirect("/hledani?q=" . $matches[1]);
-		}
-		
-		protected function search($matches) {
-			$query = HTTP::value("q", "get", "");
-			$recipes = $this->db->searchRecipes($query);
-			
-			if (count($recipes) == 1) {
-				HTTP::redirect("/recept/".$recipes[0]["id"]);
-				return;
-			}
-			
-			if (count($recipes)) { $this->view->addData("recipe", $recipes); }
-			$this->view->setTemplate("templates/search-results.xsl");
-			echo $this->view->toString();
-		}
-		
-		protected function listTypes($matches) {
-			$data = $this->db->getTypes();
-			if (count($data)) { $this->view->addData("type", $data); }
-			
-			$this->view->setTemplate("templates/types.xsl");
-			echo $this->view->toString();
-		}
-		
-		protected function getType($matches) {
-			$id = $matches[1];
-			$data = $this->db->getType($id);
-			if ($data) { $this->view->addData("type", $data); }
-			
-			$this->view->setTemplate("templates/type.xsl");
-			echo $this->view->toString();
-		}
-		
-		/**
-		 * Tree of categories + ingredients
-		 */
-		protected function listIngredients($matches) {
-			$data = $this->db->getIngredients();
-			if (count($data)) { $this->view->addData("category", $data); }
-			
-			$this->view->setTemplate("templates/ingredients.xsl");
-			echo $this->view->toString();
-		}
-
-		/**
-		 * Ingredient detail + used in recipes
-		 */
-		protected function getIngredient($matches) {
-			$id = $matches[1];
-			$data = $this->db->getIngredient($id);
-			if ($data) { 
-				$this->view->addData("ingredient", $data); 
-				$recipes = $this->db->getRecipesForIngredient($id);
-				if (count($recipes)) { $this->view->addData("recipe", $recipes); }
-			}
-			
-			$this->view->setTemplate("templates/ingredient.xsl");
-			echo $this->view->toString();
-		}
-
-		protected function getCategory($matches) {
-			$id = $matches[1];
-			$data = $this->db->getCategory($id);
-			if ($data) { $this->view->addData("category", $data); }
-			
-			$this->view->setTemplate("templates/category.xsl");
-			echo $this->view->toString();
-		}
-		
-		protected function menu($matches) {
-			$recipes = $this->db->getRandomRecipes(/* FIXME */);
-			if (count($recipes)) { $this->view->addData("recipe", $recipes); }
-			$this->view->setTemplate("templates/menu-results.xsl");
-			echo $this->view->toString();
-		}
-		
-		private function loggedId() {
-			return (isset($_SESSION["id"]) ? $_SESSION["id"] : null);
-		}
-
-		private function loggedName() {
-			return (isset($_SESSION["name"]) ? $_SESSION["name"] : null);
-		}
-		
-		/*** DELETE methods ***/
+		}		
 	}
 ?>
