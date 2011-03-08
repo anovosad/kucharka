@@ -50,7 +50,7 @@
 			foreach ($fields as $field) { $data[$field] = HTTP::value($field, "post", ""); }
 			$this->db->update(CookbookDB::INGREDIENT, $id, $data);
 
-			$this->app->saveImage($id, CookbookDB::INGREDIENT, 300);
+			$this->app->saveImage($id, CookbookDB::INGREDIENT);
 			HTTP::redirect("/surovina/".$id);
 		}
 	}

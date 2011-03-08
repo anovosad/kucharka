@@ -69,7 +69,7 @@
 			while (count($id_ingredient) && count($amount)) {
 				$id_i = (int) array_shift($id_ingredient);
 				$a = (string) array_shift($amount);
-				if ($a) { $ingredients[] = array("id_ingredient"=>$id_i, "amount"=>$a); }
+				if (count($amount) || $a) { $ingredients[] = array("id_ingredient"=>$id_i, "amount"=>$a); }
 			}
 			
 			if (!$id) { $id = $this->db->insertRecipe($this->app->loggedId()); }

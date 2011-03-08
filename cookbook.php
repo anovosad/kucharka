@@ -117,7 +117,7 @@
 			return ($user && $user["super"] == 1);
 		}
 		
-		public function saveImage($id, $table, $width) {
+		public function saveImage($id, $table, $width = null) {
 			$path = $this->db->getImagePath($table);
 			$name = $this->image_path . "/" . $path . "/" . $id . ".jpg";
 			/* FIXME */
