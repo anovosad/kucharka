@@ -59,10 +59,23 @@
 			$id = $matches[1];
 			if (!$this->app->canModifyRecipe($id)) { return $this->app->error403(); }
 
-			/* FIXME edit contents */
-			$this->db->updateRecipe($id);
+			$fields = $this->db->getFields(CookbookDB::RECIPE);
+			$values = array();
+			foreach ($fields as $field) { $values[$field] = HTTP::value($field, "post", ""); }
 			
-			$this->app->saveImage($id, CookbookDB::RECIPE);
+			$ingredients = array();
+			$id_ingredient = HTTP::value("id_ingredient", "post", array());
+			$amount = HTTP::value("amount", "post", array());
+			while (count($id_ingredient) && count($amount)) {
+				$id_i = (int) array_shift($id_ingredient);
+				$a = (string) array_shift($amount);
+				if ($a) { $ingredients[] = array("id_ingredient"=>$id_i, "amount"=>$a); }
+			}
+			
+			if (!$id) { $id = $this->db->insertRecipe($this->app->loggedId()); }
+			$this->db->updateRecipe($id, $values, $ingredients);
+
+			$this->app->saveImage($id, CookbookDB::RECIPE, 300);
 			HTTP::redirect("/recept/".$id);
 		}
 

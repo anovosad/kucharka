@@ -271,14 +271,13 @@
 			return $this->insert(self::RECIPE, array("id_user"=>$id_user));
 		}
 
-		/***/
-		
 		public function updateUser($id, $values, $password = null) {
 			if ($password) { $values["pwd"] = sha1($password); }
 			return $this->update(self::USER, $id, $values);
 		}
 
-		public function updateRecipe($id) {
+		public function updateRecipe($id, $values, $ingredients) {
+			/* FIXME */
 		}
 		
 		/**

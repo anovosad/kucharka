@@ -57,7 +57,7 @@
 		
 			if (!$id) { $id = $this->db->insert(CookbookDB::USER); }
 			$ok = $this->db->updateUser($id, $values, $password);
-			$this->app->saveImage($id, CookbookDB::USER);
+			$this->app->saveImage($id, CookbookDB::USER, 150);
 			
 			if ($id == $this->app->loggedId()) { $_SESSION["name"] = $values["name"]; }
 			HTTP::redirect("/autor/".$id);
