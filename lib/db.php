@@ -218,6 +218,33 @@
 			$this->delete(self::USER, $id);
 			return true;
 		}
-	}
+		
+		/***/
+		
+		public function insertUser() {
+			return $this->insert(self::USER);
+		}
+		
+		public function insertType() {
+			$data = $this->query("SELECT MAX(`order`) AS m FROM ".self::TYPE);
+			$order = $data[0]["m"] + 1;
+			return $this->insert(self::TYPE, array("`order`"=>$order));
+		}
 
+		public function insertCategory() {
+			$data = $this->query("SELECT MAX(`order`) AS m FROM ".self::CATEGORY);
+			$order = $data[0]["m"] + 1;
+			return $this->insert(self::CATEGORY, array("`order`"=>$order));
+		}
+
+		public function insertIngredient() {
+			return $this->insert(self::INGREDIENT);
+		}
+
+		public function insertRecipe($id_user) {
+			return $this->insert(self::RECIPE, array("id_user"=>$id_user));
+		}
+
+		/***/
+	}
 ?>

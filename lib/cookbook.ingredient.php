@@ -1,14 +1,5 @@
 <?php
-	class Ingredient extends MODULE {
-		private $db = null;
-		private $view = null;
-		
-		public function __construct($app) {
-			parent::__construct($app);
-			$this->db = $app->getDB();
-			$this->view = $app->getView();
-		}
-		
+	class Ingredient extends CookbookModule {
 		/**
 		 * Tree of categories + ingredients
 		 */

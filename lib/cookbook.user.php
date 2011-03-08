@@ -1,14 +1,5 @@
 <?php
-	class User extends MODULE {
-		private $db = null;
-		private $view = null;
-		
-		public function __construct($app) {
-			parent::__construct($app);
-			$this->db = $app->getDB();
-			$this->view = $app->getView();
-		}
-		
+	class User extends CookbookModule {
 		public function all($matches) {
 			$data = $this->db->getUsers();
 			if (count($data)) { $this->view->addData("user", $data); }

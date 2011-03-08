@@ -2,6 +2,7 @@
 	session_start();
 	include("lib/oz.php");
 	include("lib/db.php");
+	include("lib/cookbook.module.php");
 	include("lib/cookbook.user.php");
 	include("lib/cookbook.type.php");
 	include("lib/cookbook.recipe.php");

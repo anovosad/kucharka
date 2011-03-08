@@ -37,7 +37,7 @@
 				
 		}
 		
-		public function insert($table, $values) {
+		public function insert($table, $values = array()) {
 			$query = "INSERT INTO ".$table. "(";
 			$query .= implode(",", array_keys($values));
 			$query .= ") VALUES (";
@@ -53,7 +53,7 @@
 			return $this->db->lastInsertId();
 		}
 		
-		public function update($table, $id, $values) {
+		public function update($table, $id, $values = array()) {
 			$query = "UPDATE ".$table." SET ";
 			$params = array();
 			

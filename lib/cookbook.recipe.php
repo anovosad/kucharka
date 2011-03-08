@@ -1,14 +1,5 @@
 <?php
-	class Recipe extends MODULE {
-		private $db = null;
-		private $view = null;
-		
-		public function __construct($app) {
-			parent::__construct($app);
-			$this->db = $app->getDB();
-			$this->view = $app->getView();
-		}
-		
+	class Recipe extends CookbookModule {
 		public function menu($matches) {
 			$recipes = $this->db->getRandomRecipes(/* FIXME */);
 			if (count($recipes)) { $this->view->addData("recipe", $recipes); }

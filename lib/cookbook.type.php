@@ -1,14 +1,5 @@
 <?php
-	class Type extends MODULE {
-		private $db = null;
-		private $view = null;
-		
-		public function __construct($app) {
-			parent::__construct($app);
-			$this->db = $app->getDB();
-			$this->view = $app->getView();
-		}
-		
+	class Type extends CookbookModule {
 		public function all($matches) {
 			$data = $this->db->getTypes();
 			if (count($data)) { $this->view->addData("type", $data); }
