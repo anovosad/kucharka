@@ -95,13 +95,34 @@
 		}
 		
 		public function canDeleteUser($id) {
-			if (!$this->loggedId()) { return false; }
+			if (!$this->canModifyUser($id)) { return false; }
 			if ($this->loggedId() == $id) { return false; }
+			return true;
+		}
+
+		public function canModifyUser($id) {
+			if (!$this->loggedId()) { return false; }
 			$user = $this->db->getUser($this->loggedId());
 			if ($user && $user["super"] != 1) { return false; }
 			return true;
 		}
 		
+		public function canModifyRecipe($id) {
+			if (!$this->loggedId()) { return false; }
+
+			$recipe = $this->db->getRecipe($id);
+			if ($recipe && $recipe["id_user"] == $this->loggedId()) { return true; }
+
+			$user = $this->db->getUser($this->loggedId());
+			return ($user && $user["super"] == 1);
+		}
+		
+		public function saveImage($id, $table) {
+			$path = $this->db->getImagePath($table);
+			$name = $this->image_path . "/" . $path . "/" . $id . ".jpg";
+			/* FIXME */
+		}
+
 		public function error($error) {
 			$this->view->addData("error", array(""=>$error));
 			$this->view->setTemplate("templates/error.xsl");

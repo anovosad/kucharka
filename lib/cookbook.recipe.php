@@ -47,11 +47,24 @@
 		}
 		
 		public function delete($matches) {
-			if (!$this->app->loggedId()) { return $this->app->error403(); }
+			$id = $matches[1];
+			if (!$this->app->canModifyRecipe($id)) { return $this->app->error403(); }
 
 			$id = $matches[1];
 			$this->db->deleteRecipe($id);
 			HTTP::redirect("/");
 		}
+
+		public function edit($matches) {
+			$id = $matches[1];
+			if (!$this->app->canModifyRecipe($id)) { return $this->app->error403(); }
+
+			/* FIXME edit contents */
+			$this->db->updateRecipe($id);
+			
+			$this->app->saveImage($id, CookbookDB::RECIPE);
+			HTTP::redirect("/recept/".$id);
+		}
+
 	}
 ?>

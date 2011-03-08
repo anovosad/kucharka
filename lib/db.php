@@ -17,6 +17,31 @@
 			parent::__construct("mysql:host=localhost;dbname=".$db, $user, $pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		}
 		
+		public function getFields($table) {
+			switch ($table) {
+				case self::RECIPE: return array("name", "id_type", "time", "amount", "text", "remark", "hot_tip"); break;
+				case self::TYPE: return array("name"); break;
+				case self::INGREDIENT: return array("name", "id_category", "description"); break;
+				case self::CATEGORY: return array("name"); break;
+				case self::USER: return array("login", "name", "mail"); break;
+				default: return array();
+			}
+			
+		}
+		
+		public function getImagePath($table) {
+			switch ($table) {
+				case self::RECIPE: return "recipes"; break;
+				case self::INGREDIENT: return "ingredients"; break;
+				case self::USER: return "users"; break;
+				
+				case self::TYPE: 
+				case self::CATEGORY:
+				default: null;
+			}
+			
+		}
+
 		public function validateLogin($login, $password) {
 			$hash = sha1($password);
 			$data = $this->query("SELECT id, name FROM ".self::USER." WHERE login = ? AND pwd = ?", $login, $hash);
@@ -30,7 +55,7 @@
 
 		public function getRecipes() {
 			$data = $this->query("SELECT id, name, id_type FROM ".self::RECIPE." ORDER by name ASC");
-			return $this->addImageInfo($data, "recipe");
+			return $this->addImageInfo($data, self::RECIPE);
 		}
 
 		public function getTypes() {
@@ -57,7 +82,7 @@
 
 		public function getIngredients() {
 			$ingredients = $this->query("SELECT * FROM ".self::INGREDIENT." ORDER by name ASC");
-			$ingredients = $this->addImageInfo($ingredients, "ingredient");
+			$ingredients = $this->addImageInfo($ingredients, self::INGREDIENT);
 
 			$categories = $this->getCategories();
 			
@@ -81,7 +106,7 @@
 		
 		public function getUsers() {
 			$data = $this->query("SELECT id, name FROM ".self::USER." ORDER by id ASC");
-			return $this->addImageInfo($data, "user");
+			return $this->addImageInfo($data, self::USER);
 		}
 		
 		private function getCategories() {
@@ -93,7 +118,7 @@
 		public function getRecipe($id) {
 			$data = $this->query("SELECT * FROM ".self::RECIPE." WHERE id = ?", $id);
 			if (!count($data)) { return null; }
-			$data = $this->addImageInfo($data, "recipe");
+			$data = $this->addImageInfo($data, self::RECIPE);
 			
 			$data = $data[0];
 			$data["text"] = array(""=>$data["text"]);
@@ -113,7 +138,7 @@
 		public function getIngredient($id) {
 			$data = $this->query("SELECT * FROM ".self::INGREDIENT." WHERE id = ?", $id);
 			if (!count($data)) { return null; }
-			$data = $this->addImageInfo($data, "ingredient");
+			$data = $this->addImageInfo($data, self::INGREDIENT);
 			return $data[0];
 		}
 
@@ -126,7 +151,7 @@
 		public function getUser($id) {
 			$data = $this->query("SELECT * FROM ".self::USER." WHERE id = ?", $id);
 			if (!count($data)) { return null; }
-			$data = $this->addImageInfo($data, "user");
+			$data = $this->addImageInfo($data, self::USER);
 			return $data[0];
 		}
 		
@@ -143,7 +168,7 @@
 		
 		public function getLatestRecipes($amount = 10) {
 			$data = $this->query("SELECT id, name FROM ".self::RECIPE." ORDER BY ts DESC LIMIT ". (int) $amount);
-			return $this->addImageInfo($data, "recipe");
+			return $this->addImageInfo($data, self::RECIPE);
 		}
 		
 		public function getRandomRecipes($id_types, $amount = 10) {
@@ -152,22 +177,22 @@
 									WHERE id_type IN (".implode(",",$id_types).")
 									LIMIT ".(int)$amount." 
 									ORDER BY name ASC");
-			return $this->addImageInfo($data, "recipe");
+			return $this->addImageInfo($data, self::RECIPE);
 		}
 		
 		public function searchRecipes($query) {
 			$data = $this->query("SELECT id, name FROM ".self::RECIPE." WHERE name LIKE ?", "%".$query."%");
-			return $this->addImageInfo($data, "recipe");
+			return $this->addImageInfo($data, self::RECIPE);
 		}
 		
 		public function getRecipesForType($id_type) {
 			$data = $this->query("SELECT id, name FROM ".self::RECIPE." WHERE id_type = ? ORDER BY name ASC", $id_type);
-			return $this->addImageInfo($data, "recipe");
+			return $this->addImageInfo($data, self::RECIPE);
 		}
 		
 		public function getRecipesForUser($id_user) {
 			$data = $this->query("SELECT id, name FROM ".self::RECIPE." WHERE id_user = ? ORDER BY name ASC", $id_user);
-			return $this->addImageInfo($data, "recipe");
+			return $this->addImageInfo($data, self::RECIPE);
 		}
 
 		public function getRecipesForIngredient($id_ingredient) {
@@ -179,9 +204,18 @@
 			return $this->query("SELECT id, name FROM ".self::INGREDIENT." WHERE id_category = ? ORDER BY name ASC", $id_category);
 		}
 
-		private function addImageInfo($recipes, $type) {
+		public function getUserForLogin($login) {
+			$data = $this->query("SELECT * FROM ".self::USER." WHERE login = ?", $login);
+			if (!count($data)) { return null; }
+			$data = $this->addImageInfo($data, self::USER);
+			return $data[0];
+		}
+
+		private function addImageInfo($recipes, $table) {
+			$path = $this->getImagePath($table);
+			
 			for ($i=0;$i<count($recipes);$i++) {
-				$exists = file_exists($this->image_path . "/" . $type . "/" . $recipes[$i]["id"] . ".jpg");
+				$exists = file_exists($this->image_path . "/" . $path . "/" . $recipes[$i]["id"] . ".jpg");
 				$recipes[$i]["image"] = ($exists ? 1 : 0);
 			}
 			return $recipes;
@@ -221,10 +255,6 @@
 		
 		/***/
 		
-		public function insertUser() {
-			return $this->insert(self::USER);
-		}
-		
 		public function insertType() {
 			$data = $this->query("SELECT MAX(`order`) AS m FROM ".self::TYPE);
 			$order = $data[0]["m"] + 1;
@@ -237,28 +267,15 @@
 			return $this->insert(self::CATEGORY, array("`order`"=>$order));
 		}
 
-		public function insertIngredient() {
-			return $this->insert(self::INGREDIENT);
-		}
-
 		public function insertRecipe($id_user) {
 			return $this->insert(self::RECIPE, array("id_user"=>$id_user));
 		}
 
 		/***/
 		
-		public function updateUser($id) {
-			$values = array();
+		public function updateUser($id, $values, $password = null) {
+			if ($password) { $values["pwd"] = sha1($password); }
 			return $this->update(self::USER, $id, $values);
-		}
-
-		public function updateType($id) {
-		}
-
-		public function updateCategory($id) {
-		}
-
-		public function updateIngredient($id) {
 		}
 
 		public function updateRecipe($id) {

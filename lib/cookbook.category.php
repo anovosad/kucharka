@@ -29,8 +29,13 @@
 			if ($move) { /* change order */
 				$this->db->move(CookbookDB::CATEGORY, $id, $move);
 			} else { /* edit contents */
-				$this->db->updateCategory($id);
+				if (!$id) { $id = $this->db->insertCategory(); }
+				$fields = $this->db->getFields(CookbookDB::CATEGORY);
+				$data = array();
+				foreach ($fields as $field) { $data[$field] = HTTP::value($field, "post", ""); }
+				$this->db->update(CookbookDB::CATEGORY, $id, $data);
 			}
+			HTTP::redirect("/kategorie/".$id);
 		}
 	}
 ?>

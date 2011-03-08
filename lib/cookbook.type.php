@@ -37,8 +37,13 @@
 			if ($move) { /* change order */
 				$this->db->move(CookbookDB::TYPE, $id, $move);
 			} else { /* edit contents */
-				$this->db->updateType($id);
+				if (!$id) { $id = $this->db->insertType(); }
+				$fields = $this->db->getFields(CookbookDB::TYPE);
+				$data = array();
+				foreach ($fields as $field) { $data[$field] = HTTP::value($field, "post", ""); }
+				$this->db->update(CookbookDB::TYPE, $id, $data);
 			}
+			HTTP::redirect("/druh/".$id);
 		}
 	}
 ?>

@@ -38,5 +38,20 @@
 				$this->app->error("Tuto surovinu nelze smazat, neboť je využívána v nějakých receptech");
 			}
 		}
+
+		public function edit($matches) {
+			if (!$this->app->loggedId()) { return $this->app->error403(); }
+
+			$id = $matches[1];
+			if (!$id) { $id = $this->db->insert(CookbookDB::INGREDIENT); }
+			
+			$fields = $this->db->getFields(CookbookDB::INGREDIENT);
+			$data = array();
+			foreach ($fields as $field) { $data[$field] = HTTP::value($field, "post", ""); }
+			$this->db->update(CookbookDB::INGREDIENT, $id, $data);
+
+			$this->app->saveImage($id, CookbookDB::INGREDIENT);
+			HTTP::redirect("/surovina/".$id);
+		}
 	}
 ?>
