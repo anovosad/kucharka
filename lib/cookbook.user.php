@@ -26,6 +26,9 @@
 
 		public function delete($matches) {
 			$id = $matches[1];
+			if (!$this->app->canDeleteUser($id)) { return $this->app->error403(); }
+			
+
 			$ok = $this->db->deleteUser($id);
 			if ($ok) {
 				HTTP::redirect("/autori");

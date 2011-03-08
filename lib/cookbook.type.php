@@ -18,12 +18,26 @@
 		}
 		
 		public function delete($matches) {
+			if (!$this->app->loggedId()) { return $this->app->error403(); }
+
 			$id = $matches[1];
 			$ok = $this->db->deleteType($id);
 			if ($ok) {
 				HTTP::redirect("/druhy");
 			} else {
 				$this->app->error("Tento druh jídla nelze smazat, neboť mu náleží nějaké recepty");
+			}
+		}
+
+		public function edit($matches) {
+			if (!$this->app->loggedId()) { return $this->app->error403(); }
+
+			$id = $matches[1];
+			$move = HTTP::value("move", "post", 0);
+			if ($move) { /* change order */
+				$this->db->move(CookbookDB::TYPE, $id, $move);
+			} else { /* edit contents */
+				$this->db->updateType($id);
 			}
 		}
 	}

@@ -28,6 +28,8 @@
 		}
 
 		public function delete($matches) {
+			if (!$this->app->loggedId()) { return $this->app->error403(); }
+
 			$id = $matches[1];
 			$ok = $this->db->deleteIngredient($id);
 			if ($ok) {

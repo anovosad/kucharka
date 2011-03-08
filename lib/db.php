@@ -246,5 +246,44 @@
 		}
 
 		/***/
+		
+		public function updateUser($id) {
+			$values = array();
+			return $this->update(self::USER, $id, $values);
+		}
+
+		public function updateType($id) {
+		}
+
+		public function updateCategory($id) {
+		}
+
+		public function updateIngredient($id) {
+		}
+
+		public function updateRecipe($id) {
+		}
+		
+		/**
+		 * Move record up/down using its "order" column
+		 * @param {string} table
+		 * @param {int} id
+		 * @param {int} direction +1 down, -1 up
+		 */
+		public function move($table, $id, $direction) {
+			$order = $this->query("SELECT `order` AS o FROM ".$table." WHERE id = ?", $id);
+			if (!count($order)) { return false; }
+			$order = $order[0]["o"];
+			
+			$operator = ($direction == 1 ? ">" : "<");
+			$sibling = $this->query("SELECT id, `order` AS o FROM ".$table." WHERE `order` ".$operator. " ? LIMIT 1", $order);
+			if (!count($sibling)) { return false; }
+			$sibling_id = $sibling[0]["id"];
+			$sibling_order = $sibling[0]["order"];
+			
+			$this->update($table, $sibling_id, array("`order`"=>$order));
+			$this->update($table, $id, array("`order`"=>$sibling_order));
+			return true;
+		}
 	}
 ?>

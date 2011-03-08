@@ -94,6 +94,14 @@
 			return (isset($_SESSION["name"]) ? $_SESSION["name"] : null);
 		}
 		
+		public function canDeleteUser($id) {
+			if (!$this->loggedId()) { return false; }
+			if ($this->loggedId() == $id) { return false; }
+			$user = $this->db->getUser($this->loggedId());
+			if ($user && $user["super"] != 1) { return false; }
+			return true;
+		}
+		
 		public function error($error) {
 			$this->view->addData("error", array(""=>$error));
 			$this->view->setTemplate("templates/error.xsl");
