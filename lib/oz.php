@@ -287,15 +287,15 @@
 	 * Static HTTP helper
 	 */
 	class HTTP {
-		/**
-		 * @param {string} name
-		 * @param {string} where "get"/"post"/"cookie"
-		 * @param {any} default Used when no value is specified; used to coerce return type
-		 * @returns {typeof($default)}
-		 */
 		public static $BASE = "";
 		public static $REFERER = "";
 		
+		/**
+		 * @param {string} name
+		 * @param {string} where "get"/"post"/"cookie"/"files"
+		 * @param {any} default Used when no value is specified; used to coerce return type
+		 * @returns {typeof($default)}
+		 */
 		public static function value($name, $where, $default = null) {
 			$value = $default;
 			if (($where == "get") && isset($_GET[$name])) {
@@ -304,6 +304,8 @@
 				$value = $_POST[$name];
 			} elseif (($where == "cookie") && isset($_COOKIE[$name])) {
 				$value = $_COOKIE[$name];
+			} elseif (($where == "files") && isset($_FILES[$name])) {
+				$value = $_FILES[$name];
 			} else {
 				return $value;
 			}
