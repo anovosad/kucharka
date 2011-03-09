@@ -5,7 +5,7 @@
 			$data = $this->db->getCategory($id);
 			if ($data) { $this->view->addData("category", $data); }
 			
-			$this->view->setTemplate("templates/category.xsl");
+			$this->view->setTemplate("templates/category-form.xsl");
 			echo $this->view->toString();
 		}
 

@@ -13,7 +13,7 @@
 			$data = $this->db->getType($id);
 			if ($data) { $this->view->addData("type", $data); }
 			
-			$this->view->setTemplate("templates/type.xsl");
+			$this->view->setTemplate("templates/type-form.xsl");
 			echo $this->view->toString();
 		}
 		

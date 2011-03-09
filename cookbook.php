@@ -190,6 +190,6 @@
 		
 		public function fallback($matches) {
 			HTTP::redirect("/hledani?q=" . $matches[1]);
-		}		
+		}
 	}
 ?>

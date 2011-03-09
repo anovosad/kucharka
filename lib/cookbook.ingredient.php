@@ -23,7 +23,12 @@
 				if (count($recipes)) { $this->view->addData("recipe", $recipes); }
 			}
 			
-			$this->view->setTemplate("templates/ingredient.xsl");
+			$edit = HTTP::value("edit", "get", 0);
+			if ($edit) {
+				$this->view->setTemplate("templates/ingredient-form.xsl");
+			} else {
+				$this->view->setTemplate("templates/ingredient.xsl");
+			}
 			echo $this->view->toString();
 		}
 

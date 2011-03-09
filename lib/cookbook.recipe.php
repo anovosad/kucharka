@@ -1,6 +1,13 @@
 <?php
 	class Recipe extends CookbookModule {
 		public function menu($matches) {
+			$count = HTTP::value("count", "get", 0);
+			if (!$count) {
+				$this->view->setTemplate("templates/menu-form.xsl");
+				echo $this->view->toString();
+				return;
+			}
+		
 			$recipes = $this->db->getRandomRecipes(/* FIXME */);
 			if (count($recipes)) { $this->view->addData("recipe", $recipes); }
 			$this->view->setTemplate("templates/menu-results.xsl");
@@ -17,6 +24,12 @@
 
 		public function search($matches) {
 			$query = HTTP::value("q", "get", "");
+			if (!$query) {
+				$this->view->setTemplate("templates/search-form.xsl");
+				echo $this->view->toString();
+				return;
+			}
+			
 			$recipes = $this->db->searchRecipes($query);
 			
 			if (count($recipes) == 1) {
@@ -42,7 +55,12 @@
 			$data = $this->db->getRecipe($id);
 			if ($data) { $this->view->addData("recipe", $data); }
 			
-			$this->view->setTemplate("templates/recipe.xsl");
+			$edit = HTTP::value("edit", "get", 0);
+			if ($edit) {
+				$this->view->setTemplate("templates/recipe-form.xsl");
+			} else {
+				$this->view->setTemplate("templates/recipe.xsl");
+			}
 			echo $this->view->toString();
 		}
 		
