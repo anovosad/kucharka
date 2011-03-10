@@ -40,7 +40,7 @@
 						</tr>
 						<tr>
 							<td>Popis</td>
-							<td><textarea name="description"><xsl:value-of select="@description" /></textarea>
+							<td><textarea name="description"><xsl:value-of select="@description" /></textarea></td>
 						</tr>
 					</tbody>
 				</table>
