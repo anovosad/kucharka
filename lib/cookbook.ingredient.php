@@ -21,10 +21,14 @@
 				$this->view->addData("ingredient", $data); 
 				$recipes = $this->db->getRecipesForIngredient($id);
 				if (count($recipes)) { $this->view->addData("recipe", $recipes); }
+			} else {
+				$this->view->addData("ingredient", array("id"=>0));
 			}
 			
 			$edit = HTTP::value("edit", "get", 0);
 			if ($edit) {
+				$categories = $this->db->getCategories();
+				$this->view->addData("categories", array("category"=>$categories));
 				$this->view->setTemplate("templates/ingredient-form.xsl");
 			} else {
 				$this->view->setTemplate("templates/ingredient.xsl");

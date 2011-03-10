@@ -70,4 +70,18 @@
 		</nav>
 	</xsl:template>
 	
+	<xsl:template name="category-select">
+		<xsl:param name="id_category" select="0" />
+		<select name="id_category">
+			<xsl:for-each select="category">
+			<option value="@id">
+				<xsl:if test="@id = $id_category">
+					<xsl:attribute name="selected">selected</xsl:attribute>
+				</xsl:if>
+				<xsl:value-of select="@name" />
+			</option>
+			</xsl:for-each>
+		</select>
+	</xsl:template>
+	
 </xsl:stylesheet>

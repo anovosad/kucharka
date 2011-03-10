@@ -16,7 +16,38 @@
 
 		<body>
 			<xsl:call-template name="menu" /> 
-			<h1></h1>
+			
+			<xsl:for-each select="ingredient">
+			
+			<h1><xsl:value-of select="@name" /></h1>
+			
+			<form method="post" action="{concat($BASE, '/surovina/', @id)}">
+				<table>
+					<tbody>
+						<tr>
+							<td>Název</td>
+							<td><input type="text" value="@name" /></td>
+						</tr>
+						<tr>
+							<td>Kategorie</td>
+							<td>
+								<xsl:for-each select="//categories">
+									<xsl:call-template name="category-select">
+										<xsl:with-param name="id_category" select="@id_category" />
+									</xsl:call-template>
+								</xsl:for-each>
+							</td>
+						</tr>
+						<tr>
+							<td>Popis</td>
+							<td><textarea name="description"><xsl:value-of select="@description" /></textarea>
+						</tr>
+					</tbody>
+				</table>
+			</form>
+			
+			</xsl:for-each>
+			
 			<xsl:call-template name="footer" />
 		</body>
 	</html>
