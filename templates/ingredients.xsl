@@ -16,7 +16,26 @@
 
 		<body>
 			<xsl:call-template name="menu" /> 
-			<h1></h1>
+
+			<h1>Suroviny</h1>
+			
+			<ul>
+			<xsl:for-each select="category">
+				<li>
+					<xsl:value-of select="@name" />
+					<ul>
+						<xsl:for-each select="ingredient">
+							<li>
+								<a href="{concat($BASE, '/surovina/', @id)}">
+									<xsl:if test="@image = '1'"><xsl:attribute name="class">image</xsl:attribute></xsl:if>
+									<xsl:value-of select="@name" />
+								</a>
+							</li>
+						</xsl:for-each>
+					</ul>
+				</li>
+			</xsl:for-each>
+			</ul>
 			<xsl:call-template name="footer" />
 		</body>
 	</html>

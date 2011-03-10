@@ -9,7 +9,7 @@
 		<xsl:param name="title" select="''" />
 		<head>
 			<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-			<link rel="stylesheet" href="{concat($BASE, '/style.css')}" type="text/css" />
+			<link rel="stylesheet" href="{concat($BASE, '/css/cookbook.css')}" type="text/css" />
 			<title>
 				<xsl:if test="$title != ''">
 					<xsl:value-of select="$title" />
@@ -17,7 +17,7 @@
 				</xsl:if>
 				<xsl:text>Kuchařka</xsl:text>
 			</title>
-			<script type="text/javascript" src="js/oz.js"></script>
+			<script type="text/javascript" src="{concat($BASE, '/js/oz.js')}"></script>
 		</head>
 	</xsl:template>
 		
@@ -32,6 +32,25 @@
 		</xsl:if>
 	</xsl:template>
 	
+	<xsl:template name="recipe-link">
+		<a href="{concat($BASE, '/recept/', @id)}">
+			<xsl:if test="@image = '1'"><xsl:attribute name="class">image</xsl:attribute></xsl:if>
+			<xsl:value-of select="@name" />
+		</a>
+	</xsl:template>
+	
+	<xsl:template name="recipe-list">
+		<xsl:if test="recipe">
+			<ul>
+				<xsl:for-each select="recipe">
+					<li>
+						<xsl:call-template name="recipe-link" />
+					</li>
+				</xsl:for-each>
+			</ul>
+		</xsl:if>
+	</xsl:template>
+
 	<xsl:template name="menu">
 		<nav id="menu">
 			<ul>

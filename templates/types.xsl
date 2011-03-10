@@ -16,7 +16,17 @@
 
 		<body>
 			<xsl:call-template name="menu" /> 
-			<h1></h1>
+			<h1>Druhy jídel</h1>
+			
+			<ul>
+			<xsl:for-each select="type">
+				<li>
+					<xsl:value-of select="@name" />
+					<xsl:call-template name="recipe-list" />
+				</li>
+			</xsl:for-each>
+			</ul>
+			
 			<xsl:call-template name="footer" />
 		</body>
 	</html>

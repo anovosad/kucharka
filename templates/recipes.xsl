@@ -16,7 +16,10 @@
 
 		<body>
 			<xsl:call-template name="menu" /> 
-			<h1></h1>
+			<h1>Recepty dle abecedy</h1>
+
+			<xsl:call-template name="recipe-list" />
+
 			<xsl:call-template name="footer" />
 		</body>
 	</html>

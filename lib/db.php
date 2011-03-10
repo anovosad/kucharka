@@ -149,7 +149,7 @@
 		}
 
 		public function getUser($id) {
-			$data = $this->query("SELECT * FROM ".self::USER." WHERE id = ?", $id);
+			$data = $this->query("SELECT id, name, mail FROM ".self::USER." WHERE id = ?", $id);
 			if (!count($data)) { return null; }
 			$data = $this->addImageInfo($data, self::USER);
 			return $data[0];
@@ -196,8 +196,14 @@
 		}
 
 		public function getRecipesForIngredient($id_ingredient) {
-			/* FIXME obohatit, obrazek */
-			return $this->query("SELECT DISTINCT id_recipe FROM ".self::AMOUNT." WHERE id_ingredient = ? ORDER BY id_recipe ASC", $id_ingredient);
+			$data = $this->query("SELECT 
+									DISTINCT id_recipe AS id,
+									".self::RECIPE.".name AS name
+									FROM ".self::AMOUNT." 
+									LEFT JOIN ".self::RECIPE." ON ".self::AMOUNT.".id_recipe = ".self::RECIPE.".id
+									WHERE id_ingredient = ? 
+									ORDER BY id_recipe ASC", $id_ingredient);
+			return $this->addImageInfo($data, self::RECIPE);
 		}
 
 		public function getIngredientsForCategory($id_category) {

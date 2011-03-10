@@ -16,7 +16,21 @@
 
 		<body>
 			<xsl:call-template name="menu" /> 
-			<h1></h1>
+			
+			<xsl:for-each select="recipe">
+				<h1><xsl:value-of select="@name" /></h1>
+			
+				<ul>
+					<xsl:for-each select="ingredient">
+						<li>
+							<xsl:value-of select="@name" />
+							<xsl:text> </xsl:text>
+							<xsl:value-of select="@amount" />
+						</li>
+					</xsl:for-each>
+				</ul>
+			
+			</xsl:for-each>
 			<xsl:call-template name="footer" />
 		</body>
 	</html>

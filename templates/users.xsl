@@ -16,7 +16,15 @@
 
 		<body>
 			<xsl:call-template name="menu" /> 
-			<h1></h1>
+			<h1>Autoři receptů</h1>
+			
+			<ul>
+				<xsl:for-each select="user">
+					<li>
+						<a href="{concat($BASE, '/autor/', @id)}"><xsl:value-of select="@name" /></a>
+					</li>
+				</xsl:for-each>
+			</ul>
 			<xsl:call-template name="footer" />
 		</body>
 	</html>
