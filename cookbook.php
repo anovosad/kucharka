@@ -55,7 +55,7 @@
 			$this->view = new XML();
 			$this->view->setParameter("BASE", HTTP::$BASE);
 			$this->view->setParameter("DEBUG", $this->debug);
-			$this->view->setParameter("IMAGE_PATH", $this->image_path);
+			$this->view->setParameter("IMAGE_PATH", HTTP::$BASE."/img");
 			$this->view->addFilter(new FILTER_FRACTIONS());
 			
 			$id = $this->loggedId();
