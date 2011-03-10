@@ -18,7 +18,11 @@
 			<xsl:call-template name="menu" /> 
 			
 			<h1><xsl:value-of select="ingredient/@name" /></h1>
-				
+			
+			<xsl:if test="login">
+				<a href="{concat($BASE, '/surovina/', @id, '?edit=1')}">upravit</a>
+			</xsl:if>
+			
 			<xsl:call-template name="recipe-list" />
 
 			<xsl:call-template name="footer" />
