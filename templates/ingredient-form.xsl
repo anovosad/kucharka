@@ -46,6 +46,10 @@
 							<td>Popis</td>
 							<td><textarea name="description"><xsl:value-of select="@description" /></textarea></td>
 						</tr>
+						<tr>
+							<td></td>
+							<td><input type="submit" value="Uložit" /></td>
+						</tr>
 					</tbody>
 				</table>
 			</form>
