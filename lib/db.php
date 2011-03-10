@@ -181,7 +181,7 @@
 		}
 		
 		public function searchRecipes($query) {
-			$data = $this->query("SELECT id, name FROM ".self::RECIPE." WHERE name COLLATE utf8_generic_ci LIKE ?", "%".$query."%");
+			$data = $this->query("SELECT id, name FROM ".self::RECIPE." WHERE name COLLATE utf8_general_ci LIKE ?", "%".$query."%");
 			return $this->addImageInfo($data, self::RECIPE);
 		}
 		
