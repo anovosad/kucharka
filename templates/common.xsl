@@ -72,7 +72,7 @@
 	
 	<xsl:template name="category-select">
 		<xsl:param name="id_category" select="0" />
-		<select name="id_category">
+		<select name="id_category" x="{$id_category}">
 			<xsl:for-each select="category">
 			<option value="{@id}">
 				<xsl:if test="@id = $id_category">
