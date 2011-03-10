@@ -26,7 +26,7 @@
 					<tbody>
 						<tr>
 							<td>Název</td>
-							<td><input type="text" value="@name" /></td>
+							<td><input type="text" value="{@name}" /></td>
 						</tr>
 						<tr>
 							<td>Kategorie</td>
