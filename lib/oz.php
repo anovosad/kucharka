@@ -272,7 +272,7 @@
 	 * Application extension - module class
 	 */
 	class MODULE {
-		private $app;
+		protected $app;
 		
 		public function __construct($app) {
 			$this->app = $app;
