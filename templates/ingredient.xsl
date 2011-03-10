@@ -16,18 +16,21 @@
 
 		<body>
 			<xsl:call-template name="menu" /> 
+			<xsl:for-each select="ingredient">
 			
-			<h1><xsl:value-of select="ingredient/@name" /></h1>
+			<h1><xsl:value-of select="@name" /></h1>
 			
 			<xsl:if test="login">
-				<a href="{concat($BASE, '/surovina/', ingredient/@id, '?edit=1')}">upravit</a>
+				<a href="{concat($BASE, '/surovina/', @id, '?edit=1')}">upravit</a>
 			</xsl:if>
 			
-			<xsl:if test="ingredient/@image">
+			<xsl:if test="@image">
 				<xsl:call-template name="image">
 					<xsl:with-param name="path" select="'ingredients'" />
 				</xsl:call-template>
 			</xsl:if>
+			
+			</xsl:for-each>
 			
 			<xsl:call-template name="recipe-list" />
 
