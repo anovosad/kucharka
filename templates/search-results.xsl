@@ -16,7 +16,14 @@
 
 		<body>
 			<xsl:call-template name="menu" /> 
-			<h1></h1>
+			
+			<h1>Výsledky vyhledávání</h1>
+			
+			<xsl:if test="not(recipe)">
+				Nebyl nalezen žádný recept.
+			</xsl:if>
+			<xsl:call-template name="recipe-list" />
+
 			<xsl:call-template name="footer" />
 		</body>
 	</html>
