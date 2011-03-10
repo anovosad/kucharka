@@ -109,7 +109,7 @@
 			return $this->addImageInfo($data, self::USER);
 		}
 		
-		private function getCategories() {
+		public function getCategories() {
 			return $this->query("SELECT id, name FROM ".self::CATEGORY." ORDER by `order` ASC");
 		}
 
