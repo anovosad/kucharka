@@ -18,6 +18,7 @@
 			<xsl:call-template name="menu" /> 
 			
 			<xsl:for-each select="ingredient">
+			<xsl:variable name="id_category" select="@id_category" />
 			
 			<h1><xsl:value-of select="@name" /></h1>
 			
@@ -33,7 +34,7 @@
 							<td>
 								<xsl:for-each select="//categories">
 									<xsl:call-template name="category-select">
-										<xsl:with-param name="id_category" select="@id_category" />
+										<xsl:with-param name="id_category" select="$id_category" />
 									</xsl:call-template>
 								</xsl:for-each>
 							</td>
