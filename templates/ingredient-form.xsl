@@ -25,7 +25,7 @@
 				<xsl:if test="not(@name)">Nová surovina</xsl:if>
 			</h1>
 			
-			<form method="post" action="{concat($BASE, '/surovina/', @id)}">
+			<form method="post" action="{concat($BASE, '/surovina/', @id)}" enctype="multipart/form-data">
 				<table>
 					<tbody>
 						<tr>
@@ -45,6 +45,23 @@
 						<tr>
 							<td>Popis</td>
 							<td><textarea name="description"><xsl:value-of select="@description" /></textarea></td>
+						</tr>
+						<tr>
+							<td>Obrázek</td>
+							<td>
+								<xsl:if test="@image">
+									<xsl:call-template name="image">
+										<xsl:with-param name="path" select="'ingredients'" />
+									</xsl:call-template>
+									<br/>
+									<label>
+										<input type="checkbox" name="image-delete" />
+										Odstranit
+									</label><br/>
+								</xsl:if>
+								<input type="file" name="image" />
+							
+							</td>
 						</tr>
 						<tr>
 							<td></td>
