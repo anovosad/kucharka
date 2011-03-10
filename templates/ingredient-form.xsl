@@ -20,7 +20,10 @@
 			<xsl:for-each select="ingredient">
 			<xsl:variable name="id_category" select="@id_category" />
 			
-			<h1><xsl:value-of select="@name" /></h1>
+			<h1>
+				<xsl:value-of select="@name" />
+				<xsl:if test="not(@name)">Nová surovina</xsl:if>
+			</h1>
 			
 			<form method="post" action="{concat($BASE, '/surovina/', @id)}">
 				<table>
