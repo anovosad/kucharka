@@ -30,7 +30,7 @@
 					<tbody>
 						<tr>
 							<td>Název</td>
-							<td><input type="text" value="{@name}" /></td>
+							<td><input type="text" name="name" value="{@name}" /></td>
 						</tr>
 						<tr>
 							<td>Kategorie</td>
