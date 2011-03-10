@@ -23,6 +23,12 @@
 				<a href="{concat($BASE, '/surovina/', ingredient/@id, '?edit=1')}">upravit</a>
 			</xsl:if>
 			
+			<xsl:if test="ingredient/@image">
+				<xsl:call-template name="image">
+					<xsl:with-param name="path" select="'ingredients'" />
+				</xsl:call-template>
+			</xsl:if>
+			
 			<xsl:call-template name="recipe-list" />
 
 			<xsl:call-template name="footer" />

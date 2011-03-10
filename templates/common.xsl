@@ -84,4 +84,9 @@
 		</select>
 	</xsl:template>
 	
+	<xsl:template name="image">
+		<xsl:param name="path" select="''" />
+		<img src="{concat($IMAGE_PATH, '/', $path, '/', @id, '.jpg')}" alt="{@name}" />
+	</xsl:template>
+	
 </xsl:stylesheet>
