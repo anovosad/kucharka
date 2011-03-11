@@ -122,7 +122,7 @@
 			$name = $this->image_path . "/" . $path . "/" . $id . ".jpg";
 
 			$delete = HTTP::value("image-delete", "post", false);
-			if ($delete && file_exists($path)) { unlink($path); }
+			if ($delete && file_exists($name)) { unlink($name); }
 			
 			$f = HTTP::value("image", "files", null);
 			if ($f && $f["type"] == "image/jpeg" && $f["error"] == 0) {
@@ -136,7 +136,7 @@
 					$target_w = round($w * $ratio);
 					$target_h = round($h * $ratio);
 					$target = imagecreatetruecolor($target_w, $target_h);
-					imagecopyresampled($target, $source, 0, 0, 0, 0, $target_w, $target_h, $w, $h);
+					imagecopyresampled($target, $image, 0, 0, 0, 0, $target_w, $target_h, $w, $h);
 					$image = $target;
 				}
 				

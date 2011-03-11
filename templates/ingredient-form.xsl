@@ -55,7 +55,7 @@
 									</xsl:call-template>
 									<br/>
 									<label>
-										<input type="checkbox" name="image-delete" />
+										<input type="checkbox" name="image-delete" value="1" />
 										Odstranit
 									</label><br/>
 								</xsl:if>

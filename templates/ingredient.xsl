@@ -22,6 +22,10 @@
 			
 			<xsl:if test="//login">
 				<a href="{concat($BASE, '/surovina/', @id, '?edit=1')}">upravit</a>
+				<form method="post" action="{concat($BASE, '/surovina/', @id)}">
+					<input type="hidden" name="http-method" value="delete" />
+					<input type="submit" value="smazat" />
+				</form>
 			</xsl:if>
 			
 			<xsl:if test="@image">
