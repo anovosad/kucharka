@@ -49,18 +49,10 @@
 						<tr>
 							<td>Obrázek</td>
 							<td>
-								<xsl:if test="@image">
-									<xsl:call-template name="image">
-										<xsl:with-param name="path" select="'ingredients'" />
-									</xsl:call-template>
-									<br/>
-									<label>
-										<input type="checkbox" name="image-delete" value="1" />
-										Odstranit
-									</label><br/>
-								</xsl:if>
-								<input type="file" name="image" />
-							
+								<xsl:call-template name="image-form">
+									<xsl:with-param name="path" select="'ingredients'" />
+									<xsl:with-param name="width" select="0" />
+								</xsl:call-template>
 							</td>
 						</tr>
 						<tr>

@@ -15,11 +15,16 @@
 			$id = $matches[1];
 			$data = $this->db->getUser($id);
 			if ($data) { 
+				$data["canEdit"] = ($this->canModifyUser($id) ? 1 : 0);
+				$data["canDelete"] = ($this->canDeleteUser($id) ? 1 : 0);
 				$this->view->addData("user", $data); 
+				
 				$recipes = $this->db->getRecipesForUser($id);
 				if (count($recipes)) { $this->view->addData("recipe", $recipes); }
+			} else {
+				$this->view->addData("user", array("id"=>0));
 			}
-			
+
 			$edit = HTTP::value("edit", "get", 0);
 			if ($edit) {
 				$this->view->setTemplate("templates/user-form.xsl");
@@ -52,6 +57,7 @@
 			$password = null;
 			$pwd1 = HTTP::value("pwd1", "post", "");
 			$pwd2 = HTTP::value("pwd2", "post", "");
+			if (!$id && !$pwd1) { return $this->app->error("Nový uživatel musí mít heslo"); }
 			if ($pwd1 != $pwd2) { return $this->app->error("Hesla se neshodují"); }
 			if ($pwd1) { $password = $pwd1; }
 

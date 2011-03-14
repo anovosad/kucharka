@@ -12,7 +12,9 @@
 	<xsl:template match="/*">
 
 	<html>
-		<xsl:call-template name="head" />
+		<xsl:call-template name="head">
+			<xsl:with-param name="title" select="recipe/@name" />
+		</xsl:call-template>
 
 		<body>
 			<xsl:call-template name="menu" /> 

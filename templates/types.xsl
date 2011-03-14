@@ -20,10 +20,12 @@
 			
 			<ul>
 			<xsl:for-each select="type">
+				<xsl:if test="recipe">
 				<li>
 					<xsl:value-of select="@name" />
 					<xsl:call-template name="recipe-list" />
 				</li>
+				</xsl:if>
 			</xsl:for-each>
 			</ul>
 			

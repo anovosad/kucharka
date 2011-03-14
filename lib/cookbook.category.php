@@ -3,7 +3,11 @@
 		public function get($matches) {
 			$id = $matches[1];
 			$data = $this->db->getCategory($id);
-			if ($data) { $this->view->addData("category", $data); }
+			if ($data) { 
+				$this->view->addData("category", $data); 
+			} else {
+				$this->view->addData("category", array("id"=>0));
+			}
 			
 			$this->view->setTemplate("templates/category-form.xsl");
 			echo $this->view->toString();

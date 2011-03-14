@@ -103,6 +103,7 @@
 		public function canModifyUser($id) {
 			if (!$this->loggedId()) { return false; }
 			$user = $this->db->getUser($this->loggedId());
+			if ($this->loggedId() == $id) { return true; }
 			if ($user && $user["super"] != 1) { return false; }
 			return true;
 		}

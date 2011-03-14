@@ -84,9 +84,29 @@
 		</select>
 	</xsl:template>
 	
+	<xsl:template name="image-form">
+		<xsl:param name="width" select="0" />
+		<xsl:param name="path" select="''" />
+		
+		<p>Obrázek musí být ve formátu JPG.
+		<xsl:if test="$width">Bude zmenšen na šířku <xsl:value-of select="$width" /> pixelů.</xsl:if>
+		</p>
+		<xsl:call-template name="image">
+			<xsl:with-param name="path" select="$path" />
+		</xsl:call-template>
+		<br/>
+		<label>
+			<input type="checkbox" name="image-delete" value="1" />
+			Odstranit
+		</label><br/>
+		<input type="file" name="image" />
+	</xsl:template>
+	
 	<xsl:template name="image">
 		<xsl:param name="path" select="''" />
-		<img src="{concat($IMAGE_PATH, '/', $path, '/', @id, '.jpg')}" alt="{@name}" />
+		<xsl:if test="@image = 1">
+			<img src="{concat($IMAGE_PATH, '/', $path, '/', @id, '.jpg')}" alt="{@name}" />
+		</xsl:if>
 	</xsl:template>
 	
 </xsl:stylesheet>

@@ -16,8 +16,24 @@
 
 		<body>
 			<xsl:call-template name="menu" /> 
-			<h1><xsl:value-of select="user/@name" /></h1>
+			<xsl:for-each select="user">
+				<h1><xsl:value-of select="@name" /></h1>
+				
+				<xsl:if test="//login">
+					<xsl:if test="@canEdit = 1">
+						<a href="{concat($BASE, '/autor/', @id, '?edit=1')}">upravit</a>
+					</xsl:if>
+					<xsl:if test="@canDelete = 1">
+						<form method="post" action="{concat($BASE, '/autor/', @id)}">
+							<input type="hidden" name="http-method" value="delete" />
+							<input type="submit" value="smazat" />
+						</form>
+					</xsl:if>
+				</xsl:if>
 			
+			</xsl:for-each>
+			
+
 			<xsl:call-template name="recipe-list" />
 			
 			<xsl:call-template name="footer" />

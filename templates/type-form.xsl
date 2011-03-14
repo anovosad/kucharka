@@ -16,7 +16,36 @@
 
 		<body>
 			<xsl:call-template name="menu" /> 
-			<h1></h1>
+			
+			<xsl:for-each select="type">
+			
+			<h1>
+				<xsl:value-of select="@name" />
+				<xsl:if test="not(@name)">Nový druh jídla</xsl:if>
+			</h1>
+			
+			<form method="post" action="{concat($BASE, '/druh/', @id)}">
+				<table>
+					<tbody>
+						<tr>
+							<td>Název</td>
+							<td><input type="text" name="name" value="{@name}" /></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td><input type="submit" value="Uložit" /></td>
+						</tr>
+					</tbody>
+				</table>
+			</form>
+			
+			<form method="post" action="{concat($BASE, '/druh/', @id)}">
+				<input type="hidden" name="http-method" value="delete" />
+				<input type="submit" value="Smazat" />
+			</form>
+
+			</xsl:for-each>
+			
 			<xsl:call-template name="footer" />
 		</body>
 	</html>

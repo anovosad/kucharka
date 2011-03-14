@@ -11,7 +11,11 @@
 		public function get($matches) {
 			$id = $matches[1];
 			$data = $this->db->getType($id);
-			if ($data) { $this->view->addData("type", $data); }
+			if ($data) { 
+				$this->view->addData("type", $data); 
+			} else {
+				$this->view->addData("type", array("id"=>0));
+			}
 			
 			$this->view->setTemplate("templates/type-form.xsl");
 			echo $this->view->toString();

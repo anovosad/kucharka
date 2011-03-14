@@ -149,7 +149,7 @@
 		}
 
 		public function getUser($id) {
-			$data = $this->query("SELECT id, name, mail FROM ".self::USER." WHERE id = ?", $id);
+			$data = $this->query("SELECT id, login, super, name, mail FROM ".self::USER." WHERE id = ?", $id);
 			if (!count($data)) { return null; }
 			$data = $this->addImageInfo($data, self::USER);
 			return $data[0];
