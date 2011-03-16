@@ -1,7 +1,7 @@
 <?php
 	class Type extends CookbookModule {
 		public function all($matches) {
-			$data = $this->db->getTypes();
+			$data = $this->db->getTypes(true);
 			if (count($data)) { $this->view->addData("type", $data); }
 			
 			$this->view->setTemplate("templates/types.xsl");

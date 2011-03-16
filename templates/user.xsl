@@ -31,8 +31,12 @@
 					</xsl:if>
 				</xsl:if>
 			
-			</xsl:for-each>
 			
+			<xsl:call-template name="image">
+				<xsl:with-param name="path" select="'users'" />
+			</xsl:call-template>
+
+			</xsl:for-each>
 
 			<xsl:call-template name="recipe-list" />
 			

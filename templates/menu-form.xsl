@@ -16,7 +16,29 @@
 
 		<body>
 			<xsl:call-template name="menu" /> 
-			<h1></h1>
+			<h1>Jídelníček</h1>
+			
+			<form method="post" action="{concat($BASE, '/jidelnicek')}">
+				<table>
+					<tbody>
+						<tr>
+							<td>Jaké druhy jídel zahrnout?</td>
+							<td><xsl:for-each select="type">
+								<label><input type="checkbox" name="id_type[]" value="{@id}" /><xsl:value-of select="@name" /></label><br/>
+							</xsl:for-each></td>
+						</tr>
+						<tr>
+							<td>Kolik jídel vybrat?</td>
+							<td><input name="count" type="text" size="5" value="10" /></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td><input type="submit" value="Připravit" /></td>
+						</tr>
+					</tbody>
+				</table>
+			</form>
+			
 			<xsl:call-template name="footer" />
 		</body>
 	</html>

@@ -1,16 +1,20 @@
 <?php
 	class Recipe extends CookbookModule {
 		public function menu($matches) {
-			$count = HTTP::value("count", "get", 0);
-			if (!$count) {
-				$this->view->setTemplate("templates/menu-form.xsl");
-				echo $this->view->toString();
-				return;
-			}
+			$count = HTTP::value("count", "post", 0);
+			$id_types = HTTP::value("id_type", "post", array());
+			foreach ($id_types as $key=>$value) { $id_types[$key] = (int)$value; }
 		
-			$recipes = $this->db->getRandomRecipes(/* FIXME */);
+			$recipes = $this->db->getRandomRecipes($id_types, $count);
 			if (count($recipes)) { $this->view->addData("recipe", $recipes); }
 			$this->view->setTemplate("templates/menu-results.xsl");
+			echo $this->view->toString();
+		}
+
+		public function menuForm($matches) {
+			$this->view->setTemplate("templates/menu-form.xsl");
+			$types = $this->db->getTypes(false);
+			$this->view->addData("type", $types);
 			echo $this->view->toString();
 		}
 

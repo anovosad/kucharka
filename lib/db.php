@@ -58,8 +58,10 @@
 			return $this->addImageInfo($data, self::RECIPE);
 		}
 
-		public function getTypes() {
+		public function getTypes($withRecipes) {
 			$types = $this->query("SELECT id, name FROM ".self::TYPE." ORDER by `order` ASC");
+			if (!$withRecipes) { return $types; }
+
 			$recipes = $this->getRecipes();
 			
 			$tmp = array(); /* temporary id-indexed types */
@@ -171,12 +173,12 @@
 			return $this->addImageInfo($data, self::RECIPE);
 		}
 		
-		public function getRandomRecipes($id_types, $amount = 10) {
+		public function getRandomRecipes($id_types, $count = 10) {
 			$data = $this->query("SELECT id, name 
 									FROM ".self::RECIPE."
 									WHERE id_type IN (".implode(",",$id_types).")
-									LIMIT ".(int)$amount." 
-									ORDER BY name ASC");
+									ORDER BY RAND() ASC
+									LIMIT ".(int)$count);
 			return $this->addImageInfo($data, self::RECIPE);
 		}
 		

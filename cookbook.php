@@ -20,7 +20,8 @@
 			'POST	^/login$			loginProcess',		/* login action */
 			'POST	^/logout$			logoutProcess',		/* logout action */
 
-			'GET	^/jidelnicek$		Recipe.menu',		/* menu form/query */
+			'GET	^/jidelnicek$		Recipe.menuForm',	/* menu form */
+			'POST	^/jidelnicek$		Recipe.menu',		/* menu results */
 			'GET	^/rss$				Recipe.rss',		/* feed */
 			'GET	^/hledani/?$		Recipe.search',		/* search form/query */ 
 			'GET	^/recepty$			Recipe.all',		/* alphabetical */

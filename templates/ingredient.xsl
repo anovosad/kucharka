@@ -30,11 +30,9 @@
 			
 			<p><xsl:value-of select="@description" /></p>
 			
-			<xsl:if test="@image">
-				<xsl:call-template name="image">
-					<xsl:with-param name="path" select="'ingredients'" />
-				</xsl:call-template>
-			</xsl:if>
+			<xsl:call-template name="image">
+				<xsl:with-param name="path" select="'ingredients'" />
+			</xsl:call-template>
 			
 			</xsl:for-each>
 			
