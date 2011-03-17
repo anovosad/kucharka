@@ -16,7 +16,22 @@
 
 		<body>
 			<xsl:call-template name="menu" /> 
-			<h1></h1>
+			<h1>Vyhledávání</h1>
+
+			<form method="get" action="{concat($BASE, '/hledani')}">
+				<table>
+					<tbody>
+						<tr>
+							<td>Název</td>
+							<td><input type="text" name="q" value="{@name}" /></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td><input type="submit" value="Hledat" /></td>
+						</tr>
+					</tbody>
+				</table>
+			</form>
 			<xsl:call-template name="footer" />
 		</body>
 	</html>
