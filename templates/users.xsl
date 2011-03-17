@@ -15,8 +15,10 @@
 		<xsl:call-template name="head" />
 
 		<body>
-			<xsl:call-template name="menu" /> 
-			<h1>Autoři receptů</h1>
+			<header>
+				<xsl:call-template name="menu" /> 
+				<h1>Autoři receptů</h1>
+			</header>
 			
 			<ul>
 				<xsl:for-each select="user">

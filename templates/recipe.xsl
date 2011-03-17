@@ -17,21 +17,31 @@
 		</xsl:call-template>
 
 		<body>
-			<xsl:call-template name="menu" /> 
-			
 			<xsl:for-each select="recipe">
+
+			<header>
+				<xsl:call-template name="menu" /> 
 				<h1><xsl:value-of select="@name" /></h1>
+			</header>
 			
-				<ul>
-					<xsl:for-each select="ingredient">
-						<li>
-							<xsl:value-of select="@name" />
-							<xsl:text> </xsl:text>
-							<xsl:value-of select="@amount" />
-						</li>
-					</xsl:for-each>
-				</ul>
-			
+			<xsl:if test="@canEdit = 1">
+				<a href="{concat($BASE, '/recept/', @id, '?edit=1')}">upravit</a>
+				<form method="post" action="{concat($BASE, '/recept/', @id)}">
+					<input type="hidden" name="http-method" value="delete" />
+					<input type="submit" value="smazat" />
+				</form>
+			</xsl:if>
+
+			<ul>
+				<xsl:for-each select="ingredient">
+					<li>
+						<xsl:value-of select="@name" />
+						<xsl:text> </xsl:text>
+						<xsl:value-of select="@amount" />
+					</li>
+				</xsl:for-each>
+			</ul>
+		
 			</xsl:for-each>
 			<xsl:call-template name="footer" />
 		</body>

@@ -15,10 +15,13 @@
 		<xsl:call-template name="head" />
 
 		<body>
-			<xsl:call-template name="menu" /> 
 			<xsl:for-each select="ingredient">
+
+			<header>
+				<xsl:call-template name="menu" /> 
+				<h1><xsl:value-of select="@name" /></h1>
+			</header>
 			
-			<h1><xsl:value-of select="@name" /></h1>
 			
 			<xsl:if test="//login">
 				<a href="{concat($BASE, '/surovina/', @id, '?edit=1')}">upravit</a>

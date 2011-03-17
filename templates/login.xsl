@@ -15,8 +15,10 @@
 		<xsl:call-template name="head" />
 
 		<body>
-			<xsl:call-template name="menu" /> 
-			<h1>Přihlášení</h1>
+			<header>
+				<xsl:call-template name="menu" /> 
+				<h1>Přihlášení</h1>
+			</header>
 			
 			<form action="{concat($BASE, '/login')}" method="post">
 				<input type="hidden" name="referer" value="{referer/@url}" />

@@ -15,8 +15,10 @@
 		<xsl:call-template name="head" />
 
 		<body>
-			<xsl:call-template name="menu" /> 
-			<h1>Chybka...</h1>
+			<header>
+				<xsl:call-template name="menu" /> 
+				<h1>Chybka&hellip;</h1>
+			</header>
 			
 			<xsl:for-each select="error">
 				<p><xsl:value-of select="." /></p>

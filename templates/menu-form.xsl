@@ -15,8 +15,10 @@
 		<xsl:call-template name="head" />
 
 		<body>
-			<xsl:call-template name="menu" /> 
-			<h1>Jídelníček</h1>
+			<header>
+				<xsl:call-template name="menu" /> 
+				<h1>Jídelníček</h1>
+			</header>
 			
 			<form method="post" action="{concat($BASE, '/jidelnicek')}">
 				<table>

@@ -15,14 +15,16 @@
 		<xsl:call-template name="head" />
 
 		<body>
-			<xsl:call-template name="menu" /> 
-			
 			<xsl:for-each select="category">
 			
-			<h1>
-				<xsl:value-of select="@name" />
-				<xsl:if test="not(@name)">Nová kategorie surovin</xsl:if>
-			</h1>
+			<header>
+				<xsl:call-template name="menu" /> 
+				<h1>
+					<xsl:value-of select="@name" />
+					<xsl:if test="not(@name)">Nová kategorie surovin</xsl:if>
+				</h1>
+			</header>
+
 			
 			<form method="post" action="{concat($BASE, '/kategorie/', @id)}">
 				<table>

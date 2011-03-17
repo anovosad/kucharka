@@ -15,12 +15,13 @@
 		<xsl:call-template name="head" />
 
 		<body>
-			<xsl:call-template name="menu" /> 
-			
-			<h1>Výsledky vyhledávání</h1>
-			
+			<header>
+				<xsl:call-template name="menu" /> 
+				<h1>Výsledky vyhledávání</h1>
+			</header>
+
 			<xsl:if test="not(recipe)">
-				Nebyl nalezen žádný recept.
+				<p>Nebyl nalezen žádný recept.</p>
 			</xsl:if>
 			<xsl:call-template name="recipe-list" />
 

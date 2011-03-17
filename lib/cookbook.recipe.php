@@ -58,6 +58,7 @@
 			$id = $matches[1];
 			$data = $this->db->getRecipe($id);
 			if ($data) { 
+				$data["canEdit"] = ($this->canModifyRecipe($id) ? 1 : 0);
 				$this->view->addData("recipe", $data); 
 			} else {
 				$this->view->addData("recipe", array("id"=>0));

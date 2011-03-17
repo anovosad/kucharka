@@ -15,14 +15,16 @@
 		<xsl:call-template name="head" />
 
 		<body>
-			<xsl:call-template name="menu" /> 
-			
 			<xsl:for-each select="user">
 			
-			<h1>
-				<xsl:value-of select="@name" />
-				<xsl:if test="not(@name)">Nový autor receptů</xsl:if>
-			</h1>
+			<header>
+				<xsl:call-template name="menu" /> 
+				<h1>
+					<xsl:value-of select="@name" />
+					<xsl:if test="not(@name)">Nový autor receptů</xsl:if>
+				</h1>
+			</header>
+
 			
 			<form method="post" action="{concat($BASE, '/autor/', @id)}" enctype="multipart/form-data">
 				<table>
