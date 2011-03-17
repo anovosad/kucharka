@@ -126,7 +126,8 @@
 			$data["text"] = array(""=>$data["text"]);
 			$data["remark"] = array(""=>$data["remark"]);
 			
-			$data["ingredient"] = $this->getAmounts($id);
+			$amounts = $this->getAmounts($id);
+			if (count($amounts)) { $data["ingredient"] = $amounts; }
 
 			return $data; 
 		}
@@ -285,7 +286,13 @@
 		}
 
 		public function updateRecipe($id, $values, $ingredients) {
-			/* FIXME */
+			$this->update(self::RECIPE, $id, $values);
+			$this->delete(self::AMOUNT, array("id_recipe"=>$id));
+			
+			foreach ($ingredients as $ingredient) {
+				$ingredient["id_recipe"] = $id;
+				$this->insert(self::AMOUNT, $ingredient);
+			}
 		}
 		
 		/**

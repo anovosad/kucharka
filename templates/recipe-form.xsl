@@ -141,7 +141,7 @@
 				</xsl:call-template>
 				</xsl:for-each>
 			</td>
-			<td><input type="text" name="amount[]" value="{$amount}" /></td>
+			<td><input type="text" name="ingredient_amount[]" value="{$amount}" /></td>
 			<td>
 				<input type="button">
 					<xsl:attribute name="value">

@@ -72,7 +72,7 @@
 	
 	<xsl:template name="category-select">
 		<xsl:param name="id_category" select="0" />
-		<select name="id_category[]">
+		<select name="id_category">
 			<xsl:for-each select="category">
 			<option value="{@id}">
 				<xsl:if test="@id = $id_category">
@@ -100,7 +100,7 @@
 
 	<xsl:template name="ingredient-select">
 		<xsl:param name="id_ingredient" select="0" />
-		<select name="id_ingredient">
+		<select name="id_ingredient[]">
 			<xsl:for-each select="category">
 			<optgroup>
 				<xsl:attribute name="label"><xsl:value-of select="@name" /></xsl:attribute>

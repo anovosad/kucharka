@@ -97,7 +97,7 @@
 			
 			$ingredients = array();
 			$id_ingredient = HTTP::value("id_ingredient", "post", array());
-			$amount = HTTP::value("amount", "post", array());
+			$amount = HTTP::value("ingredient_amount", "post", array());
 			while (count($id_ingredient) && count($amount)) {
 				$id_i = (int) array_shift($id_ingredient);
 				$a = (string) array_shift($amount);
