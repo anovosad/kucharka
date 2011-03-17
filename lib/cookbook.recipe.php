@@ -57,10 +57,20 @@
 		public function get($matches) {
 			$id = $matches[1];
 			$data = $this->db->getRecipe($id);
-			if ($data) { $this->view->addData("recipe", $data); }
+			if ($data) { 
+				$this->view->addData("recipe", $data); 
+			} else {
+				$this->view->addData("recipe", array("id"=>0));
+			}
+
 			
 			$edit = HTTP::value("edit", "get", 0);
 			if ($edit) {
+				$types = $this->db->getTypes(false);
+				$this->view->addData("types", array("type"=>$types));
+				$categories = $this->db->getIngredients();
+				$this->view->addData("categories", array("category"=>$categories));
+				
 				$this->view->setTemplate("templates/recipe-form.xsl");
 			} else {
 				$this->view->setTemplate("templates/recipe.xsl");

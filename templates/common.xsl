@@ -84,6 +84,39 @@
 		</select>
 	</xsl:template>
 	
+	<xsl:template name="type-select">
+		<xsl:param name="id_type" select="0" />
+		<select name="id_type">
+			<xsl:for-each select="type">
+			<option value="{@id}">
+				<xsl:if test="@id = $id_type">
+					<xsl:attribute name="selected">selected</xsl:attribute>
+				</xsl:if>
+				<xsl:value-of select="@name" />
+			</option>
+			</xsl:for-each>
+		</select>
+	</xsl:template>
+
+	<xsl:template name="ingredient-select">
+		<xsl:param name="id_ingredient" select="0" />
+		<select name="id_ingredient">
+			<xsl:for-each select="category">
+			<optgroup>
+				<xsl:attribute name="label"><xsl:value-of select="@name" /></xsl:attribute>
+				<xsl:for-each select="ingredient">
+				<option value="{@id}">
+					<xsl:if test="@id = $id_ingredient">
+						<xsl:attribute name="selected">selected</xsl:attribute>
+					</xsl:if>
+					<xsl:value-of select="@name" />
+				</option>
+				</xsl:for-each>
+			</optgroup>
+			</xsl:for-each>
+		</select>
+	</xsl:template>
+
 	<xsl:template name="image-form">
 		<xsl:param name="width" select="0" />
 		<xsl:param name="path" select="''" />
@@ -94,7 +127,6 @@
 		<xsl:call-template name="image">
 			<xsl:with-param name="path" select="$path" />
 		</xsl:call-template>
-		<br/>
 		<label>
 			<input type="checkbox" name="image-delete" value="1" />
 			Odstranit
@@ -106,6 +138,7 @@
 		<xsl:param name="path" select="''" />
 		<xsl:if test="@image = 1">
 			<img src="{concat($IMAGE_PATH, '/', $path, '/', @id, '.jpg')}" alt="{@name}" />
+			<br/>
 		</xsl:if>
 	</xsl:template>
 	
