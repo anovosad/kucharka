@@ -32,6 +32,9 @@
 				</form>
 			</xsl:if>
 
+			<p><xsl:call-template name="rich-text"><xsl:with-param name="text" select="text" /></xsl:call-template></p>
+			<p><xsl:call-template name="rich-text"><xsl:with-param name="text" select="remark" /></xsl:call-template></p>
+
 			<ul>
 				<xsl:for-each select="ingredient">
 					<li>
@@ -44,6 +47,7 @@
 		
 			</xsl:for-each>
 			<xsl:call-template name="footer" />
+			
 		</body>
 	</html>
 

@@ -17,7 +17,6 @@
 				</xsl:if>
 				<xsl:text>Kuchařka</xsl:text>
 			</title>
-			<script type="text/javascript" src="{concat($BASE, '/js/oz.js')}"></script>
 		</head>
 	</xsl:template>
 		
@@ -142,6 +141,22 @@
 			<img src="{concat($IMAGE_PATH, '/', $path, '/', @id, '.jpg')}" alt="{@name}" />
 			<br/>
 		</xsl:if>
+	</xsl:template>
+	
+	<xsl:template name="rich-text">
+		<xsl:param name="text" />
+		<xsl:choose>
+			<xsl:when test="contains($text, '&#xa;')">
+				<xsl:value-of select="substring-before($text, '&#xa;')" disable-output-escaping="yes" />
+				<br/>
+				<xsl:call-template name="rich-text">
+					<xsl:with-param name="text" select="substring-after($text, '&#xa;')"/>
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$text" disable-output-escaping="yes" />
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 	
 </xsl:stylesheet>

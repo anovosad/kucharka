@@ -83,7 +83,7 @@
 			<fieldset>
 				<legend>Suroviny</legend>
 				<table>
-					<tbody>
+					<tbody id="ingredients">
 						<xsl:for-each select="ingredient">
 							<xsl:call-template name="ingredient-row">
 								<xsl:with-param name="amount" select="@amount" />
@@ -128,6 +128,10 @@
 			</xsl:for-each>
 			
 			<xsl:call-template name="footer" />
+
+			<script type="text/javascript" src="{concat($BASE, '/js/oz.js')}"></script>
+			<script type="text/javascript" src="{concat($BASE, '/js/recipe.js')}"></script>
+			<script type="text/javascript">Recipe.init(OZ.$("ingredients"));</script>
 		</body>
 	</html>
 
