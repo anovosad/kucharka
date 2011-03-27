@@ -107,7 +107,11 @@
 		}
 		
 		public function getUsers() {
-			$data = $this->query("SELECT id, name FROM ".self::USER." ORDER by id ASC");
+			$data = $this->query("SELECT ".self::USER.".id, ".self::USER.".name, COUNT(".self::RECIPE.".id) AS recipes
+								FROM ".self::USER."
+								LEFT JOIN ".self::RECIPE." ON ".self::RECIPE.".id_user = ".self::USER.".id
+								GROUP BY ".self::USER.".id
+								ORDER BY ".self::USER.".id ASC");
 			return $this->addImageInfo($data, self::USER);
 		}
 		
@@ -116,6 +120,11 @@
 		}
 
 		/***/
+		
+		public function getHotTipId() {
+			$data = $this->query("SELECT id FROM ".self::RECIPE." WHERE hot_tip = ?", 1);
+			return (count($data) ? $data[0]["id"] : null);
+		}
 
 		public function getRecipe($id) {
 			$data = $this->query("SELECT * FROM ".self::RECIPE." WHERE id = ?", $id);
@@ -286,6 +295,7 @@
 		}
 
 		public function updateRecipe($id, $values, $ingredients) {
+			$this->update(self::RECIPE, null, array("hot_tip"=>0));
 			$this->update(self::RECIPE, $id, $values);
 			$this->delete(self::AMOUNT, array("id_recipe"=>$id));
 			

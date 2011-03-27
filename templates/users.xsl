@@ -21,10 +21,18 @@
 					<h1>Autoři receptů</h1>
 				</header>
 				
-				<ul>
+				<ul id="users">
 					<xsl:for-each select="user">
 						<li>
-							<a href="{concat($BASE, '/autor/', @id)}"><xsl:value-of select="@name" /></a>
+							<a href="{concat($BASE, '/autor/', @id)}">
+								<xsl:call-template name="image"><xsl:with-param name="path" select="'users'" /></xsl:call-template>
+								<xsl:if test="@image = 0"><img src="{concat($IMAGE_PATH, '/users/0.jpg')}" alt="empty" /></xsl:if>
+							</a>
+							
+							<xsl:value-of select="@name" /> – 
+							<a href="{concat($BASE, '/autor/', @id)}">
+								<xsl:value-of select="@recipes" /> receptů
+							</a>
 						</li>
 					</xsl:for-each>
 				</ul>

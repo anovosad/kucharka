@@ -59,7 +59,7 @@
 							<tr>
 								<td>Hot Tip?</td>
 								<td>
-									<input type="checkbox">
+									<input type="checkbox" name="hot_tip" value="1">
 										<xsl:if test="@hot_tip = 1"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if>
 									</input>
 								</td>

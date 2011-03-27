@@ -187,6 +187,12 @@
 			$recipes = $this->db->getLatestRecipes();
 			if (count($recipes)) { $this->view->addData("recipe", $recipes); }
 			
+			$id = $this->db->getHotTipId();
+			if ($id) { 
+				$hottip = $this->db->getRecipe($id);
+				$this->view->addData("hottip", $hottip);
+			}
+			
 			$count = $this->db->getRecipeCount();
 			$this->view->addData("count", array("total"=>$count));
 			

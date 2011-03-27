@@ -181,7 +181,6 @@
 		<xsl:param name="path" select="''" />
 		<xsl:if test="@image = 1">
 			<img src="{concat($IMAGE_PATH, '/', $path, '/', @id, '.jpg')}" alt="{@name}" />
-			<br/>
 		</xsl:if>
 	</xsl:template>
 	

@@ -27,7 +27,11 @@
 							<tr>
 								<td>Jaké druhy jídel zahrnout?</td>
 								<td><xsl:for-each select="type">
-									<label><input type="checkbox" name="id_type[]" value="{@id}" /><xsl:value-of select="@name" /></label><br/>
+									<label>
+										<input type="checkbox" name="id_type[]" value="{@id}" />
+										<xsl:text> </xsl:text>
+										<xsl:value-of select="@name" />
+									</label><br/>
 								</xsl:for-each></td>
 							</tr>
 							<tr>

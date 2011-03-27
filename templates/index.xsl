@@ -24,6 +24,15 @@
 				
 				<p>V kuchařce je nyní <a href="{concat($BASE, '/recepty')}"><xsl:value-of select="//count/@total"></xsl:value-of> receptů</a>.</p>
 				
+				<xsl:for-each select="hottip">
+				<p id="hot-tip">
+					<strong>Hot Tip: </strong><xsl:call-template name="recipe-link" />
+					<a href="{concat($BASE, '/recept/', @id)}">
+						<xsl:call-template name="image"><xsl:with-param name="path" select="'recipes'" /></xsl:call-template>
+					</a>
+				</p>
+				</xsl:for-each>
+				
 				<p>Nejnovější recepty:</p>
 				<xsl:call-template name="recipe-list" />
 				
