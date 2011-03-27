@@ -84,14 +84,14 @@
 									<xsl:call-template name="image-action">
 										<xsl:with-param name="action" select="'/logout'" />
 										<xsl:with-param name="src" select="'key'" />
-										<xsl:with-param name="title" select="'odhlásit'" />
+										<xsl:with-param name="title" select="'Odhlásit'" />
 									</xsl:call-template>
 								</xsl:when>
 								<xsl:otherwise>
 									<xsl:call-template name="image-action">
 										<xsl:with-param name="action" select="'/login'" />
 										<xsl:with-param name="src" select="'key'" />
-										<xsl:with-param name="title" select="'přihlásit'" />
+										<xsl:with-param name="title" select="'Přihlásit'" />
 										<xsl:with-param name="method" select="'get'" />
 									</xsl:call-template>
 								</xsl:otherwise>

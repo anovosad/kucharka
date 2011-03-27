@@ -26,7 +26,7 @@
 						<tbody>
 							<tr>
 								<td>Název</td>
-								<td><input type="text" name="q" value="{@name}" /></td>
+								<td><input type="text" name="q" value="{@name}" autofocus="autofocus" /></td>
 							</tr>
 							<tr>
 								<td></td>

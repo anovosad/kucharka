@@ -58,6 +58,8 @@
 			$this->view->setParameter("DEBUG", $this->debug);
 			$this->view->setParameter("IMAGE_PATH", HTTP::$BASE."/img");
 			$this->view->addFilter(new FILTER_FRACTIONS());
+			$this->view->addFilter(new FILTER_NBSP());
+			$this->view->addFilter(new FILTER_TYPO());
 			
 			$id = $this->loggedId();
 			if ($id) {
