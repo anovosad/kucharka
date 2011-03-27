@@ -15,35 +15,37 @@
 		<xsl:call-template name="head" />
 
 		<body>
-			<xsl:for-each select="user">
+			<div id="wrap">
+				<xsl:for-each select="user">
 
-			<header>
-				<xsl:call-template name="menu" /> 
-				<h1><xsl:value-of select="@name" /></h1>
-			</header>
+				<header>
+					<xsl:call-template name="menu" /> 
+					<h1><xsl:value-of select="@name" /></h1>
+				</header>
 
-			<xsl:if test="//login">
-				<xsl:if test="@canEdit = 1">
-					<a href="{concat($BASE, '/autor/', @id, '?edit=1')}">upravit</a>
+				<xsl:if test="//login">
+					<xsl:if test="@canEdit = 1">
+						<a href="{concat($BASE, '/autor/', @id, '?edit=1')}">upravit</a>
+					</xsl:if>
+					<xsl:if test="@canDelete = 1">
+						<form method="post" action="{concat($BASE, '/autor/', @id)}">
+							<input type="hidden" name="http-method" value="delete" />
+							<input type="submit" value="smazat" />
+						</form>
+					</xsl:if>
 				</xsl:if>
-				<xsl:if test="@canDelete = 1">
-					<form method="post" action="{concat($BASE, '/autor/', @id)}">
-						<input type="hidden" name="http-method" value="delete" />
-						<input type="submit" value="smazat" />
-					</form>
-				</xsl:if>
-			</xsl:if>
-		
 			
-			<xsl:call-template name="image">
-				<xsl:with-param name="path" select="'users'" />
-			</xsl:call-template>
+				
+				<xsl:call-template name="image">
+					<xsl:with-param name="path" select="'users'" />
+				</xsl:call-template>
 
-			</xsl:for-each>
+				</xsl:for-each>
 
-			<xsl:call-template name="recipe-list" />
-			
-			<xsl:call-template name="footer" />
+				<xsl:call-template name="recipe-list" />
+				
+				<xsl:call-template name="footer" />
+			</div>
 		</body>
 	</html>
 

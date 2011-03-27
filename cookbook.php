@@ -66,6 +66,8 @@
 					"name"=>$this->loggedName()
 				));
 			}
+			
+			$this->view->addData("year", array(""=>date("Y")));
 
 			try {
 				$this->dispatch();

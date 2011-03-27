@@ -21,7 +21,10 @@
 	</xsl:template>
 		
 	<xsl:template name="footer">
-		<footer>© jak cyp</footer>
+		<footer>© 2007–<xsl:value-of select="//year" />
+			<xsl:text> </xsl:text>
+			<a href="{concat($BASE, '/autori')}">Autoři receptů</a>
+		</footer>
 		<xsl:if test="$DEBUG">
 			<div id="debug">
 				<xsl:text disable-output-escaping="yes">&lt;!--</xsl:text>
@@ -52,23 +55,56 @@
 
 	<xsl:template name="menu">
 		<nav id="menu">
-			<ul>
-				<li>
-				<xsl:choose>
-					<xsl:when test="//login">
-						<form action="{concat($BASE, '/logout')}" method="post">
-							<input type="submit" value="logout" />
-						</form>
-					</xsl:when>
-					<xsl:otherwise>
-						<form action="{concat($BASE, '/login')}" method="get">
-							<input type="submit" value="login" />
-						</form>
-					</xsl:otherwise>
-				</xsl:choose> 
-				</li>
-			</ul>
+			<table>
+				<tbody>
+					<tr>
+						<td><a href="{concat($BASE, '/')}">Hlavní stránka</a></td>
+						<td>|</td>
+						<td><a href="{concat($BASE, '/druhy')}">Druhy jídel</a></td>
+						<td>|</td>
+						<td><a href="{concat($BASE, '/recepty')}">Abecedně</a></td>
+						<td>|</td>
+						<td><a href="{concat($BASE, '/autori')}">Autoři</a></td>
+						<td>|</td>
+						<td><a href="{concat($BASE, '/suroviny')}">Suroviny</a></td>
+						<td>|</td>
+						<td><a href="{concat($BASE, '/jidelnicek')}">Sestavit jídelníček</a></td>
+						<td>|</td>
+						<td><a href="{concat($BASE, '/hledani')}">Hledat</a></td>
+					</tr>
+					<tr>
+						<td colspan="13">
+							<xsl:if test="//login">
+								Přihlášen jako 
+								<a href="{concat($BASE, '/autor/', //login/@id)}"><xsl:value-of select="//login/@name" /></a>
+								<xsl:text>, </xsl:text>
+							</xsl:if>
+							<xsl:choose>
+								<xsl:when test="//login">
+									<xsl:call-template name="post-image">
+										<xsl:with-param name="action" select="'/logout'" />
+										<xsl:with-param name="image" select="'key'" />
+										<xsl:with-param name="label" select="'odhlásit'" />
+									</xsl:call-template>
+								</xsl:when>
+								<xsl:otherwise>
+									<a href="{concat($BASE, '/login')}"><img src="{concat($BASE, '/img/icons/key.png')}" title="přihlásit" alt="přihlásit" /></a>
+								</xsl:otherwise>
+							</xsl:choose> 
+						</td>
+					</tr>
+				</tbody>
+			</table>
 		</nav>
+	</xsl:template>
+	
+	<xsl:template name="post-image">
+		<xsl:param name="action" />
+		<xsl:param name="image" />
+		<xsl:param name="label" />
+		<form action="{concat($BASE, $action)}" method="post">
+			<input type="image" src="{concat($BASE, '/img/icons/', $image, '.png')}" title="{$label}" alt="{$label}" />
+		</form>
 	</xsl:template>
 	
 	<xsl:template name="category-select">

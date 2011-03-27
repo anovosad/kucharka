@@ -15,14 +15,16 @@
 		<xsl:call-template name="head" />
 
 		<body>
-			<header>
-				<xsl:call-template name="menu" /> 
-				<h1>Připravený jídelníček</h1>
-			</header>
-			
-			<xsl:call-template name="recipe-list" />
-			
-			<xsl:call-template name="footer" />
+			<div id="wrap">
+				<header>
+					<xsl:call-template name="menu" /> 
+					<h1>Připravený jídelníček</h1>
+				</header>
+				
+				<xsl:call-template name="recipe-list" />
+				
+				<xsl:call-template name="footer" />
+			</div>
 		</body>
 	</html>
 

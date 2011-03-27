@@ -15,29 +15,31 @@
 		<xsl:call-template name="head" />
 
 		<body>
-			<header>
-				<xsl:call-template name="menu" /> 
-				<h1>Suroviny</h1>
-			</header>
-			
-			<ul>
-			<xsl:for-each select="category">
-				<li>
-					<xsl:value-of select="@name" />
-					<ul>
-						<xsl:for-each select="ingredient">
-							<li>
-								<a href="{concat($BASE, '/surovina/', @id)}">
-									<xsl:if test="@image = '1'"><xsl:attribute name="class">image</xsl:attribute></xsl:if>
-									<xsl:value-of select="@name" />
-								</a>
-							</li>
-						</xsl:for-each>
-					</ul>
-				</li>
-			</xsl:for-each>
-			</ul>
-			<xsl:call-template name="footer" />
+			<div id="wrap">
+				<header>
+					<xsl:call-template name="menu" /> 
+					<h1>Suroviny</h1>
+				</header>
+				
+				<ul>
+				<xsl:for-each select="category">
+					<li>
+						<xsl:value-of select="@name" />
+						<ul>
+							<xsl:for-each select="ingredient">
+								<li>
+									<a href="{concat($BASE, '/surovina/', @id)}">
+										<xsl:if test="@image = '1'"><xsl:attribute name="class">image</xsl:attribute></xsl:if>
+										<xsl:value-of select="@name" />
+									</a>
+								</li>
+							</xsl:for-each>
+						</ul>
+					</li>
+				</xsl:for-each>
+				</ul>
+				<xsl:call-template name="footer" />
+			</div>
 		</body>
 	</html>
 

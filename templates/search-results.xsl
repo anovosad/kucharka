@@ -15,17 +15,19 @@
 		<xsl:call-template name="head" />
 
 		<body>
-			<header>
-				<xsl:call-template name="menu" /> 
-				<h1>Výsledky vyhledávání</h1>
-			</header>
+			<div id="wrap">
+				<header>
+					<xsl:call-template name="menu" /> 
+					<h1>Výsledky vyhledávání</h1>
+				</header>
 
-			<xsl:if test="not(recipe)">
-				<p>Nebyl nalezen žádný recept.</p>
-			</xsl:if>
-			<xsl:call-template name="recipe-list" />
+				<xsl:if test="not(recipe)">
+					<p>Nebyl nalezen žádný recept.</p>
+				</xsl:if>
+				<xsl:call-template name="recipe-list" />
 
-			<xsl:call-template name="footer" />
+				<xsl:call-template name="footer" />
+			</div>
 		</body>
 	</html>
 

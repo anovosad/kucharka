@@ -3,6 +3,8 @@
 		public function menu($matches) {
 			$count = HTTP::value("count", "post", 0);
 			$id_types = HTTP::value("id_type", "post", array());
+			
+			if (!count($id_types)) { return $this->app->error("Je třeba vybrat alespoň jeden druh jídla"); }
 			foreach ($id_types as $key=>$value) { $id_types[$key] = (int)$value; }
 		
 			$recipes = $this->db->getRandomRecipes($id_types, $count);

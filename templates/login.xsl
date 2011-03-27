@@ -15,32 +15,34 @@
 		<xsl:call-template name="head" />
 
 		<body>
-			<header>
-				<xsl:call-template name="menu" /> 
-				<h1>Přihlášení</h1>
-			</header>
-			
-			<form action="{concat($BASE, '/login')}" method="post">
-				<input type="hidden" name="referer" value="{referer/@url}" />
-				<table>
-					<tbody>
-						<tr>
-							<td>Jméno:</td>
-							<td><input type="text" name="login" /></td>
-						</tr>
-						<tr>
-							<td>Heslo:</td>
-							<td><input type="password" name="password" /></td>
-						</tr>
-						<tr>
-							<td></td>
-							<td><input type="submit" value="Přihlásit" /></td>
-						</tr>
-					</tbody>
-				</table>
-			
-			</form>
-			<xsl:call-template name="footer" />
+			<div id="wrap">
+				<header>
+					<xsl:call-template name="menu" /> 
+					<h1>Přihlášení</h1>
+				</header>
+				
+				<form action="{concat($BASE, '/login')}" method="post">
+					<input type="hidden" name="referer" value="{referer/@url}" />
+					<table>
+						<tbody>
+							<tr>
+								<td>Uživatelské jméno</td>
+								<td><input type="text" name="login" autofocus="autofocus" /></td>
+							</tr>
+							<tr>
+								<td>Heslo</td>
+								<td><input type="password" name="password" /></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td><input type="submit" value="Přihlásit" /></td>
+							</tr>
+						</tbody>
+					</table>
+				
+				</form>
+				<xsl:call-template name="footer" />
+			</div>
 		</body>
 	</html>
 

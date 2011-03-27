@@ -1,12 +1,80 @@
+/* common */
+
+body {
+	margin: 0px;
+	font-family: georgia;
+}
+
+a {
+	color: #833;
+}
+
 a.image {
 	font-weight: bold;
 }
 
-html {
-	background-color: burlywood;
+table {
+	border-collapse: collapse;
 }
 
-body {
-	margin: 0px auto;
-	width: 800px;
+form {
+	display: inline;
 }
+
+li {
+	line-height: 140%;
+}
+
+img, input {
+	vertical-align: middle;
+}
+
+#wrap {
+	margin: 0px auto;
+	width: 718px;
+	padding: 0px 16px;
+	background-image: url(../img/background.gif);
+}
+
+/* forms */
+form td:first-child {
+	text-align: right;
+	font-weight: bold;
+	padding-right: 4px;
+}
+
+/* nav */
+
+nav {
+	padding-top: 16px;
+}
+
+nav table {
+	width: 100%;
+}
+
+nav td {
+	text-align: center;
+}
+
+nav tr:nth-child(2) td {
+	text-align: right;
+}
+
+footer {
+	font-size: 80%;
+	text-align: center;
+	padding: 1em;
+}
+
+/* homepage */
+
+#homepage h1 {
+	display: none;
+}
+
+#logo {
+	position: relative;
+	left: -16px;
+}
+

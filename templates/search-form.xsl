@@ -15,26 +15,28 @@
 		<xsl:call-template name="head" />
 
 		<body>
-			<header>
-				<xsl:call-template name="menu" /> 
-				<h1>Vyhledávání</h1>
-			</header>
+			<div id="wrap">
+				<header>
+					<xsl:call-template name="menu" /> 
+					<h1>Vyhledávání</h1>
+				</header>
 
-			<form method="get" action="{concat($BASE, '/hledani')}">
-				<table>
-					<tbody>
-						<tr>
-							<td>Název</td>
-							<td><input type="text" name="q" value="{@name}" /></td>
-						</tr>
-						<tr>
-							<td></td>
-							<td><input type="submit" value="Hledat" /></td>
-						</tr>
-					</tbody>
-				</table>
-			</form>
-			<xsl:call-template name="footer" />
+				<form method="get" action="{concat($BASE, '/hledani')}">
+					<table>
+						<tbody>
+							<tr>
+								<td>Název</td>
+								<td><input type="text" name="q" value="{@name}" /></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td><input type="submit" value="Hledat" /></td>
+							</tr>
+						</tbody>
+					</table>
+				</form>
+				<xsl:call-template name="footer" />
+			</div>
 		</body>
 	</html>
 

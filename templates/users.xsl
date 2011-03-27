@@ -15,19 +15,21 @@
 		<xsl:call-template name="head" />
 
 		<body>
-			<header>
-				<xsl:call-template name="menu" /> 
-				<h1>Autoři receptů</h1>
-			</header>
-			
-			<ul>
-				<xsl:for-each select="user">
-					<li>
-						<a href="{concat($BASE, '/autor/', @id)}"><xsl:value-of select="@name" /></a>
-					</li>
-				</xsl:for-each>
-			</ul>
-			<xsl:call-template name="footer" />
+			<div id="wrap">
+				<header>
+					<xsl:call-template name="menu" /> 
+					<h1>Autoři receptů</h1>
+				</header>
+				
+				<ul>
+					<xsl:for-each select="user">
+						<li>
+							<a href="{concat($BASE, '/autor/', @id)}"><xsl:value-of select="@name" /></a>
+						</li>
+					</xsl:for-each>
+				</ul>
+				<xsl:call-template name="footer" />
+			</div>
 		</body>
 	</html>
 

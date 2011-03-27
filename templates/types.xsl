@@ -15,23 +15,25 @@
 		<xsl:call-template name="head" />
 
 		<body>
-			<header>
-				<xsl:call-template name="menu" /> 
-				<h1>Druhy jídel</h1>
-			</header>
-			
-			<ul>
-			<xsl:for-each select="type">
-				<xsl:if test="recipe">
-				<li>
-					<xsl:value-of select="@name" />
-					<xsl:call-template name="recipe-list" />
-				</li>
-				</xsl:if>
-			</xsl:for-each>
-			</ul>
-			
-			<xsl:call-template name="footer" />
+			<div id="wrap">
+				<header>
+					<xsl:call-template name="menu" /> 
+					<h1>Druhy jídel</h1>
+				</header>
+				
+				<ul>
+				<xsl:for-each select="type">
+					<xsl:if test="recipe">
+					<li>
+						<xsl:value-of select="@name" />
+						<xsl:call-template name="recipe-list" />
+					</li>
+					</xsl:if>
+				</xsl:for-each>
+				</ul>
+				
+				<xsl:call-template name="footer" />
+			</div>
 		</body>
 	</html>
 
