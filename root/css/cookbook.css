@@ -9,6 +9,10 @@ a {
 	color: #833;
 }
 
+a:hover {
+	text-shadow: 0px 0px 5px #833;
+}
+
 a.image {
 	font-weight: bold;
 }

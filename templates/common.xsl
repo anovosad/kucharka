@@ -81,14 +81,19 @@
 							</xsl:if>
 							<xsl:choose>
 								<xsl:when test="//login">
-									<xsl:call-template name="post-image">
+									<xsl:call-template name="image-action">
 										<xsl:with-param name="action" select="'/logout'" />
-										<xsl:with-param name="image" select="'key'" />
-										<xsl:with-param name="label" select="'odhlásit'" />
+										<xsl:with-param name="src" select="'key'" />
+										<xsl:with-param name="title" select="'odhlásit'" />
 									</xsl:call-template>
 								</xsl:when>
 								<xsl:otherwise>
-									<a href="{concat($BASE, '/login')}"><img src="{concat($BASE, '/img/icons/key.png')}" title="přihlásit" alt="přihlásit" /></a>
+									<xsl:call-template name="image-action">
+										<xsl:with-param name="action" select="'/login'" />
+										<xsl:with-param name="src" select="'key'" />
+										<xsl:with-param name="title" select="'přihlásit'" />
+										<xsl:with-param name="method" select="'get'" />
+									</xsl:call-template>
 								</xsl:otherwise>
 							</xsl:choose> 
 						</td>
@@ -98,12 +103,13 @@
 		</nav>
 	</xsl:template>
 	
-	<xsl:template name="post-image">
+	<xsl:template name="image-action">
 		<xsl:param name="action" />
-		<xsl:param name="image" />
-		<xsl:param name="label" />
-		<form action="{concat($BASE, $action)}" method="post">
-			<input type="image" src="{concat($BASE, '/img/icons/', $image, '.png')}" title="{$label}" alt="{$label}" />
+		<xsl:param name="method" select="'post'" />
+		<xsl:param name="src" />
+		<xsl:param name="title" />
+		<form action="{concat($BASE, $action)}" method="{$method}">
+			<input type="image" src="{concat($IMAGE_PATH, '/icons/', $src, '.png')}" title="{$title}" alt="{$title}" />
 		</form>
 	</xsl:template>
 	
