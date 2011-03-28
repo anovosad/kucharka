@@ -21,10 +21,10 @@
 					<h1>Suroviny</h1>
 				</header>
 				
-				<ul>
+				<ul id="ingredients">
 				<xsl:for-each select="category">
 					<li>
-						<xsl:value-of select="@name" />
+						<span><xsl:value-of select="@name" /></span>
 						<ul>
 							<xsl:for-each select="ingredient">
 								<li>
@@ -40,6 +40,10 @@
 				</ul>
 				<xsl:call-template name="footer" />
 			</div>
+			
+			<script type="text/javascript" src="{concat($BASE, '/js/oz.js')}"></script>
+			<script type="text/javascript" src="{concat($BASE, '/js/toggle.js')}"></script>
+			<script type="text/javascript">Toggle.init(OZ.$("ingredients"));</script>
 		</body>
 	</html>
 

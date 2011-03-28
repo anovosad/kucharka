@@ -21,11 +21,11 @@
 					<h1>Druhy jídel</h1>
 				</header>
 				
-				<ul>
+				<ul id="types">
 				<xsl:for-each select="type">
 					<xsl:if test="recipe">
 					<li>
-						<xsl:value-of select="@name" />
+						<span><xsl:value-of select="@name" /></span>
 						<xsl:call-template name="recipe-list" />
 					</li>
 					</xsl:if>
@@ -34,6 +34,10 @@
 				
 				<xsl:call-template name="footer" />
 			</div>
+			
+			<script type="text/javascript" src="{concat($BASE, '/js/oz.js')}"></script>
+			<script type="text/javascript" src="{concat($BASE, '/js/toggle.js')}"></script>
+			<script type="text/javascript">Toggle.init(OZ.$("types"));</script>
 		</body>
 	</html>
 
