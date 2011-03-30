@@ -132,7 +132,6 @@
 
 			</div>
 
-			<script type="text/javascript" src="{concat($BASE, '/js/oz.js')}"></script>
 			<script type="text/javascript" src="{concat($BASE, '/js/recipe.js')}"></script>
 			<script type="text/javascript">Recipe.init(OZ.$("ingredients"));</script>
 		</body>

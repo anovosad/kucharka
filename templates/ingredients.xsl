@@ -41,7 +41,6 @@
 				<xsl:call-template name="footer" />
 			</div>
 			
-			<script type="text/javascript" src="{concat($BASE, '/js/oz.js')}"></script>
 			<script type="text/javascript" src="{concat($BASE, '/js/toggle.js')}"></script>
 			<script type="text/javascript">Toggle.init(OZ.$("ingredients"));</script>
 		</body>

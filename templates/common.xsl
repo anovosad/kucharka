@@ -10,6 +10,7 @@
 		<head>
 			<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 			<link rel="stylesheet" href="{concat($BASE, '/css/cookbook.css')}" type="text/css" />
+			<script type="text/javascript" src="{concat($BASE, '/js/oz.js')}"></script>
 			<title>
 				<xsl:if test="$title != ''">
 					<xsl:value-of select="$title" />
@@ -206,7 +207,7 @@
 	</xsl:template>
 	
 	<xsl:template name="sidebar">
-		<aside>
+		<aside id="sidebar">
 			<h2><xsl:value-of select="@name" /></h2>
 			<nav>
 				<ul>
@@ -216,6 +217,17 @@
 				</ul>
 			</nav>
 		</aside>
+		<script type="text/javascript">
+			(function(){
+				var sync = function() {
+					OZ.$("sidebar").style.right = (-OZ.$("sidebar").offsetWidth)+"px";
+					OZ.$("sidebar").style.top = Math.round(OZ.DOM.scroll()[1])+"px";
+				}
+				OZ.Event.add(window, "resize", sync);
+				OZ.Event.add(window, "scroll", sync);
+				OZ.Event.add(window, "load", sync);
+			})();
+		</script>
 	</xsl:template>
 	
 	<xsl:template name="sidebar-action">

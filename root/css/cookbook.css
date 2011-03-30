@@ -51,6 +51,7 @@ footer p {
 	width: 718px;
 	padding: 0px 16px;
 	background-image: url(../img/background.gif);
+	position: relative;
 }
 
 /* forms */
@@ -96,14 +97,16 @@ form #ingredients .notice {
 /* sidebar */
 
 aside {
-	position: fixed;
-	top: 0px;
-	right: 0px;
+	position: absolute;
+	background-color: #fec;
+	padding: 0.5em;
+	border-radius: 0px 0px 10px 0px;
 }
 
 aside h2 {
 	font-size: medium;
 	margin: 0px;
+	text-align: center;
 }
 
 aside img {

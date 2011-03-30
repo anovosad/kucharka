@@ -75,7 +75,6 @@
 				<xsl:call-template name="footer" />
 			</div>
 			
-			<script type="text/javascript" src="{concat($BASE, '/js/oz.js')}"></script>
 			<script type="text/javascript">
 				OZ.$("text").style.marginLeft = OZ.$("ingredients").offsetWidth + "px";
 				OZ.Event.add(OZ.$("print"), "click", function(e) { window.print(); });
