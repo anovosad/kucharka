@@ -25,7 +25,7 @@
 				<xsl:for-each select="type">
 					<xsl:if test="recipe">
 					<li>
-						<span><xsl:value-of select="@name" /></span>
+						<span><xsl:value-of select="@name" /> (<xsl:value-of select="@count" />)</span>
 						<xsl:call-template name="recipe-list" />
 					</li>
 					</xsl:if>

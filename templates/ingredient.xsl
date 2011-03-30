@@ -23,23 +23,16 @@
 					<h1><xsl:value-of select="@name" /></h1>
 				</header>
 				
-				
-				<xsl:if test="//login">
-					<a href="{concat($BASE, '/surovina/', @id, '?edit=1')}">upravit</a>
-					<form method="post" action="{concat($BASE, '/surovina/', @id)}">
-						<input type="hidden" name="http-method" value="delete" />
-						<input type="submit" value="smazat" />
-					</form>
-				</xsl:if>
-				
-				<p><xsl:value-of select="@description" /></p>
-				
-				<xsl:call-template name="image">
-					<xsl:with-param name="path" select="'ingredients'" />
-				</xsl:call-template>
+				<p>
+					<xsl:call-template name="image">
+						<xsl:with-param name="path" select="'ingredients'" />
+					</xsl:call-template>
+					<xsl:value-of select="@description" />
+				</p>
 				
 				</xsl:for-each>
 				
+				<p>Recepty, ve kterých je tato surovina použita:</p>
 				<xsl:call-template name="recipe-list" />
 
 				<xsl:call-template name="footer" />

@@ -10,14 +10,14 @@
 			$recipes = $this->db->getRandomRecipes($id_types, $count);
 			if (count($recipes)) { $this->view->addData("recipe", $recipes); }
 			$this->view->setTemplate("templates/menu-results.xsl");
-			echo $this->view->toString();
+			$this->app->output();
 		}
 
 		public function menuForm($matches) {
 			$this->view->setTemplate("templates/menu-form.xsl");
 			$types = $this->db->getTypes(false);
 			$this->view->addData("type", $types);
-			echo $this->view->toString();
+			$this->app->output();
 		}
 
 		public function rss($matches) {
@@ -25,15 +25,14 @@
 			if (count($recipes)) { $this->view->addData("recipe", $recipes); }
 			
 			$this->view->setTemplate("templates/rss.xsl");
-			echo $this->view->toString();
+			$this->app->output();
 		}
 
 		public function search($matches) {
 			$query = HTTP::value("q", "get", "");
 			if (!$query) {
 				$this->view->setTemplate("templates/search-form.xsl");
-				echo $this->view->toString();
-				return;
+				return $this->app->output();
 			}
 			
 			$recipes = $this->db->searchRecipes($query);
@@ -45,7 +44,7 @@
 			
 			if (count($recipes)) { $this->view->addData("recipe", $recipes); }
 			$this->view->setTemplate("templates/search-results.xsl");
-			echo $this->view->toString();
+			$this->app->output();
 		}
 		
 		public function all($matches) {
@@ -53,14 +52,13 @@
 			if (count($data)) { $this->view->addData("recipe", $data); }
 
 			$this->view->setTemplate("templates/recipes.xsl");
-			echo $this->view->toString();
+			$this->app->output();
 		}
 
 		public function get($matches) {
 			$id = $matches[1];
 			$data = $this->db->getRecipe($id);
 			if ($data) { 
-				$data["canEdit"] = ($this->canModifyRecipe($id) ? 1 : 0);
 				$this->view->addData("recipe", $data); 
 			} else {
 				$this->view->addData("recipe", array("id"=>0));
@@ -76,9 +74,24 @@
 				
 				$this->view->setTemplate("templates/recipe-form.xsl");
 			} else {
+				if ($this->app->canModifyRecipe($id)) {
+					$this->app->addAction("recipe", array(
+						"method"=>"get",
+						"icon"=>"edit",
+						"action"=>"/recept/".$id."?edit=1",
+						"label"=>"Upravit recept"
+					));
+
+					$this->app->addAction("recipe", array(
+						"method"=>"delete",
+						"icon"=>"delete",
+						"action"=>"/recept/".$id,
+						"label"=>"Smazat recept"
+					));
+				}
 				$this->view->setTemplate("templates/recipe.xsl");
 			}
-			echo $this->view->toString();
+			$this->app->output();
 		}
 		
 		public function delete($matches) {

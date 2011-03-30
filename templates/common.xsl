@@ -21,9 +21,14 @@
 	</xsl:template>
 		
 	<xsl:template name="footer">
-		<footer>© 2007–<xsl:value-of select="//year" />
-			<xsl:text> </xsl:text>
-			<a href="{concat($BASE, '/autori')}">Autoři receptů</a>
+		<xsl:for-each select="//login"><xsl:call-template name="sidebar" /></xsl:for-each>
+
+		<footer>
+			<p>
+				© 2007–<xsl:value-of select="//year" />
+				<xsl:text> </xsl:text>
+				<a href="{concat($BASE, '/autori')}">Autoři receptů</a>
+			</p>
 		</footer>
 		<xsl:if test="$DEBUG">
 			<div id="debug">
@@ -72,32 +77,15 @@
 						<td>|</td>
 						<td><a href="{concat($BASE, '/hledani')}">Hledat</a></td>
 					</tr>
-					<tr>
-						<td colspan="13">
-							<xsl:if test="//login">
-								Přihlášen jako 
-								<a href="{concat($BASE, '/autor/', //login/@id)}"><xsl:value-of select="//login/@name" /></a>
-								<xsl:text>, </xsl:text>
-							</xsl:if>
-							<xsl:choose>
-								<xsl:when test="//login">
-									<xsl:call-template name="image-action">
-										<xsl:with-param name="action" select="'/logout'" />
-										<xsl:with-param name="src" select="'key'" />
-										<xsl:with-param name="title" select="'Odhlásit'" />
-									</xsl:call-template>
-								</xsl:when>
-								<xsl:otherwise>
-									<xsl:call-template name="image-action">
-										<xsl:with-param name="action" select="'/login'" />
-										<xsl:with-param name="src" select="'key'" />
-										<xsl:with-param name="title" select="'Přihlásit'" />
-										<xsl:with-param name="method" select="'get'" />
-									</xsl:call-template>
-								</xsl:otherwise>
-							</xsl:choose> 
-						</td>
-					</tr>
+					<xsl:if test="not(//login)">
+						<tr>
+							<td colspan="13">
+								<a href="{concat($BASE, '/login')}">
+									<img src="{concat($IMAGE_PATH, '/icons/key.png')}" alt="Přihlásit" title="Přihlásit" />
+								</a>
+							</td>
+						</tr>
+					</xsl:if>
 				</tbody>
 			</table>
 		</nav>
@@ -105,12 +93,25 @@
 	
 	<xsl:template name="image-action">
 		<xsl:param name="action" />
-		<xsl:param name="method" select="'post'" />
+		<xsl:param name="method" />
 		<xsl:param name="src" />
 		<xsl:param name="title" />
-		<form action="{concat($BASE, $action)}" method="{$method}">
-			<input type="image" src="{concat($IMAGE_PATH, '/icons/', $src, '.png')}" title="{$title}" alt="{$title}" />
-		</form>
+		<xsl:choose>
+			<xsl:when test="$method = 'get'">
+				<a href="{concat($BASE, $action)}"><img src="{concat($IMAGE_PATH, '/icons/', $src, '.png')}" title="{$title}" alt="{$title}" /></a>
+			</xsl:when>
+			
+			<xsl:otherwise>
+				<form action="{concat($BASE, $action)}" method="post">
+					<xsl:if test="$method != 'post'">
+						<input type="hidden" name="http-method" value="{$method}" />
+					</xsl:if>
+					<input type="image" src="{concat($IMAGE_PATH, '/icons/', $src, '.png')}" title="{$title}" alt="{$title}" />
+				</form>
+			</xsl:otherwise>
+		</xsl:choose>
+		
+		
 	</xsl:template>
 	
 	<xsl:template name="category-select">
@@ -170,10 +171,14 @@
 		<xsl:call-template name="image">
 			<xsl:with-param name="path" select="$path" />
 		</xsl:call-template>
-		<label>
-			<input type="checkbox" name="image-delete" value="1" />
-			Odstranit
-		</label><br/>
+		<xsl:if test="@image = 1">
+			<br/>
+			<label>
+				<input type="checkbox" name="image-delete" value="1" />
+				Odstranit
+			</label>
+			<br/>
+		</xsl:if>
 		<input type="file" name="image" />
 	</xsl:template>
 	
@@ -198,6 +203,48 @@
 				<xsl:value-of select="$text" disable-output-escaping="yes" />
 			</xsl:otherwise>
 		</xsl:choose>
+	</xsl:template>
+	
+	<xsl:template name="sidebar">
+		<aside>
+			<h2><xsl:value-of select="@name" /></h2>
+			<nav>
+				<ul>
+					<xsl:for-each select="action">
+						<xsl:call-template name="sidebar-action" />
+					</xsl:for-each>
+				</ul>
+			</nav>
+		</aside>
+	</xsl:template>
+	
+	<xsl:template name="sidebar-action">
+		<li>
+			<xsl:choose>
+				<xsl:when test="@method = 'get'">
+					<a href="{concat($BASE, @action)}">
+						<xsl:call-template name="sidebar-button" />
+					</a>
+				</xsl:when>
+				<xsl:otherwise>
+					<form method="post" action="{concat($BASE, @action)}">
+						<xsl:if test="@method != 'post'">
+							<xsl:attribute name="onsubmit">return confirm("O'RLY?");</xsl:attribute>
+							<input type="hidden" name="http-method" value="{@method}" />
+						</xsl:if>
+						<xsl:call-template name="sidebar-button" />
+					</form>
+				</xsl:otherwise>
+			</xsl:choose>
+		</li>
+	</xsl:template>
+	
+	<xsl:template name="sidebar-button">
+		<button type="submit">
+			<img src="{concat($IMAGE_PATH, '/icons/', @icon, '.png')}" alt="{@label}" title="{@label}" />
+			<xsl:text> </xsl:text>
+			<xsl:value-of select="@label" />
+		</button>
 	</xsl:template>
 	
 </xsl:stylesheet>

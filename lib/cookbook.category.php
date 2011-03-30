@@ -10,7 +10,7 @@
 			}
 			
 			$this->view->setTemplate("templates/category-form.xsl");
-			echo $this->view->toString();
+			$this->app->output();
 		}
 
 		public function delete($matches) {

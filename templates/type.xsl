@@ -16,27 +16,19 @@
 
 		<body>
 			<div id="wrap">
-				<xsl:for-each select="user">
+				<xsl:for-each select="type">
 
 				<header>
 					<xsl:call-template name="menu" /> 
 					<h1><xsl:value-of select="@name" /></h1>
 				</header>
-
-				<xsl:call-template name="image">
-					<xsl:with-param name="path" select="'users'" />
-				</xsl:call-template>
 				
-				<xsl:if test="@mail != ''">
-					<p><a href="{concat('mailto:', @mail)}"><xsl:value-of select="@mail" /></a></p>
-				</xsl:if>
-
+				<p><xsl:value-of select="@description" /></p>
+				
 				</xsl:for-each>
-
-				<p>Recepty napsané tímto uživatelem:</p>
-
-				<xsl:call-template name="recipe-list" />
 				
+				<xsl:call-template name="recipe-list" />
+
 				<xsl:call-template name="footer" />
 			</div>
 		</body>

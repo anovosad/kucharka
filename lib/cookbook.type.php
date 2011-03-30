@@ -5,7 +5,7 @@
 			if (count($data)) { $this->view->addData("type", $data); }
 			
 			$this->view->setTemplate("templates/types.xsl");
-			echo $this->view->toString();
+			$this->app->output();
 		}
 		
 		public function get($matches) {
@@ -13,12 +13,34 @@
 			$data = $this->db->getType($id);
 			if ($data) { 
 				$this->view->addData("type", $data); 
+				$recipes = $this->db->getRecipesForType($id);
+				if (count($recipes)) { $this->view->addData("recipe", $recipes); }
 			} else {
 				$this->view->addData("type", array("id"=>0));
 			}
 			
-			$this->view->setTemplate("templates/type-form.xsl");
-			echo $this->view->toString();
+			$edit = HTTP::value("edit", "get", 0);
+			if ($edit) {
+				$this->view->setTemplate("templates/type-form.xsl");
+			} else {
+				if ($this->app->loggedId()) {
+					$this->app->addAction("type", array(
+						"method"=>"get",
+						"icon"=>"edit",
+						"action"=>"/druh/".$id."?edit=1",
+						"label"=>"Upravit druh"
+					));
+
+					$this->app->addAction("type", array(
+						"method"=>"delete",
+						"icon"=>"delete",
+						"action"=>"/druh/".$id,
+						"label"=>"Smazat druh"
+					));
+				}
+				$this->view->setTemplate("templates/type.xsl");
+			}
+			$this->app->output();
 		}
 		
 		public function delete($matches) {

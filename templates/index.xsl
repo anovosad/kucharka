@@ -34,6 +34,7 @@
 				</xsl:for-each>
 				
 				<p>Nejnovější recepty:</p>
+				
 				<xsl:call-template name="recipe-list" />
 				
 				<xsl:call-template name="footer" />

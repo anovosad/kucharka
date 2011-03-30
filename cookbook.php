@@ -13,6 +13,7 @@
 		private $db = null;
 		private $debug = true;
 		private $image_path = "root/img";
+		private $actions = array("recipe"=>array(), "ingredient"=>array(), "type"=>array(), "category"=>array(), "user"=>array(), "misc"=>array());
 
 		protected $dispatch_table = array(
 			'GET	^/$					index',				/* homepage */
@@ -60,16 +61,54 @@
 			$this->view->addFilter(new FILTER_FRACTIONS());
 			$this->view->addFilter(new FILTER_NBSP());
 			$this->view->addFilter(new FILTER_TYPO());
-			
+			$this->view->addData("year", array(""=>date("Y")));
+
 			$id = $this->loggedId();
 			if ($id) {
-				$this->view->addData("login", array(
-					"id"=>$id,
-					"name"=>$this->loggedName()
+				$this->addAction("misc", array(
+					"method"=>"post",
+					"icon"=>"key",
+					"action"=>"/logout",
+					"label"=>"Odhlásit"
 				));
+				
+				$this->addAction("recipe", array(
+					"method"=>"get",
+					"icon"=>"add",
+					"action"=>"/recept/0?edit=1",
+					"label"=>"Nový recept"
+				));
+				
+				$this->addAction("ingredient", array(
+					"method"=>"get",
+					"icon"=>"add",
+					"action"=>"/surovina/0?edit=1",
+					"label"=>"Nová surovina"
+				));
+
+				$this->addAction("type", array(
+					"method"=>"get",
+					"icon"=>"add",
+					"action"=>"/druh/0?edit=1",
+					"label"=>"Nový druh jídla"
+				));
+				
+				$this->addAction("category", array(
+					"method"=>"get",
+					"icon"=>"add",
+					"action"=>"/kategorie/0?edit=1",
+					"label"=>"Nová kategorie surovin"
+				));
+				
+				if ($this->loggedSuper()) {
+					$this->addAction("user", array(
+						"method"=>"get",
+						"icon"=>"add",
+						"action"=>"/autor/0?edit=1",
+						"label"=>"Nový uživatel"
+					));
+				}
 			}
-			
-			$this->view->addData("year", array(""=>date("Y")));
 
 			try {
 				$this->dispatch();
@@ -90,6 +129,28 @@
 		public function getView() {
 			return $this->view;
 		}
+		
+		public function output() {
+			$id = $this->loggedId();
+			if ($id) {
+				$all = array();
+				foreach ($this->actions as $category) {
+					foreach ($category as $action) { $all[] = $action; }
+				}
+				$this->view->addData("login", array(
+					"id"=>$id,
+					"name"=>$this->loggedName(),
+					"action"=>$all
+				));
+
+			}
+
+			echo $this->view->toString();
+		}
+		
+		public function addAction($category, $action) {
+			$this->actions[$category][] = $action;
+		}
 
 		public function loggedId() {
 			return (isset($_SESSION["id"]) ? $_SESSION["id"] : null);
@@ -97,6 +158,10 @@
 
 		public function loggedName() {
 			return (isset($_SESSION["name"]) ? $_SESSION["name"] : null);
+		}
+
+		public function loggedSuper() {
+			return (isset($_SESSION["super"]) ? $_SESSION["super"] : null);
 		}
 		
 		public function canDeleteUser($id) {
@@ -112,7 +177,7 @@
 			if ($user && $user["super"] != 1) { return false; }
 			return true;
 		}
-		
+
 		public function canModifyRecipe($id) {
 			if (!$this->loggedId()) { return false; }
 
@@ -153,13 +218,13 @@
 		public function error($error) {
 			$this->view->addData("error", array(""=>$error));
 			$this->view->setTemplate("templates/error.xsl");
-			echo $this->view->toString();
+			$this->output();
 		}
 		
 		public function login($matches) {
 			$this->view->addData("referer", array("url"=>HTTP::$REFERER));
 			$this->view->setTemplate("templates/login.xsl");
-			echo $this->view->toString();
+			$this->output();
 		}
 		
 		public function loginProcess($matches) {
@@ -169,6 +234,7 @@
 			if ($result) { 
 				$_SESSION["id"] = $result["id"];
 				$_SESSION["name"] = $result["name"];
+				$_SESSION["super"] = $result["super"];
 				$referer = HTTP::value("referer", "post", "");
 				if ($referer) { return HTTP::redirect($referer); }
 			}
@@ -179,6 +245,7 @@
 			if ($this->loggedId()) {
 				unset($_SESSION["id"]);
 				unset($_SESSION["name"]);
+				unset($_SESSION["super"]);
 			}
 			HTTP::redirectBack();
 		}
@@ -197,7 +264,7 @@
 			$this->view->addData("count", array("total"=>$count));
 			
 			$this->view->setTemplate("templates/index.xsl");
-			echo $this->view->toString();
+			$this->output();
 		}
 		
 		public function fallback($matches) {

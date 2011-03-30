@@ -93,7 +93,7 @@
 							</xsl:for-each>
 							<xsl:call-template name="ingredient-row" />
 							<tr>
-								<td colspan="3">V tomto poli je možné suroviny vyhledávat pomocí vepsání jejich názvu.</td>
+								<td colspan="3" class="notice">V tomto poli je možné suroviny vyhledávat pomocí vepsání jejich názvu.</td>
 							</tr>
 							<tr>
 								<td></td>

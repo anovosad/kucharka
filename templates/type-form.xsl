@@ -42,11 +42,6 @@
 					</table>
 				</form>
 				
-				<form method="post" action="{concat($BASE, '/druh/', @id)}">
-					<input type="hidden" name="http-method" value="delete" />
-					<input type="submit" value="Smazat" />
-				</form>
-
 				</xsl:for-each>
 				
 				<xsl:call-template name="footer" />

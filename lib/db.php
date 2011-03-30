@@ -44,7 +44,7 @@
 
 		public function validateLogin($login, $password) {
 			$hash = sha1($password);
-			$data = $this->query("SELECT id, name FROM ".self::USER." WHERE login = ? AND pwd = ?", $login, $hash);
+			$data = $this->query("SELECT id, name, super FROM ".self::USER." WHERE login = ? AND pwd = ?", $login, $hash);
 			return (count($data) ? $data[0] : null);
 		}
 
@@ -59,7 +59,11 @@
 		}
 
 		public function getTypes($withRecipes) {
-			$types = $this->query("SELECT id, name FROM ".self::TYPE." ORDER by `order` ASC");
+			$types = $this->query("SELECT ".self::TYPE.".id, ".self::TYPE.".name, COUNT(".self::RECIPE.".id) AS count
+									FROM ".self::TYPE."
+									LEFT JOIN ".self::RECIPE." ON ".self::RECIPE.".id_type = ".self::TYPE.".id
+									GROUP BY ".self::TYPE.".id
+									ORDER by `order` ASC");
 			if (!$withRecipes) { return $types; }
 
 			$recipes = $this->getRecipes();
@@ -127,7 +131,13 @@
 		}
 
 		public function getRecipe($id) {
-			$data = $this->query("SELECT * FROM ".self::RECIPE." WHERE id = ?", $id);
+			$data = $this->query("SELECT ".self::RECIPE.".*,
+								".self::USER.".name AS name_user,
+								".self::TYPE.".name AS name_type
+								FROM ".self::RECIPE." 
+								LEFT JOIN ".self::USER." ON ".self::RECIPE.".id_user = ".self::USER.".id
+								LEFT JOIN ".self::TYPE." ON ".self::RECIPE.".id_type = ".self::TYPE.".id
+								WHERE ".self::RECIPE.".id = ?", $id);
 			if (!count($data)) { return null; }
 			$data = $this->addImageInfo($data, self::RECIPE);
 			

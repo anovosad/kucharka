@@ -5,7 +5,7 @@
 			if (count($data)) { $this->view->addData("user", $data); }
 			
 			$this->view->setTemplate("templates/users.xsl");
-			echo $this->view->toString();
+			$this->app->output();
 		}
 		
 		/**
@@ -15,8 +15,6 @@
 			$id = $matches[1];
 			$data = $this->db->getUser($id);
 			if ($data) { 
-				$data["canEdit"] = ($this->canModifyUser($id) ? 1 : 0);
-				$data["canDelete"] = ($this->canDeleteUser($id) ? 1 : 0);
 				$this->view->addData("user", $data); 
 				
 				$recipes = $this->db->getRecipesForUser($id);
@@ -29,9 +27,28 @@
 			if ($edit) {
 				$this->view->setTemplate("templates/user-form.xsl");
 			} else {
+
+				if ($this->app->canModifyUser($id)) {
+					$this->app->addAction("user", array(
+						"method"=>"get",
+						"icon"=>"edit",
+						"action"=>"/autor/".$id."?edit=1",
+						"label"=>"Upravit uživatele"
+					));
+				}
+
+				if ($this->app->canDeleteUser($id)) {
+					$this->app->addAction("user", array(
+						"method"=>"delete",
+						"icon"=>"delete",
+						"action"=>"/autor/".$id,
+						"label"=>"Smazat uživatele"
+					));
+				}
+				
 				$this->view->setTemplate("templates/user.xsl");
 			}
-			echo $this->view->toString();
+			$this->app->output();
 		}
 
 		public function delete($matches) {

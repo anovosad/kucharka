@@ -34,8 +34,16 @@ td p {
 }
 
 img {
-	vertical-align: middle;
 	border: 3px solid #000;
+}
+
+footer {
+	font-size: 80%;
+	text-align: center;
+}
+
+footer p {
+	padding-bottom: 1em;
 }
 
 #wrap {
@@ -50,35 +58,73 @@ img {
 form td:first-child {
 	text-align: right;
 	font-weight: bold;
-	padding-right: 4px;
+	padding-right: 5px;
+}
+
+form #ingredients td {
+	text-align: left;
+}
+
+form #ingredients .notice {
+	font-weight: normal;
+	font-size: x-small;
 }
 
 /* nav */
 
-nav {
-	padding-top: 16px;
-}
-
-nav table {
+#menu table {
+	margin-top: 16px;
 	width: 100%;
 }
 
-nav td {
+#menu td {
 	text-align: center;
 }
 
-nav tr:nth-child(2) td {
+#menu tr:nth-child(2) td {
 	text-align: right;
 }
 
-footer {
-	font-size: 80%;
-	text-align: center;
-	padding: 1em;
+#menu input {
+	vertical-align: middle;
 }
 
-nav input {
+#menu img {
+	border: none;
+}
+
+/* sidebar */
+
+aside {
+	position: fixed;
+	top: 0px;
+	right: 0px;
+}
+
+aside h2 {
+	font-size: medium;
+	margin: 0px;
+}
+
+aside img {
+	border: none;
 	vertical-align: middle;
+}
+
+aside a {
+	text-decoration: none;
+}
+
+aside ul, aside li {
+	list-style-type: none;
+	margin: 0px;
+	padding: 0px;
+}
+
+aside button {
+	padding: 1px 2px;
+	font-size: x-small;
+	cursor: pointer;
 }
 
 /* homepage */
@@ -120,6 +166,67 @@ nav input {
 }
 
 /* list */
+
 #types span, #ingredients span { 
 	cursor: pointer;
+}
+
+/* recipe */
+
+#recipe h2 {
+	font-size: medium;
+	margin: 0px;
+}
+
+#recipe #ingredients {
+	float: left;
+	font-size: small;
+	padding-right: 2em;
+}
+
+#recipe #ingredients p {
+	margin-top: 0px;
+	margin-bottom: 0.5em;
+}
+
+#recipe #ingredients td {
+	border-bottom: 1px solid #888;
+	padding: 1px 5px;
+}
+
+#recipe #ingredients td:first-child {
+	text-align: right;
+}
+
+#recipe #ingredients tr:hover td {
+	background-color: #f80;
+}
+
+#recipe #ingredients a {
+	color: #c00;
+	text-decoration: none;
+}
+
+#recipe #ingredients a:hover {
+	text-shadow: none;
+}
+
+#recipe #text p {
+	margin-top: 0px;
+}
+
+#recipe #print {
+	float: right;
+	line-height: 16px;
+}
+
+#recipe #print img {
+	border: none;
+	cursor: pointer;
+}
+
+/* users */
+
+#users img {
+	vertical-align: middle;
 }

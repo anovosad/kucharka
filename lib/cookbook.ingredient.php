@@ -8,7 +8,7 @@
 			if (count($data)) { $this->view->addData("category", $data); }
 			
 			$this->view->setTemplate("templates/ingredients.xsl");
-			echo $this->view->toString();
+			$this->app->output();
 		}
 
 		/**
@@ -31,9 +31,25 @@
 				$this->view->addData("categories", array("category"=>$categories));
 				$this->view->setTemplate("templates/ingredient-form.xsl");
 			} else {
+				if ($this->app->loggedId()) {
+					$this->app->addAction("ingredient", array(
+						"method"=>"get",
+						"icon"=>"edit",
+						"action"=>"/surovina/".$id."?edit=1",
+						"label"=>"Upravit surovinu"
+					));
+
+					$this->app->addAction("ingredient", array(
+						"method"=>"delete",
+						"icon"=>"delete",
+						"action"=>"/surovina/".$id,
+						"label"=>"Smazat surovinu"
+					));
+				}
+
 				$this->view->setTemplate("templates/ingredient.xsl");
 			}
-			echo $this->view->toString();
+			$this->app->output();
 		}
 
 		public function delete($matches) {
