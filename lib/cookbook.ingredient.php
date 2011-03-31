@@ -7,7 +7,12 @@
 			$data = $this->db->getIngredients();
 			if (count($data)) { $this->view->addData("category", $data); }
 			
-			$this->view->setTemplate("templates/ingredients.xsl");
+			if (HTTP::value("format", "get", "html") == "xml") {
+				header("Content-type: text/xml");
+				$this->view->setTemplate("templates/ingredients-xml.xsl");
+			} else {
+				$this->view->setTemplate("templates/ingredients.xsl");
+			}
 			$this->app->output();
 		}
 

@@ -87,7 +87,7 @@
 		}
 
 		public function getIngredients() {
-			$ingredients = $this->query("SELECT * FROM ".self::INGREDIENT." ORDER by name ASC");
+			$ingredients = $this->query("SELECT id, name, id_category FROM ".self::INGREDIENT." ORDER by name ASC");
 			$ingredients = $this->addImageInfo($ingredients, self::INGREDIENT);
 
 			$categories = $this->getCategories();
@@ -132,6 +132,7 @@
 
 		public function getRecipe($id) {
 			$data = $this->query("SELECT ".self::RECIPE.".*,
+								YEAR(ts) AS year, MONTH(ts) AS month, DAY(ts) AS day,
 								".self::USER.".name AS name_user,
 								".self::TYPE.".name AS name_type
 								FROM ".self::RECIPE." 
@@ -238,6 +239,33 @@
 			$data = $this->addImageInfo($data, self::USER);
 			return $data[0];
 		}
+		
+		public function getSimilarRecipes($id) {
+			$recipe = $this->getRecipe($id);
+			if (!$recipe) { return array(); }
+			
+			$ingredients = (array_key_exists("ingredient", $recipe) ? count($recipe["ingredient"]) : 0);
+			$similar = $this->query("SELECT ".self::RECIPE.".id, ".self::RECIPE.".name,
+										2*SUM( IF (id_ingredient IN (
+											SELECT id_ingredient
+											FROM ".self::AMOUNT."
+											WHERE id_recipe = ?
+										),1,0) ) -
+										1*SUM( IF (id_ingredient NOT IN (
+											SELECT id_ingredient
+											FROM ".self::AMOUNT."
+											WHERE id_recipe =  ?
+										),1,0) )
+										- ? AS relevance
+										FROM ".self::AMOUNT."
+										LEFT JOIN ".self::RECIPE." ON ".self::AMOUNT.".id_recipe = ".self::RECIPE.".id
+										WHERE id_recipe <> ? AND id_type = ?
+										GROUP BY id_recipe
+										HAVING relevance > 0
+										ORDER BY relevance DESC
+										LIMIT 5", $id, $id, $ingredients, $id, $recipe["id_type"]);
+			return $this->addImageInfo($similar, self::RECIPE);
+		}
 
 		private function addImageInfo($recipes, $table) {
 			$path = $this->getImagePath($table);
@@ -322,12 +350,12 @@
 		 * @param {int} direction +1 down, -1 up
 		 */
 		public function move($table, $id, $direction) {
-			$order = $this->query("SELECT `order` AS o FROM ".$table." WHERE id = ?", $id);
+			$order = $this->query("SELECT `order` FROM ".$table." WHERE id = ?", $id);
 			if (!count($order)) { return false; }
-			$order = $order[0]["o"];
+			$order = $order[0]["order"];
 			
 			$operator = ($direction == 1 ? ">" : "<");
-			$sibling = $this->query("SELECT id, `order` AS o FROM ".$table." WHERE `order` ".$operator. " ? LIMIT 1", $order);
+			$sibling = $this->query("SELECT id, `order` FROM ".$table." WHERE `order` ".$operator. " ? LIMIT 1", $order);
 			if (!count($sibling)) { return false; }
 			$sibling_id = $sibling[0]["id"];
 			$sibling_order = $sibling[0]["order"];

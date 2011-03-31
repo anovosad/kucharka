@@ -17,20 +17,35 @@
 		</xsl:call-template>
 
 		<body id="recipe">
-			<div id="wrap">
+			<div id="wrap" itemscope="itemscope" itemtype="http://data-vocabulary.org/Recipe">
 				<xsl:for-each select="recipe">
 
 				<header>
 					<xsl:call-template name="menu" /> 
-					<h1><xsl:value-of select="@name" /></h1>
+					<h1 itemprop="name"><xsl:value-of select="@name" /></h1>
 				</header>
 				
-				<p>
-					Druh: <a href="{concat($BASE, '/druh/', @id_type)}"><xsl:value-of select="@name_type" /></a>,
-					Autor: <a href="{concat($BASE, '/autor/', @id_user)}"><xsl:value-of select="@name_user" /></a>
+				<p class="noprint">
+					Druh: <a href="{concat($BASE, '/druh/', @id_type)}"><span itemprop="recipeType"><xsl:value-of select="@name_type" /></span></a>,
+					autor: <a itemprop="author" href="{concat($BASE, '/autor/', @id_user)}"><xsl:value-of select="@name_user" /></a>,
+					přidáno <span itemprop="published" datetime="{concat(@year, '-', format-number(@month, '00'), '-', @day)}">
+						<xsl:value-of select="concat(@day, '. ', @month, '. ', @year)" />
+					</span>
 				</p>
 				
-				<p>Čas na přípravu: <xsl:value-of select="@time" /> minut</p>
+				<p>Čas na přípravu: 
+					<span itemprop="totalTime" datetime="{concat('PT', @time, 'M')}">
+						<xsl:value-of select="@time" /> 
+						minut
+					</span>
+				</p>
+				
+				<xsl:for-each select="//similar">
+					<div class="noprint" id="similar">
+						<h2>Podobné recepty</h2>
+						<xsl:call-template name="recipe-list" />
+					</div>
+				</xsl:for-each>
 				
 				<xsl:if test="@image = 1">
 					<p>
@@ -42,13 +57,17 @@
 				
 				<div id="ingredients">
 					<h2>Ingredience</h2>
-					<p>(<xsl:value-of select="@amount" />)</p>
+					<xsl:if test="@amount != ''">
+						<p class="noprint">(<span itemprop="yield"><xsl:value-of select="@amount" /></span>)</p>
+					</xsl:if>
 					<table>
 						<tbody>
 						<xsl:for-each select="ingredient">
-							<tr>
-								<td><xsl:value-of select="@amount" /></td>
-								<td><a href="{concat($BASE, '/surovina/', @id_ingredient)}"><xsl:value-of select="@name" /></a></td>
+							<tr itemprop="ingredient" itemscope="itemscope" itemtype="http://data-vocabulary.org/RecipeIngredient">
+								<td itemprop="amount"><xsl:value-of select="@amount" /></td>
+								<td><a href="{concat($BASE, '/surovina/', @id_ingredient)}">
+									<span itemprop="name"><xsl:value-of select="@name" /></span>
+								</a></td>
 							</tr>
 						</xsl:for-each>
 						</tbody>
@@ -64,7 +83,7 @@
 					</h2>
 					<p><xsl:call-template name="rich-text"><xsl:with-param name="text" select="text" /></xsl:call-template></p>
 					
-					<xsl:if test="remark">
+					<xsl:if test="remark != ''">
 						<h2>Poznámka</h2>
 						<p><xsl:call-template name="rich-text"><xsl:with-param name="text" select="remark" /></xsl:call-template></p>
 					</xsl:if>

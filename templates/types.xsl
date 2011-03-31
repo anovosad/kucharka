@@ -23,12 +23,26 @@
 				
 				<ul id="types">
 				<xsl:for-each select="type">
-					<xsl:if test="recipe">
 					<li>
-						<span><xsl:value-of select="@name" /> (<xsl:value-of select="@count" />)</span>
-						<xsl:call-template name="recipe-list" />
+						<xsl:choose>
+							<xsl:when test="//login">
+								<xsl:call-template name="move-icon">
+									<xsl:with-param name="action" select="concat($BASE, '/druh/', @id)" />
+									<xsl:with-param name="direction" select="-1" />
+								</xsl:call-template>
+								<xsl:call-template name="move-icon">
+									<xsl:with-param name="action" select="concat($BASE, '/druh/', @id)" />
+									<xsl:with-param name="direction" select="1" />
+								</xsl:call-template>
+								<a href="{concat($BASE, '/druh/', @id)}"><xsl:value-of select="@name" /></a>
+							</xsl:when>
+							
+							<xsl:otherwise>
+								<span><xsl:value-of select="@name" /> (<xsl:value-of select="@count" />)</span>
+								<xsl:if test="recipe"><xsl:call-template name="recipe-list" /></xsl:if>
+							</xsl:otherwise>
+						</xsl:choose>
 					</li>
-					</xsl:if>
 				</xsl:for-each>
 				</ul>
 				

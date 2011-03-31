@@ -40,9 +40,11 @@ img {
 footer {
 	font-size: 80%;
 	text-align: center;
+	clear: both;
 }
 
 footer p {
+	margin-top: 3em;
 	padding-bottom: 1em;
 }
 
@@ -71,6 +73,11 @@ form #ingredients .notice {
 	font-size: x-small;
 }
 
+form #refresh {
+	font-size: small;
+}
+
+
 /* nav */
 
 #menu table {
@@ -84,10 +91,6 @@ form #ingredients .notice {
 
 #menu tr:nth-child(2) td {
 	text-align: right;
-}
-
-#menu input {
-	vertical-align: middle;
 }
 
 #menu img {
@@ -174,11 +177,16 @@ aside button {
 	cursor: pointer;
 }
 
+#types input, #ingredients input {
+	vertical-align: middle;
+}
+
 /* recipe */
 
 #recipe h2 {
 	font-size: medium;
 	margin: 0px;
+	margin-bottom: 2px;
 }
 
 #recipe #ingredients {
@@ -226,6 +234,26 @@ aside button {
 #recipe #print img {
 	border: none;
 	cursor: pointer;
+}
+
+#recipe #similar {
+	float: right;
+	font-size: small;
+	border-left: 2px solid #f80;
+	border-bottom: 2px solid #f80;
+	padding-left: 0.5em;
+	padding-bottom: 0.5em;
+	margin-left: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+#recipe #similar ul {
+	margin: 0px;
+	padding-left: 1em;
+}
+
+#recipe #similar a.image {
+	font-weight: normal;
 }
 
 /* users */

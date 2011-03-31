@@ -67,7 +67,7 @@
 			if ($id) {
 				$this->addAction("misc", array(
 					"method"=>"post",
-					"icon"=>"key",
+					"icon"=>"lock",
 					"action"=>"/logout",
 					"label"=>"Odhlásit"
 				));
@@ -180,6 +180,7 @@
 
 		public function canModifyRecipe($id) {
 			if (!$this->loggedId()) { return false; }
+			if (!$id) { return true; }
 
 			$recipe = $this->db->getRecipe($id);
 			if ($recipe && $recipe["id_user"] == $this->loggedId()) { return true; }

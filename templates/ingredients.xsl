@@ -24,17 +24,33 @@
 				<ul id="ingredients">
 				<xsl:for-each select="category">
 					<li>
-						<span><xsl:value-of select="@name" /></span>
-						<ul>
-							<xsl:for-each select="ingredient">
-								<li>
-									<a href="{concat($BASE, '/surovina/', @id)}">
-										<xsl:if test="@image = '1'"><xsl:attribute name="class">image</xsl:attribute></xsl:if>
-										<xsl:value-of select="@name" />
-									</a>
-								</li>
-							</xsl:for-each>
-						</ul>
+						<xsl:choose>
+							<xsl:when test="//login">
+								<xsl:call-template name="move-icon">
+									<xsl:with-param name="action" select="concat($BASE, '/kategorie/', @id)" />
+									<xsl:with-param name="direction" select="-1" />
+								</xsl:call-template>
+								<xsl:call-template name="move-icon">
+									<xsl:with-param name="action" select="concat($BASE, '/kategorie/', @id)" />
+									<xsl:with-param name="direction" select="1" />
+								</xsl:call-template>
+								<a href="{concat($BASE, '/kategorie/', @id)}"><xsl:value-of select="@name" /></a>
+							</xsl:when>
+							
+							<xsl:otherwise>
+								<span><xsl:value-of select="@name" /></span>
+								<ul>
+									<xsl:for-each select="ingredient">
+										<li>
+											<a href="{concat($BASE, '/surovina/', @id)}">
+												<xsl:if test="@image = '1'"><xsl:attribute name="class">image</xsl:attribute></xsl:if>
+												<xsl:value-of select="@name" />
+											</a>
+										</li>
+									</xsl:for-each>
+								</ul>
+							</xsl:otherwise>
+						</xsl:choose>
 					</li>
 				</xsl:for-each>
 				</ul>

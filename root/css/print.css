@@ -1,0 +1,46 @@
+body {
+	font-family: georgia;
+	margin: 0px;
+}
+
+aside, nav, footer, img, .noprint {
+	display: none;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+#recipe h2 {
+	font-size: medium;
+	margin: 0px;
+}
+
+#recipe #ingredients {
+	float: left;
+	font-size: small;
+	padding-right: 2em;
+}
+
+#recipe #ingredients p {
+	margin-top: 0px;
+	margin-bottom: 0.5em;
+}
+
+#recipe #ingredients td {
+	border-bottom: 1px solid #888;
+	padding: 1px 5px;
+}
+
+#recipe #ingredients td:first-child {
+	text-align: right;
+}
+
+#recipe #ingredients a {
+	text-decoration: none;
+	color: #000;
+}
+
+#recipe #text p {
+	margin-top: 0px;
+}

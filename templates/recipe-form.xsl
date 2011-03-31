@@ -82,7 +82,7 @@
 				</fieldset>
 				
 				<fieldset>
-					<legend>Suroviny</legend>
+					<legend>Suroviny <span id="refresh">(<a href="#">aktualizovat</a>)</span></legend>
 					<table>
 						<tbody id="ingredients">
 							<xsl:for-each select="ingredient">
@@ -133,7 +133,7 @@
 			</div>
 
 			<script type="text/javascript" src="{concat($BASE, '/js/recipe.js')}"></script>
-			<script type="text/javascript">Recipe.init(OZ.$("ingredients"));</script>
+			<script type="text/javascript">Recipe.init(OZ.$("ingredients"), OZ.$("refresh"), "<xsl:value-of select="concat($BASE, '/suroviny?format=xml')" />");</script>
 		</body>
 	</html>
 
@@ -144,11 +144,7 @@
 		<xsl:param name="id_ingredient" select="0" />
 		<tr>
 			<td>
-				<xsl:for-each select="//categories">
-				<xsl:call-template name="ingredient-select">
-					<xsl:with-param name="id_ingredient" select="$id_ingredient" />
-				</xsl:call-template>
-				</xsl:for-each>
+				<input type="hidden" value="{$id_ingredient}" />
 			</td>
 			<td><input type="text" name="ingredient_amount[]" value="{$amount}" /></td>
 			<td>

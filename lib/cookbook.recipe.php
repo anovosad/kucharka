@@ -89,6 +89,9 @@
 						"label"=>"Smazat recept"
 					));
 				}
+				
+				$similar = $this->db->getSimilarRecipes($id);
+				if (count($similar)) { $this->view->addData("similar", array("recipe"=>$similar)); }
 				$this->view->setTemplate("templates/recipe.xsl");
 			}
 			$this->app->output();

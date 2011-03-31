@@ -5,11 +5,33 @@
 			$data = $this->db->getCategory($id);
 			if ($data) { 
 				$this->view->addData("category", $data); 
+				$ingredients = $this->db->getIngredientsForCategory($id);
+				if (count($ingredients)) { $this->view->addData("ingredient", $ingredients); }
 			} else {
 				$this->view->addData("category", array("id"=>0));
 			}
 			
-			$this->view->setTemplate("templates/category-form.xsl");
+			$edit = HTTP::value("edit", "get", 0);
+			if ($edit) {
+				$this->view->setTemplate("templates/category-form.xsl");
+			} else {
+				if ($this->app->loggedId()) {
+					$this->app->addAction("category", array(
+						"method"=>"get",
+						"icon"=>"edit",
+						"action"=>"/kategorie/".$id."?edit=1",
+						"label"=>"Upravit kategorii"
+					));
+
+					$this->app->addAction("category", array(
+						"method"=>"delete",
+						"icon"=>"delete",
+						"action"=>"/kategorie/".$id,
+						"label"=>"Smazat kategorii"
+					));
+				}
+				$this->view->setTemplate("templates/category.xsl");
+			}
 			$this->app->output();
 		}
 

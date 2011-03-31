@@ -17,33 +17,25 @@
 		<body>
 			<div id="wrap">
 				<xsl:for-each select="category">
-				
+
 				<header>
 					<xsl:call-template name="menu" /> 
-					<h1>
-						<xsl:value-of select="@name" />
-						<xsl:if test="not(@name)">Nová kategorie surovin</xsl:if>
-					</h1>
+					<h1><xsl:value-of select="@name" /></h1>
 				</header>
-
 				
-				<form method="post" action="{concat($BASE, '/kategorie/', @id)}">
-					<table>
-						<tbody>
-							<tr>
-								<td>Název</td>
-								<td><input type="text" name="name" value="{@name}" /></td>
-							</tr>
-							<tr>
-								<td></td>
-								<td><input type="submit" value="Uložit" /></td>
-							</tr>
-						</tbody>
-					</table>
-				</form>
-
 				</xsl:for-each>
 				
+				<ul>
+					<xsl:for-each select="ingredient">
+						<li>
+							<a href="{concat($BASE, '/surovina/', @id)}">
+								<xsl:if test="@image = '1'"><xsl:attribute name="class">image</xsl:attribute></xsl:if>
+								<xsl:value-of select="@name" />
+							</a>
+						</li>
+					</xsl:for-each>
+				</ul>
+
 				<xsl:call-template name="footer" />
 			</div>
 		</body>

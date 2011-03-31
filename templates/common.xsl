@@ -9,7 +9,8 @@
 		<xsl:param name="title" select="''" />
 		<head>
 			<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-			<link rel="stylesheet" href="{concat($BASE, '/css/cookbook.css')}" type="text/css" />
+			<link rel="stylesheet" href="{concat($BASE, '/css/cookbook.css')}" type="text/css" media="screen,projection,handheld" />
+			<link rel="stylesheet" href="{concat($BASE, '/css/print.css')}" type="text/css" media="print" />
 			<script type="text/javascript" src="{concat($BASE, '/js/oz.js')}"></script>
 			<title>
 				<xsl:if test="$title != ''">
@@ -143,25 +144,6 @@
 		</select>
 	</xsl:template>
 
-	<xsl:template name="ingredient-select">
-		<xsl:param name="id_ingredient" select="0" />
-		<select name="id_ingredient[]">
-			<xsl:for-each select="category">
-			<optgroup>
-				<xsl:attribute name="label"><xsl:value-of select="@name" /></xsl:attribute>
-				<xsl:for-each select="ingredient">
-				<option value="{@id}">
-					<xsl:if test="@id = $id_ingredient">
-						<xsl:attribute name="selected">selected</xsl:attribute>
-					</xsl:if>
-					<xsl:value-of select="@name" />
-				</option>
-				</xsl:for-each>
-			</optgroup>
-			</xsl:for-each>
-		</select>
-	</xsl:template>
-
 	<xsl:template name="image-form">
 		<xsl:param name="width" select="0" />
 		<xsl:param name="path" select="''" />
@@ -186,7 +168,9 @@
 	<xsl:template name="image">
 		<xsl:param name="path" select="''" />
 		<xsl:if test="@image = 1">
-			<img src="{concat($IMAGE_PATH, '/', $path, '/', @id, '.jpg')}" alt="{@name}" />
+			<img src="{concat($IMAGE_PATH, '/', $path, '/', @id, '.jpg')}" alt="{@name}">
+				<xsl:if test="$path = 'recipes'"><xsl:attribute name="itemprop">photo</xsl:attribute></xsl:if>
+			</img>
 		</xsl:if>
 	</xsl:template>
 	
@@ -257,6 +241,31 @@
 			<xsl:text> </xsl:text>
 			<xsl:value-of select="@label" />
 		</button>
+	</xsl:template>
+	
+	<xsl:template name="move-icon">
+		<xsl:param name="action" />
+		<xsl:param name="direction" />
+
+		<form method="post" action="{$action}">
+			<input type="hidden" name="move" value="{$direction}" />
+
+			<xsl:variable name="path">
+				<xsl:choose>
+					<xsl:when test="$direction = 1">down</xsl:when>
+					<xsl:otherwise>up</xsl:otherwise>
+				</xsl:choose>
+			</xsl:variable>
+
+			<xsl:variable name="title">
+				<xsl:choose>
+					<xsl:when test="$direction = 1">Posunout dolů</xsl:when>
+					<xsl:otherwise>Posunout nahoru</xsl:otherwise>
+				</xsl:choose>
+			</xsl:variable>
+
+			<input type="image" name="image" src="{concat($IMAGE_PATH, '/icons/', $path, '.png')}" title="{$title}" />
+		</form>
 	</xsl:template>
 	
 </xsl:stylesheet>
