@@ -203,8 +203,51 @@
 			return $this->addImageInfo($data, self::RECIPE);
 		}
 		
-		public function searchRecipes($query) {
-			$data = $this->query("SELECT id, name FROM ".self::RECIPE." WHERE name COLLATE utf8_general_ci LIKE ? ORDER BY name ASC", "%".$query."%");
+		public function searchRecipes($conditions) {
+			$c = array("1");
+			$params = array();
+			
+			if (array_key_exists("query", $conditions)) {
+				$c[] = "name COLLATE utf8_general_ci LIKE ?";
+				$params[] = "%".$conditions["query"]."%";
+			}
+			
+			if (array_key_exists("id_type", $conditions)) {
+				$c[] = "id_type = ?";
+				$params[] = $conditions["id_type"];
+			}
+			
+			if (array_key_exists("time", $conditions)) {
+				$t = $conditions["time"];
+				$time_type = $t[0];
+				$time = $t[1];
+				$c[] = "time ". ($time_type == 1 ? "<=" : ">=") . " ?";
+				$params[] = $time;
+			}
+
+			if (array_key_exists("amount", $conditions)) {
+				$c[] = "amount COLLATE utf8_general_ci LIKE ?";
+				$params[] = "%".$conditions["amount"]."%";
+			}
+
+			if (array_key_exists("id_ingredient", $conditions)) {
+				$c[] = "id IN (
+							SELECT DISTINCT id_recipe
+							FROM ".self::AMOUNT."
+							WHERE id_ingredient = ?
+						)";
+				$params[] = $conditions["id_ingredient"];
+			}
+
+			if (array_key_exists("id_user", $conditions)) {
+				$c[] = "id_user = ?";
+				$params[] = $conditions["id_user"];
+			}
+			
+			$data = $this->query("SELECT id, name 
+									FROM ".self::RECIPE." 
+									WHERE ".implode(" AND ", $c)."
+									ORDER BY name ASC", $params);
 			return $this->addImageInfo($data, self::RECIPE);
 		}
 		

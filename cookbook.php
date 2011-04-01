@@ -16,40 +16,41 @@
 		private $actions = array("recipe"=>array(), "ingredient"=>array(), "type"=>array(), "category"=>array(), "user"=>array(), "misc"=>array());
 
 		protected $dispatch_table = array(
-			'GET	^/$					index',				/* homepage */
-			'GET	^/login$			login',				/* login form */
-			'POST	^/login$			loginProcess',		/* login action */
-			'POST	^/logout$			logoutProcess',		/* logout action */
+			'GET	^/$					index',					/* homepage */
+			'GET	^/login$			login',					/* login form */
+			'POST	^/login$			loginProcess',			/* login action */
+			'POST	^/logout$			logoutProcess',			/* logout action */
 
-			'GET	^/jidelnicek$		Recipe.menuForm',	/* menu form */
-			'POST	^/jidelnicek$		Recipe.menu',		/* menu results */
-			'GET	^/rss$				Recipe.rss',		/* feed */
-			'GET	^/hledani/?$		Recipe.search',		/* search form/query */ 
-			'GET	^/recepty$			Recipe.all',		/* alphabetical */
-			'GET	^/recept/(\d+)$		Recipe.get',		/* one recipe */
-			'POST	^/recept/(\d+)$		Recipe.edit',		/* edit recipe */
-			'DELETE	^/recept/(\d+)$		Recipe.delete',		/* delete recipe */
+			'GET	^/jidelnicek$		Recipe.menuForm',		/* menu form */
+			'POST	^/jidelnicek$		Recipe.menu',			/* menu results */
+			'GET	^/rss$				Recipe.rss',			/* feed */
+			'GET	^/hledani/?$		Recipe.searchBasic',	/* search form/query */ 
+			'POST	^/hledani$			Recipe.searchAdvanced',	/* advanced search */ 
+			'GET	^/recepty$			Recipe.all',			/* alphabetical */
+			'GET	^/recept/(\d+)$		Recipe.get',			/* one recipe */
+			'POST	^/recept/(\d+)$		Recipe.edit',			/* edit recipe */
+			'DELETE	^/recept/(\d+)$		Recipe.delete',			/* delete recipe */
 
-			'GET	^/druhy$			Type.all',			/* list recipe types */
-			'GET	^/druh/(\d+)$		Type.get',			/* one recipe type */
-			'POST	^/druh/(\d+)$		Type.edit',			/* edit type */
-			'DELETE	^/druh/(\d+)$		Type.delete',		/* delete type */
+			'GET	^/druhy$			Type.all',				/* list recipe types */
+			'GET	^/druh/(\d+)$		Type.get',				/* one recipe type */
+			'POST	^/druh/(\d+)$		Type.edit',				/* edit type */
+			'DELETE	^/druh/(\d+)$		Type.delete',			/* delete type */
 			
-			'GET	^/suroviny$			Ingredient.all',	/* list ingredients */
-			'GET	^/surovina/(\d+)$	Ingredient.get',	/* one ingredient */
-			'POST	^/surovina/(\d+)$	Ingredient.edit',	/* edit ingredient */
-			'DELETE	^/surovina/(\d+)$	Ingredient.delete',	/* delete ingredient */
+			'GET	^/suroviny$			Ingredient.all',		/* list ingredients */
+			'GET	^/surovina/(\d+)$	Ingredient.get',		/* one ingredient */
+			'POST	^/surovina/(\d+)$	Ingredient.edit',		/* edit ingredient */
+			'DELETE	^/surovina/(\d+)$	Ingredient.delete',		/* delete ingredient */
 
-			'GET	^/kategorie/(\d+)$	Category.get',		/* one ingredient category */
-			'POST	^/kategorie/(\d+)$	Category.edit',		/* edit ingredient */
-			'DELETE	^/kategorie/(\d+)$	Category.delete',	/* delete ingredient */
+			'GET	^/kategorie/(\d+)$	Category.get',			/* one ingredient category */
+			'POST	^/kategorie/(\d+)$	Category.edit',			/* edit ingredient */
+			'DELETE	^/kategorie/(\d+)$	Category.delete',		/* delete ingredient */
 			
-			'GET	^/autori$			User.all',			/* list all users */
-			'GET	^/autor/(\d+)$		User.get',			/* get one user */
-			'POST	^/autor/(\d+)$		User.edit',			/* edit user */
-			'DELETE	^/autor/(\d+)$		User.delete',		/* delete user */
+			'GET	^/autori$			User.all',				/* list all users */
+			'GET	^/autor/(\d+)$		User.get',				/* get one user */
+			'POST	^/autor/(\d+)$		User.edit',				/* edit user */
+			'DELETE	^/autor/(\d+)$		User.delete',			/* delete user */
 
-			'GET	^/([^/]*)$			fallback'			/* search fallback */
+			'GET	^/([^/]*)$			fallback'				/* search fallback */
 		);
 		
 		public function __construct() {

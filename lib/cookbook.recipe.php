@@ -27,15 +27,53 @@
 			$this->view->setTemplate("templates/rss.xsl");
 			$this->app->output();
 		}
-
-		public function search($matches) {
+		
+		public function searchBasic($matches) {
 			$query = HTTP::value("q", "get", "");
-			if (!$query) {
-				$this->view->setTemplate("templates/search-form.xsl");
-				return $this->app->output();
-			}
+			if ($query) { return $this->search(array("query"=>$query)); }
+
+			$ingredients = $this->db->getIngredients();
+			$this->view->addData("category", $ingredients);
 			
-			$recipes = $this->db->searchRecipes($query);
+			$types = $this->db->getTypes(false);
+			$this->view->addData("type", $types);
+			
+			$users = $this->db->getUsers();
+			$this->view->addData("user", $users);
+			
+			$this->view->setTemplate("templates/search-form.xsl");
+			return $this->app->output();
+		}
+
+		public function searchAdvanced($matches) {
+			$conditions = array();
+			
+			/* type search */
+			$id_type = HTTP::value("id_type", "post", 0);
+			if ($id_type) { $conditions["id_type"] = $id_type; }
+			
+			/* prep time */
+			$time_type = HTTP::value("time_type", "post", 0);
+			$time = HTTP::value("time", "post", 0);
+			if ($time_type && $time) { $conditions["time"] = array($time_type, $time); }
+			
+			/* amount */
+			$amount = HTTP::value("amount", "post", "");
+			if ($amount) { $conditions["amount"] = $amount; }
+			
+			/* ingredient */
+			$id_ingredient = HTTP::value("id_ingredient", "post", 0);
+			if ($id_ingredient) { $conditions["id_ingredient"] = $id_ingredient; }
+
+			/* author */
+			$id_user = HTTP::value("id_user", "post", 0);
+			if ($id_user) { $conditions["id_user"] = $id_user; }
+
+			return $this->search($conditions);
+		}
+
+		private function search($conditions) {
+			$recipes = $this->db->searchRecipes($conditions);
 			
 			if (count($recipes) == 1) {
 				HTTP::redirect("/recept/".$recipes[0]["id"]);

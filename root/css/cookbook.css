@@ -48,6 +48,11 @@ footer p {
 	padding-bottom: 1em;
 }
 
+legend {
+	font-weight: bold;
+	padding: 0.5em;
+}
+
 #wrap {
 	margin: 0px auto;
 	width: 718px;
@@ -77,6 +82,9 @@ form #refresh {
 	font-size: small;
 }
 
+fieldset p {
+	margin: 0.5em 0em;
+}
 
 /* nav */
 

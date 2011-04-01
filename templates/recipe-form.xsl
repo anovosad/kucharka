@@ -160,5 +160,18 @@
 		</tr>
 	</xsl:template>
 	
+	<xsl:template name="type-select">
+		<xsl:param name="id_type" select="0" />
+		<select name="id_type">
+			<xsl:for-each select="type">
+			<option value="{@id}">
+				<xsl:if test="@id = $id_type">
+					<xsl:attribute name="selected">selected</xsl:attribute>
+				</xsl:if>
+				<xsl:value-of select="@name" />
+			</option>
+			</xsl:for-each>
+		</select>
+	</xsl:template>
 	
 </xsl:stylesheet>
