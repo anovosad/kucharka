@@ -27,10 +27,6 @@
 					<xsl:with-param name="path" select="'users'" />
 				</xsl:call-template>
 				
-				<xsl:if test="@mail != ''">
-					<p><a href="{concat('mailto:', @mail)}"><xsl:value-of select="@mail" /></a></p>
-				</xsl:if>
-
 				</xsl:for-each>
 
 				<p>Recepty napsané tímto uživatelem:</p>

@@ -23,7 +23,7 @@
 				case self::TYPE: return array("name"); break;
 				case self::INGREDIENT: return array("name", "id_category", "description"); break;
 				case self::CATEGORY: return array("name"); break;
-				case self::USER: return array("login", "name", "mail"); break;
+				case self::USER: return array("name", "mail"); break;
 				default: return array();
 			}
 			
@@ -42,9 +42,9 @@
 			
 		}
 
-		public function validateLogin($login, $password) {
+		public function validateLogin($mail, $password) {
 			$hash = sha1($password);
-			$data = $this->query("SELECT id, name, super FROM ".self::USER." WHERE login = ? AND pwd = ?", $login, $hash);
+			$data = $this->query("SELECT id, name, super FROM ".self::USER." WHERE mail = ? AND pwd = ?", $mail, $hash);
 			return (count($data) ? $data[0] : null);
 		}
 
@@ -172,7 +172,7 @@
 		}
 
 		public function getUser($id) {
-			$data = $this->query("SELECT id, login, super, name, mail FROM ".self::USER." WHERE id = ?", $id);
+			$data = $this->query("SELECT id, super, name, mail FROM ".self::USER." WHERE id = ?", $id);
 			if (!count($data)) { return null; }
 			$data = $this->addImageInfo($data, self::USER);
 			return $data[0];
@@ -276,8 +276,8 @@
 			return $this->query("SELECT id, name FROM ".self::INGREDIENT." WHERE id_category = ? ORDER BY name ASC", $id_category);
 		}
 
-		public function getUserForLogin($login) {
-			$data = $this->query("SELECT * FROM ".self::USER." WHERE login = ?", $login);
+		public function getUserForMail($mail) {
+			$data = $this->query("SELECT * FROM ".self::USER." WHERE mail = ?", $mail);
 			if (!count($data)) { return null; }
 			$data = $this->addImageInfo($data, self::USER);
 			return $data[0];

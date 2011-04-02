@@ -31,10 +31,6 @@
 					<table>
 						<tbody>
 							<tr>
-								<td>Uživatelské jméno</td>
-								<td><input type="text" name="login" value="{@login}" /></td>
-							</tr>
-							<tr>
 								<td>Celé jméno</td>
 								<td><input type="text" name="name" value="{@name}" /></td>
 							</tr>

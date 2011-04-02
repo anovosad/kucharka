@@ -20,6 +20,7 @@
 			'GET	^/login$			login',					/* login form */
 			'POST	^/login$			loginProcess',			/* login action */
 			'POST	^/logout$			logoutProcess',			/* logout action */
+			'GET	^/napoveda$			help',					/* help */
 
 			'GET	^/jidelnicek$		Recipe.menuForm',		/* menu form */
 			'POST	^/jidelnicek$		Recipe.menu',			/* menu results */
@@ -66,6 +67,13 @@
 
 			$id = $this->loggedId();
 			if ($id) {
+				$this->addAction("misc", array(
+					"method"=>"get",
+					"icon"=>"help",
+					"action"=>"/napoveda",
+					"label"=>"Nápověda"
+				));
+
 				$this->addAction("misc", array(
 					"method"=>"post",
 					"icon"=>"lock",
@@ -230,9 +238,9 @@
 		}
 		
 		public function loginProcess($matches) {
-			$login = HTTP::value("login", "post", "");
+			$mail = HTTP::value("mail", "post", "");
 			$password = HTTP::value("password", "post", "");
-			$result = $this->db->validateLogin($login, $password);
+			$result = $this->db->validateLogin($mail, $password);
 			if ($result) { 
 				$_SESSION["id"] = $result["id"];
 				$_SESSION["name"] = $result["name"];
@@ -266,6 +274,12 @@
 			$this->view->addData("count", array("total"=>$count));
 			
 			$this->view->setTemplate("templates/index.xsl");
+			$this->output();
+		}
+		
+		public function help($matches) {
+			if (!$this->loggedId()) { return $this->error403(); }
+			$this->view->setTemplate("templates/help.xsl");
 			$this->output();
 		}
 		

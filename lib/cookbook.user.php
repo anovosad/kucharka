@@ -78,10 +78,10 @@
 			if ($pwd1 != $pwd2) { return $this->app->error("Hesla se neshodují"); }
 			if ($pwd1) { $password = $pwd1; }
 
-			if (!$values["login"]) { return $this->app->error("Uživatelské jméno nesmí být prázdné"); }
+			if (!$values["mail"]) { return $this->app->error("E-mail nesmí být prázdný"); }
 
-			$data = $this->db->getUserForLogin($values["login"]);
-			if ($data && $data["id"] != $id) { return $this->app->error("Toto uživatelské jméno je již použité"); }
+			$data = $this->db->getUserForMail($values["mail"]);
+			if ($data && $data["id"] != $id) { return $this->app->error("Tento e-mail je již použitý"); }
 		
 			if (!$id) { $id = $this->db->insert(CookbookDB::USER); }
 			$ok = $this->db->updateUser($id, $values, $password);

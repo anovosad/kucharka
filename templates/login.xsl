@@ -26,8 +26,8 @@
 					<table>
 						<tbody>
 							<tr>
-								<td>Uživatelské jméno</td>
-								<td><input type="text" name="login" autofocus="autofocus" /></td>
+								<td>E-mail</td>
+								<td><input type="text" name="mail" autofocus="autofocus" /></td>
 							</tr>
 							<tr>
 								<td>Heslo</td>
