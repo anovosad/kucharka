@@ -88,8 +88,11 @@ fieldset p {
 
 /* nav */
 
+#menu {
+	padding-top: 16px;
+}
+
 #menu table {
-	margin-top: 16px;
 	width: 100%;
 }
 

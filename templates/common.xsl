@@ -12,6 +12,7 @@
 			<link rel="stylesheet" href="{concat($BASE, '/css/cookbook.css')}" type="text/css" media="screen,projection,handheld" />
 			<link rel="stylesheet" href="{concat($BASE, '/css/print.css')}" type="text/css" media="print" />
 			<script type="text/javascript" src="{concat($BASE, '/js/oz.js')}"></script>
+			<script type="text/javascript">["header", "nav", "section", "aside", "article", "footer"].forEach(OZ.DOM.elm);</script>
 			<title>
 				<xsl:if test="$title != ''">
 					<xsl:value-of select="$title" />
