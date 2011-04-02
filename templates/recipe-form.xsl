@@ -35,8 +35,8 @@
 					<table>
 						<tbody>
 							<tr>
-								<td>Název</td>
-								<td><input type="text" name="name" value="{@name}" /></td>
+								<td>Název receptu</td>
+								<td><input type="text" name="name" value="{@name}" size="40" /></td>
 							</tr>
 							<tr>
 								<td>Druh</td>

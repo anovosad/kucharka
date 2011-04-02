@@ -1,4 +1,7 @@
 RewriteEngine On
 
+RewriteCond %{HTTP_USER_AGENT} "MSIE 6"
+RewriteRule ^(.*)$ http://ie6countdown.com/ [R=301,L]
+
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule .* index.php [L,QSA]

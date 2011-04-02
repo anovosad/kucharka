@@ -75,18 +75,17 @@
 				</div>
 				
 				<div id="text">
-					<h2>
-						<span id="print">
-							<img src="{concat($IMAGE_PATH, '/icons/printer.png')}" alt="tisk" title="Tisk" />
-						</span>
-						Postup
-					</h2>
+					<h2>Postup</h2>
 					<p><xsl:call-template name="rich-text"><xsl:with-param name="text" select="text" /></xsl:call-template></p>
 					
 					<xsl:if test="remark != ''">
 						<h2>Poznámka</h2>
 						<p><xsl:call-template name="rich-text"><xsl:with-param name="text" select="remark" /></xsl:call-template></p>
 					</xsl:if>
+					
+					<div id="print">
+						<img src="{concat($IMAGE_PATH, '/icons/printer.png')}" alt="tisk" title="Tisk" />
+					</div>
 				</div>
 
 
