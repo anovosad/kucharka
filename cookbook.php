@@ -11,7 +11,7 @@
 
 	class Cookbook extends APP {
 		private $db = null;
-		private $debug = true;
+		private $debug = false;
 		private $image_path = "root/img";
 		private $actions = array("recipe"=>array(), "ingredient"=>array(), "type"=>array(), "category"=>array(), "user"=>array(), "misc"=>array());
 

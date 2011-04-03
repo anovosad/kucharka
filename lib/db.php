@@ -376,7 +376,7 @@
 		}
 
 		public function updateRecipe($id, $values, $ingredients) {
-			$this->update(self::RECIPE, null, array("hot_tip"=>0));
+			if ($values["hot_tip"] == 1) { $this->update(self::RECIPE, null, array("hot_tip"=>0)); }
 			$this->update(self::RECIPE, $id, $values);
 			$this->delete(self::AMOUNT, array("id_recipe"=>$id));
 			

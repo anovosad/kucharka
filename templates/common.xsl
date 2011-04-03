@@ -9,8 +9,10 @@
 		<xsl:param name="title" select="''" />
 		<head>
 			<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+			<link rel="alternate" type="application/rss+xml" title="RSS – Nejnovější recepty" href="{concat($BASE, '/rss')}" />
 			<link rel="stylesheet" href="{concat($BASE, '/css/cookbook.css')}" type="text/css" media="screen,projection,handheld" />
 			<link rel="stylesheet" href="{concat($BASE, '/css/print.css')}" type="text/css" media="print" />
+			<link rel="shortcut icon" href="{concat($IMAGE_PATH, '/favicon.ico')}" type="image/x-icon" />	
 			<script type="text/javascript" src="{concat($BASE, '/js/oz.js')}"></script>
 			<script type="text/javascript">["header", "nav", "section", "aside", "article", "footer"].forEach(OZ.DOM.elm);</script>
 			<title>
@@ -20,6 +22,12 @@
 				</xsl:if>
 				<xsl:text>Kuchařka</xsl:text>
 			</title>
+			
+			<script src="http://www.google-analytics.com/urchin.js" type="text/javascript"></script>
+			<script type="text/javascript">
+				_uacct = "UA-383250-2";
+				urchinTracker();
+			</script>	
 		</head>
 	</xsl:template>
 		
