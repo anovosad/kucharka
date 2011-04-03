@@ -28,16 +28,16 @@
 				<p class="noprint">
 					Druh: <a href="{concat($BASE, '/druh/', @id_type)}"><span itemprop="recipeType"><xsl:value-of select="@name_type" /></span></a>,
 					autor: <a itemprop="author" href="{concat($BASE, '/autor/', @id_user)}"><xsl:value-of select="@name_user" /></a>,
-					přidáno <span itemprop="published" datetime="{concat(@year, '-', format-number(@month, '00'), '-', @day)}">
+					přidáno <time itemprop="published" datetime="{concat(@year, '-', format-number(@month, '00'), '-', @day)}">
 						<xsl:value-of select="concat(@day, '. ', @month, '. ', @year)" />
-					</span>
+					</time>
 				</p>
 				
 				<p>Čas na přípravu: 
-					<span itemprop="totalTime" datetime="{concat('PT', @time, 'M')}">
+					<time itemprop="totalTime" datetime="{concat('PT', @time, 'M')}">
 						<xsl:value-of select="@time" /> 
 						minut
-					</span>
+					</time>
 				</p>
 				
 				<xsl:for-each select="//similar">
