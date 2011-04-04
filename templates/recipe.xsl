@@ -76,7 +76,7 @@
 				
 				<div id="text">
 					<h2>Postup</h2>
-					<p><xsl:call-template name="rich-text"><xsl:with-param name="text" select="text" /></xsl:call-template></p>
+					<p itemprop="instructions"><xsl:call-template name="rich-text"><xsl:with-param name="text" select="text" /></xsl:call-template></p>
 					
 					<xsl:if test="remark != ''">
 						<h2>Poznámka</h2>
