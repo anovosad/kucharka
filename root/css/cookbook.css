@@ -245,10 +245,9 @@ aside button {
 	position: absolute;
 	right: 0px;
 	bottom: -16px;
-}
-
-#recipe #print img {
-	border: none;
+	width: 16px;
+	height: 16px;
+	background-image: url(../img/icons/printer.png);
 	cursor: pointer;
 }
 

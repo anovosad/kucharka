@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fb="http://www.facebook.com/2008/fbml">
 	<xsl:include href="common.xsl" />
 
     <xsl:output 
@@ -23,6 +23,7 @@
 				<header>
 					<xsl:call-template name="menu" /> 
 					<h1 itemprop="name"><xsl:value-of select="@name" /></h1>
+					<span class="noprint"><fb:like action="recommend" /></span>
 				</header>
 				
 				<p class="noprint">
@@ -38,6 +39,7 @@
 						<xsl:value-of select="@time" /> 
 						minut
 					</time>
+					
 				</p>
 				
 				<xsl:for-each select="//similar">
@@ -83,9 +85,7 @@
 						<p><xsl:call-template name="rich-text"><xsl:with-param name="text" select="remark" /></xsl:call-template></p>
 					</xsl:if>
 					
-					<div id="print">
-						<img src="{concat($IMAGE_PATH, '/icons/printer.png')}" alt="tisk" title="Tisk" />
-					</div>
+					<div id="print" title="Tisk"></div>
 				</div>
 
 
@@ -97,6 +97,7 @@
 				OZ.$("text").style.marginLeft = OZ.$("ingredients").offsetWidth + "px";
 				OZ.Event.add(OZ.$("print"), "click", function(e) { window.print(); });
 			</script>
+			<script src="http://connect.facebook.net/cs_CZ/all.js#xfbml=1"></script>
 		</body>
 	</html>
 
