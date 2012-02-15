@@ -8,6 +8,7 @@
 	<xsl:template name="head">
 		<xsl:param name="title" select="''" />
 		<head>
+			<meta name="viewport" content="width=device-width" />
 			<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 			<link rel="alternate" type="application/rss+xml" title="RSS – Nejnovější recepty" href="{concat($BASE, '/rss')}" />
 			<link rel="stylesheet" href="{concat($BASE, '/css/cookbook.css')}" type="text/css" media="screen,projection,handheld" />

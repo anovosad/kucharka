@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fb="http://www.facebook.com/2008/fbml">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fb="http://www.facebook.com/2008/fbml" xmlns:g="http://base.google.com/cns/1.0">
 	<xsl:include href="common.xsl" />
 
     <xsl:output 
@@ -23,7 +23,10 @@
 				<header>
 					<xsl:call-template name="menu" /> 
 					<h1 itemprop="name"><xsl:value-of select="@name" /></h1>
-					<span class="noprint"><fb:like action="recommend" /></span>
+					<span class="noprint">
+						<g:plusone size="medium"></g:plusone>
+						<fb:like action="recommend" />
+					</span>
 				</header>
 				
 				<p class="noprint">
@@ -97,7 +100,8 @@
 				OZ.$("text").style.marginLeft = OZ.$("ingredients").offsetWidth + "px";
 				OZ.Event.add(OZ.$("print"), "click", function(e) { window.print(); });
 			</script>
-			<script src="http://connect.facebook.net/cs_CZ/all.js#xfbml=1"></script>
+			<script type="text/javascript" src="http://connect.facebook.net/cs_CZ/all.js#xfbml=1"></script>
+			<script type="text/javascript" src="http://apis.google.com/js/plusone.js"></script>
 		</body>
 	</html>
 
