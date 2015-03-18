@@ -95,18 +95,16 @@
 						<td>|</td>
 						<td><a href="{concat($BASE, '/hledani')}">Hledat</a></td>
 					</tr>
-					<xsl:if test="not(//login)">
-						<tr>
-							<td colspan="13">
-								<a href="{concat($BASE, '/login')}">
-									<img src="{concat($IMAGE_PATH, '/icons/key.png')}" alt="Přihlásit" title="Přihlásit" />
-								</a>
-							</td>
-						</tr>
-					</xsl:if>
 				</tbody>
 			</table>
 		</nav>
+
+		<xsl:if test="not(//login)">
+			<a id="login" href="{concat($BASE, '/login')}">
+				<img src="{concat($IMAGE_PATH, '/icons/key.png')}" alt="Přihlásit" title="Přihlásit" />
+			</a>
+		</xsl:if>
+
 	</xsl:template>
 	
 	<xsl:template name="image-action">

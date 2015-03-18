@@ -26,7 +26,7 @@ form {
 }
 
 li {
-	line-height: 140%;
+	line-height: 1.4;
 }
 
 td p {
@@ -100,12 +100,13 @@ fieldset p {
 	text-align: center;
 }
 
-#menu tr:nth-child(2) td {
-	text-align: right;
+#login {
+	float: right;
 }
 
-#menu img {
+#login img {
 	border: none;
+	margin: 12px 10px 0 0;
 }
 
 /* sidebar */
@@ -260,6 +261,8 @@ aside button {
 	padding-bottom: 0.5em;
 	margin-left: 0.5em;
 	margin-bottom: 0.5em;
+	position: relative;
+	z-index: 1;
 }
 
 #recipe #similar ul {
@@ -275,4 +278,10 @@ aside button {
 
 #users img {
 	vertical-align: middle;
+}
+
+@media (max-width: 720px) {
+	li {
+		line-height: 1.8;
+	}
 }
