@@ -150,7 +150,10 @@
 
 			$fields = $this->db->getFields(CookbookDB::RECIPE);
 			$values = array();
-			foreach ($fields as $field) { $values[$field] = HTTP::value($field, "post", ""); }
+			foreach ($fields as $field) { 
+				$def = ($field == "hot_tip" ? 0 : "");
+				$values[$field] = HTTP::value($field, "post", $def); 
+			}
 			
 			$ingredients = array();
 			$id_ingredient = HTTP::value("id_ingredient", "post", array());
