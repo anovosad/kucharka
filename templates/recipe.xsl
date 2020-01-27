@@ -17,7 +17,7 @@
 		</xsl:call-template>
 
 		<body id="recipe">
-			<div id="wrap" itemscope="itemscope" itemtype="http://data-vocabulary.org/Recipe">
+			<div id="wrap" itemscope="itemscope" itemtype="https://schema.org/Recipe">
 				<xsl:for-each select="recipe">
 
 				<header>
@@ -30,9 +30,9 @@
 				</header>
 				
 				<p class="noprint">
-					Druh: <a href="{concat($BASE, '/druh/', @id_type)}"><span itemprop="recipeType"><xsl:value-of select="@name_type" /></span></a>,
+					Druh: <a href="{concat($BASE, '/druh/', @id_type)}"><span itemprop="recipeCategory"><xsl:value-of select="@name_type" /></span></a>,
 					autor: <a itemprop="author" href="{concat($BASE, '/autor/', @id_user)}"><xsl:value-of select="@name_user" /></a>,
-					přidáno <time itemprop="published" datetime="{concat(@year, '-', format-number(@month, '00'), '-', @day)}">
+					přidáno <time itemprop="datePublished" datetime="{concat(@year, '-', format-number(@month, '00'), '-', @day)}">
 						<xsl:value-of select="concat(@day, '. ', @month, '. ', @year)" />
 					</time>
 				</p>
@@ -68,10 +68,10 @@
 					<table>
 						<tbody>
 						<xsl:for-each select="ingredient">
-							<tr itemprop="ingredient" itemscope="itemscope" itemtype="http://data-vocabulary.org/RecipeIngredient">
-								<td itemprop="amount"><xsl:value-of select="@amount" /></td>
+							<tr itemprop="recipeIngredient">
+								<td><xsl:value-of select="@amount" /></td>
 								<td><a href="{concat($BASE, '/surovina/', @id_ingredient)}">
-									<span itemprop="name"><xsl:value-of select="@name" /></span>
+									<span><xsl:value-of select="@name" /></span>
 								</a></td>
 							</tr>
 						</xsl:for-each>
@@ -81,7 +81,7 @@
 				
 				<div id="text">
 					<h2>Postup</h2>
-					<p itemprop="instructions"><xsl:call-template name="rich-text"><xsl:with-param name="text" select="text" /></xsl:call-template></p>
+					<p itemprop="recipeInstructions"><xsl:call-template name="rich-text"><xsl:with-param name="text" select="text" /></xsl:call-template></p>
 					
 					<xsl:if test="remark != ''">
 						<h2>Poznámka</h2>

@@ -155,7 +155,7 @@
 		<xsl:param name="path" select="''" />
 		<xsl:if test="@image = 1">
 			<img src="{concat($IMAGE_PATH, '/', $path, '/', @id, '.jpg')}" alt="{@name}">
-				<xsl:if test="$path = 'recipes'"><xsl:attribute name="itemprop">photo</xsl:attribute></xsl:if>
+				<xsl:if test="$path = 'recipes'"><xsl:attribute name="itemprop">image</xsl:attribute></xsl:if>
 			</img>
 		</xsl:if>
 	</xsl:template>
