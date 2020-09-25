@@ -55,9 +55,10 @@ legend {
 
 #wrap {
 	margin: 0px auto;
-	width: 718px;
+	max-width: 718px;
 	padding: 0px 16px;
 	background-image: url(../img/background.gif);
+	background-size: contain;
 	position: relative;
 }
 
@@ -88,17 +89,22 @@ fieldset p {
 
 /* nav */
 
-#menu {
+#menu ul {
+	list-style: none;
+	display: flex;
+	flex-wrap: wrap;
+	margin: 0;
+	padding: 0;
 	padding-top: 16px;
+	justify-content: space-between;
 }
 
-#menu table {
-	width: 100%;
+#menu li {
+	padding: 0 4px;
 }
 
-#menu td {
-	text-align: center;
-}
+#menu li:first-child { padding-left: 0; }
+#menu li:last-child { padding-right: 0; }
 
 #login {
 	float: right;
@@ -155,6 +161,7 @@ aside button {
 	position: relative;
 	left: -16px;
 	border: none;
+	max-width: calc(100% + 32px);
 }
 
 #hot-tip {

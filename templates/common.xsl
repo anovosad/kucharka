@@ -78,25 +78,15 @@
 
 	<xsl:template name="menu">
 		<nav id="menu">
-			<table>
-				<tbody>
-					<tr>
-						<td><a href="{concat($BASE, '/')}">Hlavní stránka</a></td>
-						<td>|</td>
-						<td><a href="{concat($BASE, '/druhy')}">Druhy jídel</a></td>
-						<td>|</td>
-						<td><a href="{concat($BASE, '/recepty')}">Abecedně</a></td>
-						<td>|</td>
-						<td><a href="{concat($BASE, '/autori')}">Autoři</a></td>
-						<td>|</td>
-						<td><a href="{concat($BASE, '/suroviny')}">Suroviny</a></td>
-						<td>|</td>
-						<td><a href="{concat($BASE, '/jidelnicek')}">Sestavit jídelníček</a></td>
-						<td>|</td>
-						<td><a href="{concat($BASE, '/hledani')}">Hledat</a></td>
-					</tr>
-				</tbody>
-			</table>
+			<ul>
+				<li><a href="{concat($BASE, '/')}">Hlavní stránka</a></li>
+				<li><a href="{concat($BASE, '/druhy')}">Druhy jídel</a></li>
+				<li><a href="{concat($BASE, '/recepty')}">Abecedně</a></li>
+				<li><a href="{concat($BASE, '/autori')}">Autoři</a></li>
+				<li><a href="{concat($BASE, '/suroviny')}">Suroviny</a></li>
+				<li><a href="{concat($BASE, '/jidelnicek')}">Sestavit jídelníček</a></li>
+				<li><a href="{concat($BASE, '/hledani')}">Hledat</a></li>
+			</ul>
 		</nav>
 
 		<xsl:if test="not(//login)">
