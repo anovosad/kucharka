@@ -100,8 +100,8 @@
 				OZ.$("text").style.marginLeft = OZ.$("ingredients").offsetWidth + "px";
 				OZ.Event.add(OZ.$("print"), "click", function(e) { window.print(); });
 			</script>
-			<script type="text/javascript" src="http://connect.facebook.net/cs_CZ/all.js#xfbml=1"></script>
-			<script type="text/javascript" src="http://apis.google.com/js/plusone.js"></script>
+			<script type="text/javascript" src="https://connect.facebook.net/cs_CZ/all.js#xfbml=1"></script>
+			<script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
 		</body>
 	</html>
 
