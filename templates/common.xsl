@@ -11,8 +11,8 @@
 			<meta name="viewport" content="width=device-width" />
 			<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 			<link rel="alternate" type="application/rss+xml" title="RSS – Nejnovější recepty" href="{concat($BASE, '/rss')}" />
-			<link rel="stylesheet" href="{concat($BASE, '/css/cookbook.css')}" type="text/css" media="screen,projection,handheld" />
-			<link rel="stylesheet" href="{concat($BASE, '/css/print.css')}" type="text/css" media="print" />
+			<link rel="stylesheet" href="{concat($BASE, '/css/cookbook.css?1')}" type="text/css" media="screen,projection,handheld" />
+			<link rel="stylesheet" href="{concat($BASE, '/css/print.css?1')}" type="text/css" media="print" />
 			<link rel="shortcut icon" href="{concat($IMAGE_PATH, '/favicon.ico')}" type="image/x-icon" />	
 			<script type="text/javascript" src="{concat($BASE, '/js/oz.js')}"></script>
 			<script type="text/javascript">["header", "nav", "section", "aside", "article", "footer"].forEach(OZ.DOM.elm);</script>
