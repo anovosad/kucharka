@@ -17,7 +17,6 @@
 		<body id="homepage">
 			<div id="wrap">
 				<header>
-					<img src="{concat($IMAGE_PATH, '/korenky3.jpg')}" alt="logo" id="logo" />
 					<xsl:call-template name="menu" /> 
 					<h1>Kuchařka</h1>
 				</header>

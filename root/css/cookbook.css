@@ -59,7 +59,6 @@ legend {
 	padding: 0px 16px;
 	background-image: url(../img/background.gif);
 	background-size: contain;
-	position: relative;
 }
 
 /* forms */
@@ -157,11 +156,17 @@ aside button {
 	display: none;
 }
 
-#logo {
-	position: relative;
-	left: -16px;
-	border: none;
-	max-width: calc(100% + 32px);
+#homepage #wrap {
+	background-image: url(../img/korenky3.jpg), url(../img/background.gif);
+	background-size: contain;
+	background-repeat: no-repeat, repeat;
+	padding-top: 176px;
+}
+
+@media (max-width: 750px) {
+	#homepage #wrap {
+		padding-top: calc(100vw * 0.2347);
+	}
 }
 
 #hot-tip {
