@@ -14,6 +14,7 @@
 		private $debug = false;
 		private $image_path = "root/img";
 		private $actions = array("recipe"=>array(), "ingredient"=>array(), "type"=>array(), "category"=>array(), "user"=>array(), "misc"=>array());
+		protected $view;
 
 		protected $dispatch_table = array(
 			'GET	^/$					index',					/* homepage */
@@ -25,8 +26,8 @@
 			'GET	^/jidelnicek$		Recipe.menuForm',		/* menu form */
 			'POST	^/jidelnicek$		Recipe.menu',			/* menu results */
 			'GET	^/rss$				Recipe.rss',			/* feed */
-			'GET	^/hledani/?$		Recipe.searchBasic',	/* search form/query */ 
-			'POST	^/hledani$			Recipe.searchAdvanced',	/* advanced search */ 
+			'GET	^/hledani/?$		Recipe.searchBasic',	/* search form/query */
+			'POST	^/hledani$			Recipe.searchAdvanced',	/* advanced search */
 			'GET	^/recepty$			Recipe.all',			/* alphabetical */
 			'GET	^/recept/(\d+)$		Recipe.get',			/* one recipe */
 			'POST	^/recept/(\d+)$		Recipe.edit',			/* edit recipe */
@@ -36,7 +37,7 @@
 			'GET	^/druh/(\d+)$		Type.get',				/* one recipe type */
 			'POST	^/druh/(\d+)$		Type.edit',				/* edit type */
 			'DELETE	^/druh/(\d+)$		Type.delete',			/* delete type */
-			
+
 			'GET	^/suroviny$			Ingredient.all',		/* list ingredients */
 			'GET	^/surovina/(\d+)$	Ingredient.get',		/* one ingredient */
 			'POST	^/surovina/(\d+)$	Ingredient.edit',		/* edit ingredient */
@@ -45,7 +46,7 @@
 			'GET	^/kategorie/(\d+)$	Category.get',			/* one ingredient category */
 			'POST	^/kategorie/(\d+)$	Category.edit',			/* edit ingredient */
 			'DELETE	^/kategorie/(\d+)$	Category.delete',		/* delete ingredient */
-			
+
 			'GET	^/autori$			User.all',				/* list all users */
 			'GET	^/autor/(\d+)$		User.get',				/* get one user */
 			'POST	^/autor/(\d+)$		User.edit',				/* edit user */
@@ -53,7 +54,7 @@
 
 			'GET	^/([^/]*)$			fallback'				/* search fallback */
 		);
-		
+
 		public function __construct() {
 			$this->db = new CookbookDB($this->image_path);
 			$this->view = new XML();
@@ -80,14 +81,14 @@
 					"action"=>"/logout",
 					"label"=>"Odhlásit"
 				));
-				
+
 				$this->addAction("recipe", array(
 					"method"=>"get",
 					"icon"=>"add",
 					"action"=>"/recept/0?edit=1",
 					"label"=>"Nový recept"
 				));
-				
+
 				$this->addAction("ingredient", array(
 					"method"=>"get",
 					"icon"=>"add",
@@ -101,14 +102,14 @@
 					"action"=>"/druh/0?edit=1",
 					"label"=>"Nový druh jídla"
 				));
-				
+
 				$this->addAction("category", array(
 					"method"=>"get",
 					"icon"=>"add",
 					"action"=>"/kategorie/0?edit=1",
 					"label"=>"Nová kategorie surovin"
 				));
-				
+
 				if ($this->loggedSuper()) {
 					$this->addAction("user", array(
 						"method"=>"get",
@@ -130,15 +131,15 @@
 				}
 			}
 		}
-		
+
 		public function getDB() {
 			return $this->db;
 		}
-		
+
 		public function getView() {
 			return $this->view;
 		}
-		
+
 		public function output() {
 			$id = $this->loggedId();
 			if ($id) {
@@ -156,7 +157,7 @@
 
 			echo $this->view->toString();
 		}
-		
+
 		public function addAction($category, $action) {
 			$this->actions[$category][] = $action;
 		}
@@ -172,7 +173,7 @@
 		public function loggedSuper() {
 			return (isset($_SESSION["super"]) ? $_SESSION["super"] : null);
 		}
-		
+
 		public function canDeleteUser($id) {
 			if (!$this->canModifyUser($id)) { return false; }
 			if ($this->loggedId() == $id) { return false; }
@@ -197,21 +198,21 @@
 			$user = $this->db->getUser($this->loggedId());
 			return ($user && $user["super"] == 1);
 		}
-		
+
 		public function saveImage($id, $table, $width = null) {
 			$path = $this->db->getImagePath($table);
 			$name = $this->image_path . "/" . $path . "/" . $id . ".jpg";
 
 			$delete = HTTP::value("image-delete", "post", false);
 			if ($delete && file_exists($name)) { unlink($name); }
-			
+
 			$f = HTTP::value("image", "files", null);
 			if ($f && $f["type"] == "image/jpeg" && $f["error"] == 0) {
 				$image = imagecreatefromjpeg($f["tmp_name"]);
-				
+
 				$w = imagesx($image);
 				$h = imagesy($image);
-				
+
 				if ($width && $width < $w) {
 					$ratio = $width/$w;
 					$target_w = round($w * $ratio);
@@ -220,7 +221,7 @@
 					imagecopyresampled($target, $image, 0, 0, 0, 0, $target_w, $target_h, $w, $h);
 					$image = $target;
 				}
-				
+
 				imagejpeg($image, $name);
 			}
 		}
@@ -230,25 +231,25 @@
 			$this->view->setTemplate("templates/error.xsl");
 			$this->output();
 		}
-		
+
 		public function login($matches) {
 			$this->view->addData("referer", array("url"=>HTTP::$REFERER));
 			$this->view->setTemplate("templates/login.xsl");
 			$this->output();
 		}
-		
+
 		public function loginProcess($matches) {
 			$mail = HTTP::value("mail", "post", "");
 			$password = HTTP::value("password", "post", "");
 			$result = $this->db->validateLogin($mail, $password);
-			if ($result) { 
+			if ($result) {
 				$_SESSION["id"] = $result["id"];
 				$_SESSION["name"] = $result["name"];
 				$_SESSION["super"] = $result["super"];
 				$referer = HTTP::value("referer", "post", "");
 				if ($referer) { return HTTP::redirect($referer); }
 			}
-			HTTP::redirectBack(); 
+			HTTP::redirectBack();
 		}
 
 		protected function logoutProcess($matches) {
@@ -263,26 +264,26 @@
 		public function index($matches) {
 			$recipes = $this->db->getLatestRecipes();
 			if (count($recipes)) { $this->view->addData("recipe", $recipes); }
-			
+
 			$id = $this->db->getHotTipId();
-			if ($id) { 
+			if ($id) {
 				$hottip = $this->db->getRecipe($id);
 				$this->view->addData("hottip", $hottip);
 			}
-			
+
 			$count = $this->db->getRecipeCount();
 			$this->view->addData("count", array("total"=>$count));
-			
+
 			$this->view->setTemplate("templates/index.xsl");
 			$this->output();
 		}
-		
+
 		public function help($matches) {
 			if (!$this->loggedId()) { return $this->error403(); }
 			$this->view->setTemplate("templates/help.xsl");
 			$this->output();
 		}
-		
+
 		public function fallback($matches) {
 			HTTP::redirect("/hledani?q=" . $matches[1]);
 		}

@@ -9,18 +9,18 @@
 	 */
 	class DB {
 		protected $db = null;
-		
+
 		public function __construct($dsn, $username = "", $password = "", $driver_options = array()) {
 			$this->db = new PDO($dsn, $username, $password, $driver_options);
 			$this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		}
-		
+
 		public function query($query) {
 			$values = func_get_args();
 			array_shift($values);
 
 			$s = $this->db->prepare($query);
-			
+
 			if (count($values) && is_array($values[0])) {
 				$s->execute($values[0]);
 			} else {
@@ -28,20 +28,20 @@
 			}
 
 			$s->setFetchMode(PDO::FETCH_ASSOC);
-			
+
 			if ($s->columnCount()) {
 				return $s->fetchAll();
 			} else {
 				return true;
 			}
-				
+
 		}
-		
+
 		public function insert($table, $values = array()) {
 			$query = "INSERT INTO ".$table. "(";
 			$query .= implode(",", array_keys($values));
 			$query .= ") VALUES (";
-			
+
 			$params = array();
 			foreach ($values as $value) {
 				if (count($params)) { $query .= ","; }
@@ -52,17 +52,17 @@
 			$this->query($query, $params);
 			return $this->db->lastInsertId();
 		}
-		
+
 		public function update($table, $id, $values = array()) {
 			$query = "UPDATE ".$table." SET ";
 			$params = array();
-			
+
 			foreach ($values as $key=>$value) {
 				if (count($params)) { $query .= ","; }
 				$params[] = $value;
 				$query .= $key."=?";
 			}
-			
+
 			if ($id) {
 				$id_name = "id";
 				$id_value = $id;
@@ -78,11 +78,11 @@
 
 			return $this->query($query, $params);
 		}
-		
+
 		public function delete($table, $id = null) {
 			$query = "DELETE FROM ".$table;
 			$params = array();
-			
+
 			if ($id) {
 				$id_name = "id";
 				$id_value = $id;
@@ -91,15 +91,15 @@
 					$id_name = array_shift($keys);
 					$id_value = $id[$id_name];
 				}
-				
+
 				$query .= " WHERE ".$id_name." = ?";
 				$params[] = $id_value;
 			}
 			return $this->query($query, $params);
 		}
-		
+
 	}
-	
+
 	/**
 	 * XML (+XSLT) output class
 	 */
@@ -108,33 +108,34 @@
 		protected $template = null;
 		protected $parameters = array();
 		protected $xml = null;
+		protected $documentElement;
 
 		public function __construct() {
 			$this->xml = new DOMDocument();
 			$this->documentElement = $this->xml->createElement("data");
 			$this->xml->appendChild($this->documentElement);
 		}
-		
+
 		public function setTemplate($template) {
 			$this->template = $template;
 			return $this;
 		}
-		
+
 		public function setParameter($name, $value) {
 			$this->parameters[$name] = $value;
 			return $this;
 		}
-		
+
 		public function addData($name, $data) {
 			$this->documentElement->appendChild($this->arrayToNode($data, $name));
 			return $this;
 		}
-		
+
 		public function addFilter($filter) {
 			$this->filters[] = $filter;
 			return $this;
 		}
-		
+
 		public function toString() {
 			$xml = null;
 			if ($this->template) {
@@ -151,7 +152,7 @@
 				return $this->xml->saveXML();
 			}
 		}
-		
+
 		protected function arrayToNode($array, $nodeName) {
 			$test = count($array) > 0 ? array_keys($array)[0]: NULL;
 			if (is_numeric($test)) {
@@ -161,7 +162,7 @@
 				}
 				return $frag;
 			}
-			
+
 			$node = $this->xml->createElement($nodeName);
 			foreach ($array as $name=>$value) {
 				if (is_array($value)) {
@@ -185,7 +186,7 @@
 			return $str;
 		}
 	}
-	
+
 	/**
 	 * Base web application
 	 */
@@ -202,7 +203,7 @@
 
 			$handler = "";
 			$resource = substr($_SERVER["REQUEST_URI"], strlen(HTTP::$BASE));
-			
+
 			$qs = strpos($resource, "?");
 			if ($qs !== false) { $resource = substr($resource, 0, $qs); }
 
@@ -217,22 +218,22 @@
 					$handler = $item[2];
 					break;
 				}
-				
-				if (!$handler) { 
+
+				if (!$handler) {
 					if ($resource_matched) {
 						return $this->error405();
 					} else {
-						return $this->error404(); 
+						return $this->error404();
 					}
 				} /* does not exist in table */
-				
+
 				if (substr($handler, 0, 1) == "/") { /* alias to other resource */
 					$resource = $handler;
 					$handler = "";
 				}
-				
+
 			} while (!$handler);
-			
+
 			$instance = $this;
 			$dotpos = strpos($handler, ".");
 			if ($dotpos !== false) {
@@ -241,7 +242,7 @@
 				$instance = new $class($this);
 				$handler = substr($handler, $dotpos+1);
 			}
-			
+
 			return $instance->$handler($matches);
 		}
 
@@ -254,7 +255,7 @@
 			HTTP::status(404);
 			echo "<h1>404 Not Found</h1>";
 		}
-		
+
 		public function error405() {
 			HTTP::status(405);
 			echo "<h1>405 Method Not Allowed</h1>";
@@ -270,17 +271,17 @@
 			echo "<h1>501 Not Implemented</h1>";
 		}
 	}
-	
+
 	/**
 	 * Application extension - module class
 	 */
 	class MODULE {
 		protected $app;
-		
+
 		public function __construct($app) {
 			$this->app = $app;
 		}
-		
+
 		public function __call($name, $arguments) {
 			return call_user_func_array(array($this->app, $name), $arguments);
 		}
@@ -292,7 +293,7 @@
 	class HTTP {
 		public static $BASE = "";
 		public static $REFERER = "";
-		
+
 		/**
 		 * @param {string} name
 		 * @param {string} where "get"/"post"/"cookie"/"files"
@@ -312,22 +313,22 @@
 			} else {
 				return $value;
 			}
-			
+
 			if (!is_null($default)) { settype($value, gettype($default)); }
 			return $value;
 		}
-		
+
 		public static function redirect($location) {
 			if (substr($location, 0, 1) == "/") {
 				$location = self::$BASE . $location;
 			}
 			header("Location: " . $location);
 		}
-		
+
 		public static function redirectBack() {
 			self::redirect(self::$REFERER);
 		}
-		
+
 		public static function status($code) {
 			header("HTTP/1.1 " . $code, true, $code);
 		}
@@ -341,9 +342,9 @@
 			HTTP::$BASE = substr($cwd, strlen($root));
 		}
 	}
-	
+
 	if (isset($_SERVER["HTTP_REFERER"])) { HTTP::$REFERER = $_SERVER["HTTP_REFERER"]; }
-	
+
 	/**
 	 * XML output filter
 	 */
@@ -355,7 +356,7 @@
 			return $str;
 		}
 	}
-	
+
 	class FILTER_TYPO extends FILTER {
 		protected static $typo = array(
 			"<->" => "↔",
@@ -376,13 +377,13 @@
 			"(R)" => "®",
 			"..." => "…"
 		);
-		
+
 		public function apply($str) {
 			$str = str_replace(array_keys(self::$typo), array_values(self::$typo), $str);
 			return preg_replace("/(?<=\d)x(?=\d)/i", "×", $str);
 		}
 	}
-	
+
 	class FILTER_NBSP extends FILTER {
 		public function apply($str) {
 			return preg_replace("/(?<=\s)([A-Z]) (?=\S)/i", "$1".html_entity_decode("&nbsp;", ENT_QUOTES, "utf-8"), $str);
@@ -391,6 +392,7 @@
 
 	class FILTER_FRACTIONS extends FILTER {
 		protected $fractions = null;
+		protected $xml;
 
 		protected static $_fractions = array(
 			"1/2" => "½",
@@ -409,7 +411,7 @@
 			"5/8" => "⅝",
 			"7/8" => "⅞"
 		);
-		
+
 		public function __construct() {
 			parent::__construct();
 			$this->xml = new DOMDocument();
