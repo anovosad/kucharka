@@ -59,6 +59,7 @@ legend {
 	padding: 0px 16px;
 	background-image: url(../img/background.gif);
 	background-size: contain;
+	position: relative;  /* admin menu */
 }
 
 /* forms */
@@ -197,7 +198,7 @@ aside button {
 
 /* list */
 
-#types span, #ingredients span { 
+#types span, #ingredients span {
 	cursor: pointer;
 }
 

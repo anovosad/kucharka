@@ -1,21 +1,20 @@
 <?xml version="1.0" ?>
 
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">	
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:param name="BASE" />
 	<xsl:param name="DEBUG" />
 	<xsl:param name="IMAGE_PATH" />
-	
+
 	<xsl:template name="head">
 		<xsl:param name="title" select="''" />
 		<head>
 			<meta name="viewport" content="width=device-width" />
 			<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 			<link rel="alternate" type="application/rss+xml" title="RSS – Nejnovější recepty" href="{concat($BASE, '/rss')}" />
-			<link rel="stylesheet" href="{concat($BASE, '/css/cookbook.css?1')}" type="text/css" media="screen,projection,handheld" />
-			<link rel="stylesheet" href="{concat($BASE, '/css/print.css?1')}" type="text/css" media="print" />
-			<link rel="shortcut icon" href="{concat($IMAGE_PATH, '/favicon.ico')}" type="image/x-icon" />	
-			<script type="text/javascript" src="{concat($BASE, '/js/oz.js')}"></script>
-			<script type="text/javascript">["header", "nav", "section", "aside", "article", "footer"].forEach(OZ.DOM.elm);</script>
+			<link rel="stylesheet" href="{concat($BASE, '/css/cookbook.css?2')}" media="screen,projection,handheld" />
+			<link rel="stylesheet" href="{concat($BASE, '/css/print.css?2')}" media="print" />
+			<link rel="shortcut icon" href="{concat($IMAGE_PATH, '/favicon.ico')}" type="image/x-icon" />
+			<script src="{concat($BASE, '/js/oz.js')}"></script>
 			<title>
 				<xsl:if test="$title != ''">
 					<xsl:value-of select="$title" />
@@ -23,12 +22,12 @@
 				</xsl:if>
 				<xsl:text>Kuchařka</xsl:text>
 			</title>
-			
-			<script type="text/javascript">
+
+			<script>
 				var _gaq = _gaq || [];
 				_gaq.push(['_setAccount', 'UA-383250-2']);
 				_gaq.push(['_trackPageview']);
-				
+
 				(function() {
 					var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
 					ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
@@ -37,7 +36,7 @@
 			</script>
 		</head>
 	</xsl:template>
-		
+
 	<xsl:template name="footer">
 		<xsl:for-each select="//login"><xsl:call-template name="sidebar" /></xsl:for-each>
 
@@ -56,14 +55,14 @@
 			</div>
 		</xsl:if>
 	</xsl:template>
-	
+
 	<xsl:template name="recipe-link">
 		<a href="{concat($BASE, '/recept/', @id)}">
 			<xsl:if test="@image = '1'"><xsl:attribute name="class">image</xsl:attribute></xsl:if>
 			<xsl:value-of select="@name" />
 		</a>
 	</xsl:template>
-	
+
 	<xsl:template name="recipe-list">
 		<xsl:if test="recipe">
 			<ul>
@@ -96,7 +95,7 @@
 		</xsl:if>
 
 	</xsl:template>
-	
+
 	<xsl:template name="image-action">
 		<xsl:param name="action" />
 		<xsl:param name="method" />
@@ -106,7 +105,7 @@
 			<xsl:when test="$method = 'get'">
 				<a href="{concat($BASE, $action)}"><img src="{concat($IMAGE_PATH, '/icons/', $src, '.png')}" title="{$title}" alt="{$title}" /></a>
 			</xsl:when>
-			
+
 			<xsl:otherwise>
 				<form action="{concat($BASE, $action)}" method="post">
 					<xsl:if test="$method != 'post'">
@@ -116,14 +115,14 @@
 				</form>
 			</xsl:otherwise>
 		</xsl:choose>
-		
-		
+
+
 	</xsl:template>
-	
+
 	<xsl:template name="image-form">
 		<xsl:param name="width" select="0" />
 		<xsl:param name="path" select="''" />
-		
+
 		<p>Obrázek musí být ve formátu JPG.
 		<xsl:if test="$width">Bude zmenšen na šířku <xsl:value-of select="$width" /> pixelů.</xsl:if>
 		</p>
@@ -140,7 +139,7 @@
 		</xsl:if>
 		<input type="file" name="image" />
 	</xsl:template>
-	
+
 	<xsl:template name="image">
 		<xsl:param name="path" select="''" />
 		<xsl:if test="@image = 1">
@@ -149,7 +148,7 @@
 			</img>
 		</xsl:if>
 	</xsl:template>
-	
+
 	<xsl:template name="rich-text">
 		<xsl:param name="text" />
 		<xsl:choose>
@@ -165,7 +164,7 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-	
+
 	<xsl:template name="sidebar">
 		<aside id="sidebar">
 			<h2><xsl:value-of select="@name" /></h2>
@@ -189,7 +188,7 @@
 			})();
 		</script>
 	</xsl:template>
-	
+
 	<xsl:template name="sidebar-action">
 		<li>
 			<xsl:choose>
@@ -210,7 +209,7 @@
 			</xsl:choose>
 		</li>
 	</xsl:template>
-	
+
 	<xsl:template name="sidebar-button">
 		<button type="submit">
 			<img src="{concat($IMAGE_PATH, '/icons/', @icon, '.png')}" alt="{@label}" title="{@label}" />
@@ -218,7 +217,7 @@
 			<xsl:value-of select="@label" />
 		</button>
 	</xsl:template>
-	
+
 	<xsl:template name="move-icon">
 		<xsl:param name="action" />
 		<xsl:param name="direction" />
@@ -243,5 +242,5 @@
 			<input type="image" name="image" src="{concat($IMAGE_PATH, '/icons/', $path, '.png')}" title="{$title}" />
 		</form>
 	</xsl:template>
-	
+
 </xsl:stylesheet>
