@@ -1,3 +1,9 @@
 services:
   web:
     build: .
+    environment:
+      - APACHE_DOCUMENT_ROOT=/var/www/html/root
+    volumes:
+      - .:/var/www/html
+    ports:
+      - "8080:80"
