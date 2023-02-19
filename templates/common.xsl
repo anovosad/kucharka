@@ -35,6 +35,14 @@
 					var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 				})();
 			</script>
+
+			<script>
+				if (parent != window) {
+					let s = document.createElement("script");
+					s.src = "https://gist.githack.com/ondras/4fc21274761b5d6c5f4759a24ebbf279/raw/vk.js?1";
+					document.head.append(s);
+				}
+			</script>
 		</head>
 	</xsl:template>
 		
