@@ -1,11 +1,11 @@
 FROM php:8-apache
 
 RUN apt update && \
-	apt install -y libxslt1-dev libsqlite3-dev && \
+	apt install -y libxslt1-dev libsqlite3-dev sqlite3 zlib1g-dev libpng-dev libjpeg-dev && \
+	docker-php-ext-configure gd --with-jpeg && \
+	docker-php-ext-install gd && \
 	docker-php-ext-install pdo pdo_mysql xsl && \
 	docker-php-ext-install pdo_sqlite && \
-# RUN docker-php-ext-install gd
-	apt purge --auto-remove -y libxslt1-dev libsqlite3-dev && \
 	apt clean
 
 RUN a2enmod rewrite

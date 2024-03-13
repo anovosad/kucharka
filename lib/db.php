@@ -14,7 +14,10 @@
 		public function __construct($image_path) {
 			global $user, $pass, $host, $db;
 			$this->image_path = $image_path;
-			parent::__construct("mysql:host=".$host.";dbname=".$db, $user, $pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+			$options = [
+			    PDO::SQLITE_ATTR_OPEN_FLAGS => PDO::SQLITE_OPEN_READWRITE,  
+			];
+			parent::__construct("sqlite:db/sqlite.db", null, null, $options);
 		}
 
 		public function getFields($table) {
@@ -132,7 +135,7 @@
 
 		public function getRecipe($id) {
 			$data = $this->query("SELECT ".self::RECIPE.".*,
-								YEAR(ts) AS year, MONTH(ts) AS month, DAY(ts) AS day,
+								strftime('%Y') AS year, strftime('%m') AS month, strftime('%d') AS day,
 								".self::USER.".name AS name_user,
 								".self::TYPE.".name AS name_type
 								FROM ".self::RECIPE."

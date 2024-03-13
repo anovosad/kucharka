@@ -1,0 +1,14 @@
+version: '3.4'
+
+services:
+  kucharka:
+    image: kucharka
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      - APACHE_DOCUMENT_ROOT=/var/www/html/root
+    volumes:
+      - .:/var/www/html
+    ports:
+      - "8080:80"

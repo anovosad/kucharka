@@ -38,18 +38,23 @@
 		}
 
 		public function insert($table, $values = array()) {
-			$query = "INSERT INTO ".$table. "(";
-			$query .= implode(",", array_keys($values));
-			$query .= ") VALUES (";
+			if(empty($values)) {
+				$query = "INSERT INTO ".$table." DEFAULT VALUES";
+				$this->query($query);
+			} else {
+				$query = "INSERT INTO ".$table. "(";
+				$query .= implode(",", array_keys($values));
+				$query .= ") VALUES (";
 
-			$params = array();
-			foreach ($values as $value) {
-				if (count($params)) { $query .= ","; }
-				$params[] = $value;
-				$query .= "?";
+				$params = array();
+				foreach ($values as $value) {
+					if (count($params)) { $query .= ","; }
+					$params[] = $value;
+					$query .= "?";
+				}
+				$query .= ")";
+				$this->query($query, $params);
 			}
-			$query .= ")";
-			$this->query($query, $params);
 			return $this->db->lastInsertId();
 		}
 
